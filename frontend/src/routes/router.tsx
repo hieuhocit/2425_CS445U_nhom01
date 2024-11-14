@@ -1,16 +1,16 @@
 import { createBrowserRouter } from 'react-router-dom';
-import App from '@/App';
-import Root from '@/Root';
 import ListExam from '@/pages/list-exam/ListExam';
+import Layout from '@/Layout';
+import HomePage from '@/pages/home/Home';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root />,
+    element: <Layout />,
     children: [
       {
         index: true,
-        element: <App />,
+        element: <HomePage />,
       },
       {
         path: 'list-exam',

@@ -1,5 +1,10 @@
-import { ReactNode } from 'react';
+// ** React router
+import { Outlet } from 'react-router-dom';
 
-export default function Layout({ children }: { children: ReactNode }) {
-  return <>{children}</>;
+export default function Layout() {
+  return (
+    <>
+      <Outlet />
+    </>
+  );
 }

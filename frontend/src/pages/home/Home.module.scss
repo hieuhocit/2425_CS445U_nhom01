@@ -1,0 +1,277 @@
+@import "styles/colors";
+
+.homepage {
+  background-color: $background-light-mode-1;
+  width: 100vw;
+  min-height: 100vh;
+  padding-bottom: 24px;
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+
+    padding: 2rem;
+    margin-bottom: 32px;
+
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      $font-size: 1.65rem;
+
+      .title {
+        font-size: $font-size;
+      }
+
+      .icon {
+        font-size: $font-size;
+        cursor: pointer;
+        transition: transform 0.3s ease-in-out;
+
+        &:hover,
+        &:active {
+          transform: scale(1.1);
+        }
+      }
+    }
+    .bottom {
+      .addition {
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  .main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 32px;
+    padding-inline: 16px;
+    .card {
+      $gap: 16px;
+      background-color: $background-light-mode-2;
+
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: $gap;
+
+      padding: 18px;
+      border-radius: 24px;
+      width: 380px;
+
+      .item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 18px;
+
+        flex: calc(50% - $gap);
+        flex-grow: 0;
+        background-color: $background-light-mode-3;
+
+        padding: 1rem;
+        border-radius: 24px;
+        cursor: pointer;
+
+        transition: transform 0.3s ease-in-out;
+        &:hover,
+        &:active {
+          transform: scale(1.03);
+        }
+
+        .icon {
+          font-size: 4rem;
+        }
+
+        p {
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+
+  &.darkMode {
+    background-color: $background-dark-mode-1;
+    .header {
+      color: $color-dark-mode;
+    }
+
+    .main {
+      .card {
+        background-color: $background-dark-mode-2;
+
+        .item {
+          background-color: $background-dark-mode-3;
+        }
+      }
+    }
+    .purple {
+      color: hsl(301, 64%, 45%);
+    }
+
+    .lightPurple {
+      color: hsl(280, 67%, 70%);
+    }
+
+    .green {
+      color: hsl(154, 100%, 38%);
+    }
+
+    .solidGren {
+      color: hsl(181, 86%, 36%);
+    }
+
+    .red {
+      color: hsl(0, 96%, 54%);
+    }
+
+    .solidOrange {
+      color: hsl(33, 88%, 54%);
+    }
+
+    .solidBlue {
+      color: hsl(206, 100%, 39%);
+    }
+
+    .solidPink {
+      color: hsl(341, 84%, 57%);
+    }
+
+    .history {
+      color: hsl(28, 67%, 54%);
+    }
+
+    .login {
+      color: hsl(213, 47%, 57%);
+    }
+
+    .register {
+      color: hsl(344, 77%, 49%);
+    }
+
+    .dark {
+      color: $background-light-mode-1;
+    }
+  }
+
+  @media (max-width: 400px) {
+    & {
+      .header {
+        .bottom {
+          .addition {
+            font-size: 0.75rem;
+          }
+        }
+      }
+
+      .main {
+        .card {
+          .item {
+            .icon {
+              font-size: 3rem;
+            }
+
+            p {
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 360px) {
+    & {
+      .header {
+        .top {
+          .title {
+            font-size: 1.4rem;
+          }
+        }
+
+        .bottom {
+          .addition {
+            font-size: 0.65rem;
+          }
+        }
+      }
+
+      .main {
+        .card {
+          .item {
+            p {
+              font-size: 0.75rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 319px) {
+    & {
+      .main {
+        .card {
+          .item {
+            flex: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Utils
+.purple {
+  color: #942092;
+}
+
+.lightPurple {
+  color: #af52dd;
+}
+
+.green {
+  color: #008f51;
+}
+
+.solidGren {
+  color: #09797b;
+}
+
+.red {
+  color: #dc0505;
+}
+
+.solidOrange {
+  color: #cd770d;
+}
+
+.solidBlue {
+  color: #005392;
+}
+
+.solidPink {
+  color: #dc1354;
+}
+
+.history {
+  color: #bc6c25;
+}
+
+.login {
+  color: #3f72af;
+}
+
+.register {
+  color: #af1740;
+}
+
+.dark {
+  color: $background-dark-mode-1;
+}
