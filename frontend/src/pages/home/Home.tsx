@@ -29,6 +29,8 @@ import {
   MdOutlineLightMode,
 } from 'react-icons/md';
 
+import { CgProfile } from 'react-icons/cg';
+
 /** react-redux */
 import { useDispatch, useSelector } from 'react-redux';
 import { themeMode } from '@/store/theme/themeSelector';
@@ -152,6 +154,12 @@ export default function HomePage() {
               )}
               <p>{isDarkMode ? 'Sáng' : 'Tối'}</p>
             </div>
+            {user && (
+              <div className={`${styles.item} ${styles.profile}`}>
+                <CgProfile className={styles.icon} />
+                <p>Hồ sơ</p>
+              </div>
+            )}
           </div>
         </main>
       </div>
