@@ -37,6 +37,9 @@ import { themeMode } from '@/store/theme/themeSelector';
 import { toggleMode } from '@/store/theme/themeSlice';
 import { useState } from 'react';
 
+/** react-router */
+import { Link } from 'react-router-dom';
+
 export default function HomePage() {
   const mode = useSelector(themeMode);
   const dispatch = useDispatch();
@@ -63,7 +66,9 @@ export default function HomePage() {
         <header className={styles.header}>
           <div className={styles.top}>
             <h1 className={styles.title}>Ôn thi GPLX hạng A1</h1>
-            <IoMdSettings className={styles.icon} />
+            <Link to='/setting'>
+              <IoMdSettings className={styles.icon} />
+            </Link>
           </div>
           <div className={styles.bottom}>
             <p className={styles.addition}>
