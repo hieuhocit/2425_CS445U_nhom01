@@ -1,0 +1,171 @@
+@import "styles/colors";
+
+.setting {
+  background-color: $background-light-mode-1;
+
+  width: 100vw;
+  min-height: 100vh;
+  padding-bottom: 32px;
+
+  .header {
+    display: flex;
+    align-items: center;
+
+    padding: 8px 16px;
+    background-color: $background-light-mode-2;
+    box-shadow: 0px 0px 10px 1px $background-light-mode-4;
+
+    .nav {
+      .back {
+        color: $color-light-mode;
+        font-size: 2rem;
+        display: flex;
+        align-items: center;
+        padding: 4px;
+        transition: transform 0.2s ease-out;
+
+        &:hover,
+        &:active {
+          transform: scale(1.1);
+        }
+      }
+    }
+
+    .title {
+      flex: 1;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+  }
+
+  .main {
+    margin-top: 36px;
+    .listSetting {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+
+      margin-inline: 15%;
+
+      .item {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        input {
+          width: 20px;
+          height: 20px;
+        }
+
+        div {
+          h2 {
+            font-size: 1.25rem;
+            margin-bottom: 4px;
+          }
+
+          p {
+            font-size: 1rem;
+            color: hsl(0, 0%, 40%);
+          }
+        }
+      }
+    }
+  }
+
+  .footer {
+    margin-top: 32px;
+    .actions {
+      margin-inline: 15%;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+
+      .button {
+        border: none;
+        outline: none;
+        background-color: $background-light-mode-3;
+        padding: 12px 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        min-width: 80px;
+        font-size: 1.1rem;
+        transition:
+          background-color 0.2s ease-in-out,
+          transform 0.3s ease-in-out;
+
+        &:hover,
+        &:active {
+          transform: scale(1.05);
+          background-color: $background-light-mode-4;
+        }
+      }
+
+      .lighter {
+        background-color: $background-light-mode-2;
+
+        &:hover,
+        &:active {
+          background-color: $background-light-mode-3;
+        }
+      }
+    }
+  }
+
+  &.darkMode {
+    background-color: $background-dark-mode-1;
+    .header {
+      background-color: $background-dark-mode-2;
+      box-shadow: 0px 0px 10px 1px $background-dark-mode-4;
+
+      .nav {
+        .back {
+          color: $color-dark-mode;
+        }
+      }
+
+      .title {
+        color: $color-dark-mode;
+      }
+    }
+
+    .main {
+      .listSetting {
+        .item {
+          div {
+            h2 {
+              color: $color-dark-mode;
+            }
+
+            p {
+              color: hsl(0, 0%, 70%);
+            }
+          }
+        }
+      }
+    }
+
+    .footer {
+      .actions {
+        .button {
+          color: $color-dark-mode;
+          background-color: $background-dark-mode-3;
+
+          &:hover,
+          &:active {
+            background-color: $background-dark-mode-4;
+          }
+        }
+
+        .lighter {
+          background-color: $background-dark-mode-2;
+
+          &:hover,
+          &:active {
+            background-color: $background-dark-mode-3;
+          }
+        }
+      }
+    }
+  }
+}

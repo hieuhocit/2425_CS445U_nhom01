@@ -26,14 +26,17 @@
         font-size: $font-size;
       }
 
-      .icon {
-        font-size: $font-size;
-        cursor: pointer;
-        transition: transform 0.3s ease-in-out;
+      a {
+        color: $color-light-mode;
+        .icon {
+          font-size: $font-size;
+          cursor: pointer;
+          transition: transform 0.3s ease-in-out;
 
-        &:hover,
-        &:active {
-          transform: scale(1.1);
+          &:hover,
+          &:active {
+            transform: scale(1.1);
+          }
         }
       }
     }
@@ -102,6 +105,10 @@
     background-color: $background-dark-mode-1;
     .header {
       color: $color-dark-mode;
+
+      a {
+        color: $color-dark-mode;
+      }
     }
 
     .main {
