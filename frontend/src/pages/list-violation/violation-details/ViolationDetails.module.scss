@@ -1,0 +1,73 @@
+@import "styles/colors";
+
+.violationDetails {
+  background-color: $background-light-mode-1;
+  width: 100%;
+  min-height: 100vh;
+  padding-bottom: 48px;
+
+  .main {
+    .sections {
+      margin-top: 60px;
+      width: 90%;
+      margin-inline: auto;
+
+      .section {
+        border-bottom: 1px solid black;
+        padding-bottom: 12px;
+        margin-bottom: 24px;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        p {
+          font-size: 1.1rem;
+          line-height: 1.4;
+          margin-bottom: 2px;
+        }
+
+        h2 {
+          font-size: 1.4rem;
+          margin-bottom: 4px;
+        }
+
+        .bold {
+          font-weight: bold;
+        }
+
+        .colorRed {
+          color: red;
+        }
+      }
+    }
+  }
+
+  &.darkMode {
+    background-color: $background-dark-mode-1;
+
+    .main {
+      .sections {
+        .section {
+          border-bottom: 1px solid white;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          p {
+            color: $color-dark-mode;
+          }
+
+          h2 {
+            color: $color-dark-mode;
+          }
+
+          .colorRed {
+            color: red;
+          }
+        }
+      }
+    }
+  }
+}
