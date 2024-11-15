@@ -12,6 +12,8 @@ import { useSelector } from 'react-redux';
 
 /** redux */
 import { themeMode } from '@/store/theme/themeSelector';
+
+/** components */
 import Header from '@/components/header/Header';
 
 export default function SettingPage() {
@@ -36,7 +38,7 @@ export default function SettingPage() {
           isDarkMode ? styles.darkMode : undefined
         }`}
       >
-        <Header title='Cài đặt' />
+        <Header title='Cài đặt' isDark={isDarkMode} />
         <main className={styles.main}>
           <ul className={styles.listSetting}>
             <li>

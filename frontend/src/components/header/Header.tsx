@@ -7,9 +7,17 @@ import { IoIosArrowBack } from 'react-icons/io';
 /** react-router */
 import { Link } from 'react-router-dom';
 
-export default function Header({ title }: { title: string }) {
+export default function Header({
+  title,
+  isDark,
+}: {
+  title: string;
+  isDark: boolean;
+}) {
   return (
-    <header className={styles.header}>
+    <header
+      className={`${styles.header} ${isDark ? styles.darkMode : undefined}`}
+    >
       <nav className={styles.nav}>
         <Link to='../' className={styles.back}>
           <IoIosArrowBack className={styles.icon} />
