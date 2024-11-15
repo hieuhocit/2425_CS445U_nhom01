@@ -114,10 +114,13 @@ export default function HomePage() {
               <FaSign className={styles.icon} />
               <p>Biển báo</p>
             </Link>
-            <div className={`${styles.item} ${styles.solidPink}`}>
+            <Link
+              to='/list-law'
+              className={`${styles.item} ${styles.solidPink}`}
+            >
               <FaBalanceScale className={styles.icon} />
               <p>Luật</p>
-            </div>
+            </Link>
           </div>
 
           <div className={styles.card}>

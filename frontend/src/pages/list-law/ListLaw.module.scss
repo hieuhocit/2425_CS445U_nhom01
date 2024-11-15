@@ -1,0 +1,161 @@
+@import "styles/colors";
+
+.listLawPage {
+  background-color: $background-light-mode-1;
+  width: 100%;
+  min-height: 100vh;
+  padding-bottom: 48px;
+
+  .main {
+    .options {
+      margin-block: 52px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+
+      .option {
+        position: relative;
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: -12px;
+          width: 1px;
+          height: 100%;
+          transform: translateY(-50%);
+          background-color: black;
+        }
+
+        &:first-child::after {
+          width: 0;
+        }
+
+        label {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          cursor: pointer;
+
+          input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+          }
+
+          span {
+            font-size: 1.2rem;
+          }
+        }
+      }
+    }
+    .list {
+      width: 60%;
+      margin-inline: auto;
+      border-radius: 32px;
+
+      background-color: $background-light-mode-2;
+
+      li {
+        border-bottom: 1px solid $color-light-mode;
+        padding-block: 8px;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .item {
+          color: $color-light-mode;
+          padding: 1rem;
+
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .icon {
+            font-size: 1.6rem;
+          }
+
+          h2 {
+            font-size: 1.4rem;
+          }
+        }
+      }
+    }
+  }
+
+  &.darkMode {
+    background-color: $background-dark-mode-1;
+    .main {
+      .options {
+        .option {
+          &::after {
+            background-color: white;
+          }
+
+          &:first-child::after {
+            width: 0;
+          }
+
+          label {
+            color: $color-dark-mode;
+          }
+        }
+      }
+      .list {
+        background-color: $background-dark-mode-2;
+        li {
+          border-bottom: 1px solid $color-dark-mode;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          .item {
+            color: $color-dark-mode;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .main {
+      .list {
+        width: 70%;
+      }
+    }
+  }
+  @media (max-width: 768px) {
+    .main {
+      .list {
+        width: 80%;
+      }
+    }
+  }
+  @media (max-width: 550px) {
+    .main {
+      .list {
+        width: 90%;
+      }
+    }
+  }
+  @media (max-width: 430px) {
+    .main {
+      .list {
+        li {
+          .item {
+            .icon {
+              font-size: 1.5rem;
+            }
+
+            h2 {
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
