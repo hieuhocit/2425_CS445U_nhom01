@@ -19,7 +19,7 @@ export default function Header({
       className={`${styles.header} ${isDark ? styles.darkMode : undefined}`}
     >
       <nav className={styles.nav}>
-        <Link to='../' className={styles.back}>
+        <Link to='..' relative='path' className={styles.back}>
           <IoIosArrowBack className={styles.icon} />
         </Link>
       </nav>

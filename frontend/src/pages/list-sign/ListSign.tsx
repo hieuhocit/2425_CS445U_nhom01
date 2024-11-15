@@ -24,7 +24,7 @@ export default function ListSignPage() {
         <main className={styles.main}>
           <ul className={styles.list}>
             <li>
-              <Link to='/' className={styles.item}>
+              <Link to='/list-sign/idhere' className={styles.item}>
                 <div className={styles.head}>
                   <img
                     src='https://beta.gplx.app/images/assets/topic_sign_0.png'

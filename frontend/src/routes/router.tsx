@@ -4,6 +4,7 @@ import Layout from '@/Layout';
 import HomePage from '@/pages/home/Home';
 import SettingPage from '@/pages/setting/Setting';
 import ListSignPage from '@/pages/list-sign/ListSign';
+import SignDetailsPage from '../pages/list-sign/sign-details/SignDetails';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: '/list-sign',
         element: <ListSignPage />,
+      },
+      {
+        path: '/list-sign/:signId',
+        element: <SignDetailsPage />,
       },
       {
         path: 'list-exam',
