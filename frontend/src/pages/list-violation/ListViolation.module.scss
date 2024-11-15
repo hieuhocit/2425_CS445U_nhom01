@@ -1,0 +1,64 @@
+@import "styles/colors";
+
+.listViolation {
+  background-color: $background-light-mode-1;
+  width: 100%;
+  min-height: 100vh;
+  padding-bottom: 48px;
+
+  .main {
+    .list {
+      margin-top: 60px;
+      width: 90%;
+      margin-inline: auto;
+
+      li {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+
+        margin-bottom: 16px;
+        border-bottom: 1px solid black;
+        padding-bottom: 12px;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        h2 {
+          font-size: 1.25rem;
+        }
+        p {
+          font-size: 1.1rem;
+          color: red;
+        }
+        a {
+          width: max-content;
+          color: $color-light-mode;
+          font-size: 1.1rem;
+          color: hsl(240, 100%, 70%);
+        }
+      }
+    }
+  }
+
+  &.darkMode {
+    background-color: $background-dark-mode-1;
+
+    .main {
+      .list {
+        li {
+          border-bottom: 1px solid white;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          h2 {
+            color: $color-dark-mode;
+          }
+        }
+      }
+    }
+  }
+}
