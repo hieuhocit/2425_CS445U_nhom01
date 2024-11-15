@@ -107,10 +107,13 @@ export default function HomePage() {
                 <p>Các câu sai</p>
               </div>
             )}
-            <div className={`${styles.item} ${styles.solidBlue}`}>
+            <Link
+              to='list-sign'
+              className={`${styles.item} ${styles.solidBlue}`}
+            >
               <FaSign className={styles.icon} />
               <p>Biển báo</p>
-            </div>
+            </Link>
             <div className={`${styles.item} ${styles.solidPink}`}>
               <FaBalanceScale className={styles.icon} />
               <p>Luật</p>
