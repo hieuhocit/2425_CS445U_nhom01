@@ -85,7 +85,10 @@ export default function ListLawPage() {
         </div>
         <ul className={styles.list}>
           <li>
-            <Link to='/' className={styles.item}>
+            <Link
+              to='/list-law/list-violation?violationType=1&violationGroup=1'
+              className={styles.item}
+            >
               <GiTrafficCone className={styles.icon} />
               <h2>Hiệu lệnh, chỉ dẫn</h2>
             </Link>
