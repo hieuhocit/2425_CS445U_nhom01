@@ -1,0 +1,68 @@
+@import "styles/colors";
+
+.signDetails {
+  background-color: $background-light-mode-1;
+  width: 100%;
+  min-height: 100vh;
+  padding-bottom: 48px;
+
+  .main {
+    margin-top: 48px;
+    .list {
+      width: 85%;
+      margin-inline: auto;
+      border-radius: 24px;
+      background-color: $background-light-mode-2;
+
+      .item {
+        padding: 1.2rem;
+        border-bottom: 1px solid $color-light-mode;
+        margin-bottom: 16px;
+
+        &:last-child {
+          border-bottom: none;
+          margin-bottom: 0;
+        }
+
+        .head {
+          margin-bottom: 12px;
+          h2 {
+            font-size: 1.4rem;
+          }
+        }
+        .body {
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+
+          img {
+            width: 100px;
+            height: 100px;
+          }
+
+          p {
+            font-size: 1.2rem;
+          }
+        }
+      }
+    }
+  }
+
+  &.darkMode {
+    background-color: $background-dark-mode-1;
+    .main {
+      .list {
+        background-color: $background-dark-mode-2;
+
+        .item {
+          border-bottom: 1px solid $color-dark-mode;
+          color: $color-dark-mode;
+          &:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
