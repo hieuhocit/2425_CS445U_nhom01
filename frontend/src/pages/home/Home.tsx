@@ -44,7 +44,7 @@ export default function HomePage() {
   const mode = useSelector(themeMode);
   const dispatch = useDispatch();
 
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(true);
 
   const isDarkMode = mode === 'dark';
 
@@ -102,10 +102,13 @@ export default function HomePage() {
               <p>20 câu liệt</p>
             </div>
             {user && (
-              <div className={`${styles.item} ${styles.solidOrange}`}>
+              <Link
+                to='/list-wrong'
+                className={`${styles.item} ${styles.solidOrange}`}
+              >
                 <FaCircleXmark className={styles.icon} />
                 <p>Các câu sai</p>
-              </div>
+              </Link>
             )}
             <Link
               to='list-sign'
