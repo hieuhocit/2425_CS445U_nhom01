@@ -13,6 +13,7 @@ import SignDetailsPage from '../pages/list-sign/sign-details/SignDetails';
 import ListLawPage from '@/pages/list-law/ListLaw';
 import ListViolationPage from '@/pages/list-violation/ListViolation';
 import ViolationDetailsPage from '@/pages/list-violation/violation-details/ViolationDetails';
+import ListWrongPage from '@/pages/list-wrong/ListWrong';
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: '/list-law/list-violation/:violationId',
         element: <ViolationDetailsPage />,
+      },
+      {
+        path: '/list-wrong',
+        element: <ListWrongPage />,
       },
       {
         path: 'list-exam',
