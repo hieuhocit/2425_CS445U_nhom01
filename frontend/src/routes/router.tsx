@@ -14,6 +14,7 @@ import ListLawPage from '@/pages/list-law/ListLaw';
 import ListViolationPage from '@/pages/list-violation/ListViolation';
 import ViolationDetailsPage from '@/pages/list-violation/violation-details/ViolationDetails';
 import ListWrongPage from '@/pages/list-wrong/ListWrong';
+import ListRequiredPage from '@/pages/list-required/ListRequired';
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: '/list-wrong',
         element: <ListWrongPage />,
+      },
+      {
+        path: '/list-required',
+        element: <ListRequiredPage />,
       },
       {
         path: 'list-exam',

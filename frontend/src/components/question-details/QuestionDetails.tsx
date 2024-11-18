@@ -28,7 +28,13 @@ export default function QuestionDetails({
       } ${behavior.type === 'view' ? styles.view : undefined}
       `}
     >
-      <h2 className={styles.title}>{question.title}</h2>
+      <h2
+        className={`${styles.title} ${
+          question.required ? styles.required : undefined
+        }`}
+      >
+        {question.title}
+      </h2>
 
       {question?.image && (
         <div className={styles.imageContainer}>
@@ -38,42 +44,59 @@ export default function QuestionDetails({
 
       <div className={styles.answers}>
         {question?.answers?.length > 0 &&
-          question.answers.map((answer, index) => (
-            <div className={styles.answer} key={answer.id}>
-              <label
-                className={`${
-                  answer.id === question.idSelectedAnswer
-                    ? styles.wrongAnswer
-                    : undefined
-                } ${
-                  answer.id === question.idTrueAnswer
-                    ? styles.trueAnswer
-                    : undefined
-                } ${
-                  answer.id === question.idSelectedAnswer &&
-                  question.idSelectedAnswer === question.idTrueAnswer
-                    ? styles.correctAnswer
-                    : undefined
-                }
-            `}
-              >
-                <input
-                  type='radio'
-                  name={question.id}
-                  defaultValue={answer.id}
-                  checked={
-                    behavior.type === 'view' &&
-                    answer.id === question.idSelectedAnswer
-                      ? true
-                      : undefined
-                  }
-                  disabled={behavior.type === 'view'}
-                  onChange={() => handleSelectedAnswer(question.id, answer.id)}
-                />
-                <span>{`${index + 1}. ${answer.title}`}</span>
-              </label>
-            </div>
-          ))}
+          question.answers.map((answer, index) => {
+            let className = '';
+
+            // Nếu là câu trả lời của người dùng
+            if (answer.id === question.idSelectedAnswer) {
+              // Kiểm tra nếu câu trả lời là đúng
+              if (question.idSelectedAnswer === question.idTrueAnswer) {
+                className = styles.correctAnswer;
+              } else {
+                // Ngược lại nếu sai
+                className = styles.wrongAnswer;
+              }
+            } else {
+              // Nếu không phải câu trả lời người dùng
+              // thì kiểm tra có phải là câu trả lời đúng không nếu đúng thì hiển thị
+              className =
+                answer.id === question.idTrueAnswer ? styles.trueAnswer : '';
+            }
+
+            let checked = undefined;
+
+            // Nếu đg ở chế độ xem
+            if (behavior.type === 'view') {
+              // Nếu có câu trả lời của người dùng (thg nằm trong list wrong answer)
+              if (question.idSelectedAnswer) {
+                // Nếu có thì kiểm tra câu hiện tại có phải là câu trả lời người dùng không, nếu có thì hiển thị
+                checked =
+                  answer.id === question.idSelectedAnswer ? true : undefined;
+              } else {
+                // Nếu không có câu trả lời của người dùng thì hiển thị câu trả lời đúng
+                checked =
+                  answer.id === question.idTrueAnswer ? true : undefined;
+              }
+            }
+
+            return (
+              <div className={styles.answer} key={answer.id}>
+                <label className={className}>
+                  <input
+                    type='radio'
+                    name={question.id}
+                    defaultValue={answer.id}
+                    checked={checked}
+                    disabled={behavior.type === 'view'}
+                    onChange={() =>
+                      handleSelectedAnswer(question.id, answer.id)
+                    }
+                  />
+                  <span>{`${index + 1}. ${answer.title}`}</span>
+                </label>
+              </div>
+            );
+          })}
 
         {(!question?.answers || question?.answers?.length === 0) && (
           <p>

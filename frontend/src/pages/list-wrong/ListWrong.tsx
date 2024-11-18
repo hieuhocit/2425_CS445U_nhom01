@@ -94,10 +94,10 @@ export default function ListWrongPage() {
           </div>
         )}
 
-        {!wrongQuestions ||
-          (wrongQuestions.length === 0 && (
-            <p>Xin chúc mừng, hiện tại bạn không có câu nào làm sai!</p>
-          ))}
+        {(!wrongQuestions ||
+          (wrongQuestions && wrongQuestions.length === 0)) && (
+          <p>Xin chúc mừng, hiện tại bạn không có câu nào làm sai!</p>
+        )}
       </main>
     </div>
   );
