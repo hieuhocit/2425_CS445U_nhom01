@@ -97,10 +97,13 @@ export default function HomePage() {
           </div>
 
           <div className={styles.card}>
-            <div className={`${styles.item} ${styles.red}`}>
+            <Link
+              to='/list-required'
+              className={`${styles.item} ${styles.red}`}
+            >
               <FaHeart className={styles.icon} />
               <p>20 câu liệt</p>
-            </div>
+            </Link>
             {user && (
               <Link
                 to='/list-wrong'
