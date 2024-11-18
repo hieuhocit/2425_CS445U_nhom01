@@ -1,0 +1,242 @@
+@import "styles/colors";
+
+.gridQuestions {
+  position: fixed;
+  inset: 0;
+
+  background-color: rgb(203, 241, 245, 0.4);
+  backdrop-filter: blur(4px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  animation: fade-out 0.3s ease-in-out forwards;
+
+  & > p {
+    font-size: 1.15rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 60px);
+    grid-template-rows: repeat(auto-fit, 40px);
+    gap: 16px;
+    justify-content: center;
+    align-content: flex-start;
+    align-items: center;
+
+    margin: 48px;
+    padding-inline: 16px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    max-width: calc(60px * 16 + 16px * 14);
+    max-height: calc(40px * 10 + 16px * 9);
+
+    animation: slide-down 0.3s ease-in forwards;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: hsl(0, 0%, 43%);
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 12px;
+    }
+
+    .question {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $background-light-mode-3;
+      border-radius: 8px;
+      flex: 0 0 60px;
+      width: 60px;
+      height: 40px;
+      cursor: pointer;
+
+      font-size: 1.25rem;
+
+      transition: background-color 0.3s ease-in-out;
+
+      &:hover,
+      &:active {
+        background-color: $background-light-mode-4;
+      }
+
+      &.done {
+        color: white;
+        background-color: hsl(240, 100%, 65%);
+      }
+      &.wrong {
+        color: white;
+        background-color: hsl(0, 100%, 60%);
+      }
+      &.true {
+        color: white;
+        background-color: hsl(120, 100%, 35%);
+      }
+    }
+
+    @media (max-width: 1280px) {
+      & {
+        max-width: calc(60px * 13 + 16px * 11);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      & {
+        max-width: calc(60px * 10 + 16px * 8);
+        max-height: calc(40px * 9 + 16px * 8);
+      }
+    }
+
+    @media (max-width: 768px) {
+      & {
+        max-width: calc(60px * 8 + 16px * 6);
+      }
+    }
+
+    @media (max-width: 640px) {
+      & {
+        max-width: calc(60px * 7 + 16px * 5);
+        max-height: calc(40px * 8 + 16px * 7);
+      }
+    }
+
+    @media (max-width: 550px) {
+      & {
+        max-width: calc(60px * 6 + 16px * 4);
+        max-height: calc(40px * 7 + 16px * 6);
+      }
+    }
+
+    @media (max-width: 430px) {
+      & {
+        max-width: calc(60px * 5 + 16px * 3);
+        max-height: calc(40px * 5 + 16px * 4);
+      }
+    }
+
+    @media (max-width: 380px) {
+      & {
+        max-width: calc(60px * 4 + 16px * 2);
+      }
+    }
+  }
+
+  &.show {
+    animation: fade-in 0.1s ease-in-out forwards;
+    .grid {
+      animation: slide-up 0.3s ease-out forwards;
+    }
+  }
+
+  @keyframes fade-out {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+      z-index: 999;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(200vh);
+      z-index: -1;
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(200vh);
+      z-index: -1;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+      z-index: 999;
+    }
+  }
+
+  @keyframes slide-up {
+    0% {
+      transform: translateY(200vh);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-down {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(200vh);
+    }
+  }
+
+  .close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 3rem;
+    cursor: pointer;
+
+    transition: transform 0.2s ease-in-out;
+
+    &:hover,
+    &:active {
+      transform: scale(1.1);
+    }
+  }
+
+  &.darkMode {
+    background-color: rgba(74, 74, 74, 0.1);
+
+    & > p {
+      color: $color-dark-mode;
+    }
+
+    .grid {
+      .question {
+        background-color: $background-dark-mode-4;
+        color: $color-dark-mode;
+
+        &:hover,
+        &:active {
+          background-color: $background-dark-mode-2;
+        }
+
+        &.done {
+          color: white;
+          background-color: hsl(240, 100%, 65%);
+        }
+        &.wrong {
+          color: white;
+          background-color: hsl(0, 100%, 60%);
+        }
+        &.true {
+          color: white;
+          background-color: hsl(120, 100%, 35%);
+        }
+      }
+    }
+
+    .close {
+      color: $color-dark-mode;
+    }
+  }
+}
