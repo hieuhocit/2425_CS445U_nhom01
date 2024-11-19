@@ -2,7 +2,7 @@
 import styles from './QuestionDetails.module.scss';
 
 /** types */
-import { IBehavior, IQuestion } from '@/types/definations';
+import { IBehavior, IQuestion } from '@/types/definitions';
 
 export default function QuestionDetails({
   isDarkMode,

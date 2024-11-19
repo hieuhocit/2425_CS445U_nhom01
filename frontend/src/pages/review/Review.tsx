@@ -1,5 +1,5 @@
 /** styles */
-import styles from './ListWrong.module.scss';
+import styles from './Review.module.scss';
 
 /** react-redux */
 import { useSelector } from 'react-redux';
@@ -7,12 +7,12 @@ import { themeMode } from '@/store/theme/themeSelector';
 
 /** components */
 import Header from '@/components/header/Header';
-import QuestionDetails from '@/components/question-details/QuestionDetails';
 
 /** types */
 import { IQuestion } from '@/types/definitions';
+import GridQuestions from '@/components/grid-questions/GridQuestions';
 
-export default function ListWrongPage() {
+export default function ReviewPage() {
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
@@ -71,33 +71,32 @@ export default function ListWrongPage() {
     required: false,
   };
 
-  const wrongQuestions: IQuestion[] | null = [question1, question2];
+  const questions: IQuestion[] | null = [question1, question2];
+
+  for (let i = 3; i <= 200; i++) {
+    const q = { ...question1 };
+    q.id = i + '';
+    questions.push(q);
+  }
 
   return (
-    <div
-      className={`${styles.listWrongPage} ${
-        isDarkMode ? styles.darkMode : undefined
-      }`}
-    >
-      <Header title='Các câu sai' isDark={isDarkMode} />
-      <main className={styles.main}>
-        {wrongQuestions && wrongQuestions.length > 0 && (
-          <div className={styles.list}>
-            {wrongQuestions.map((question) => (
-              <QuestionDetails
-                key={question.id}
-                isDarkMode={isDarkMode}
-                behavior={{ type: 'view' }}
-                question={question}
-              />
-            ))}
-          </div>
-        )}
+    <div className={`${styles.review} ${isDarkMode ? styles.darkMode : ''}`}>
+      <Header title='Ôn tập' isDark={isDarkMode} />
 
-        {(!wrongQuestions ||
-          (wrongQuestions && wrongQuestions.length === 0)) && (
-          <p>Xin chúc mừng, hiện tại bạn không có câu nào làm sai!</p>
-        )}
+      <main className={styles.main}>
+        <GridQuestions
+          isDark={isDarkMode}
+          behavior={{ type: 'view' }}
+          questions={questions}
+          css={{
+            position: 'relative',
+            backgroundColor: 'transparent',
+          }}
+          show={true}
+          close={false}
+          animation={false}
+          onGoTo={() => {}}
+        />
       </main>
     </div>
   );

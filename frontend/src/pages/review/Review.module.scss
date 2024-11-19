@@ -1,0 +1,12 @@
+@import "styles/colors";
+
+.review {
+  background-color: $background-light-mode-1;
+  width: 100%;
+  height: 100vh;
+  padding-bottom: 48px;
+
+  &.darkMode {
+    background-color: $background-dark-mode-3;
+  }
+}

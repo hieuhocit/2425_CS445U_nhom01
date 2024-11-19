@@ -1,4 +1,4 @@
-import { ITheme } from '@/types/definations';
+import { ITheme } from '@/types/definitions';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: ITheme = {

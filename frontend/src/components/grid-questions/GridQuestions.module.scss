@@ -12,7 +12,17 @@
   justify-content: center;
   align-items: center;
 
-  animation: fade-out 0.3s ease-in-out forwards;
+  opacity: 0;
+  transform: translateY(200vh);
+  z-index: -1;
+
+  &.animation {
+    animation: fade-out 0.3s ease-in-out forwards;
+
+    .grid {
+      animation: slide-down 0.3s ease-in forwards;
+    }
+  }
 
   & > p {
     font-size: 1.15rem;
@@ -32,10 +42,10 @@
     overflow-x: hidden;
     overflow-y: auto;
 
-    max-width: calc(60px * 16 + 16px * 14);
-    max-height: calc(40px * 10 + 16px * 9);
+    transform: translateY(200vh);
 
-    animation: slide-down 0.3s ease-in forwards;
+    max-width: 95%;
+    max-height: calc(40px * 12 + 16px * 11);
 
     &::-webkit-scrollbar {
       width: 6px;
@@ -90,54 +100,92 @@
       }
     }
 
-    @media (max-width: 1280px) {
+    @media (min-height: 1100px) {
       & {
-        max-width: calc(60px * 13 + 16px * 11);
+        max-height: calc(40px * 14 + 16px * 13);
       }
     }
 
-    @media (max-width: 1024px) {
+    @media (min-height: 1200px) {
       & {
-        max-width: calc(60px * 10 + 16px * 8);
+        max-height: calc(40px * 15 + 16px * 14);
+      }
+    }
+
+    @media (max-height: 820px) {
+      & {
+        max-height: calc(40px * 11 + 16px * 10);
+      }
+    }
+
+    @media (max-height: 760px) {
+      & {
+        max-height: calc(40px * 10 + 16px * 9);
+      }
+    }
+
+    @media (max-height: 700px) {
+      & {
         max-height: calc(40px * 9 + 16px * 8);
       }
     }
 
-    @media (max-width: 768px) {
+    @media (max-height: 630px) {
       & {
-        max-width: calc(60px * 8 + 16px * 6);
-      }
-    }
-
-    @media (max-width: 640px) {
-      & {
-        max-width: calc(60px * 7 + 16px * 5);
         max-height: calc(40px * 8 + 16px * 7);
       }
     }
 
-    @media (max-width: 550px) {
+    @media (max-height: 560px) {
       & {
-        max-width: calc(60px * 6 + 16px * 4);
         max-height: calc(40px * 7 + 16px * 6);
       }
     }
 
-    @media (max-width: 430px) {
+    @media (max-height: 500px) {
       & {
-        max-width: calc(60px * 5 + 16px * 3);
+        max-height: calc(40px * 6 + 16px * 5);
+      }
+    }
+
+    @media (max-height: 460px) {
+      & {
         max-height: calc(40px * 5 + 16px * 4);
       }
     }
 
-    @media (max-width: 380px) {
+    @media (max-height: 400px) {
       & {
-        max-width: calc(60px * 4 + 16px * 2);
+        max-height: calc(40px * 4 + 16px * 3);
+      }
+    }
+    @media (max-height: 340px) {
+      & {
+        max-height: calc(40px * 3 + 16px * 2);
+      }
+    }
+    @media (max-height: 290px) {
+      & {
+        max-height: calc(40px * 2 + 16px * 1);
+      }
+    }
+    @media (max-height: 240px) {
+      & {
+        max-height: calc(40px * 1 + 16px * 0);
       }
     }
   }
 
   &.show {
+    transform: translateY(0);
+    opacity: 1;
+    z-index: 999;
+    .grid {
+      transform: translateY(0);
+    }
+  }
+
+  &.show.animation {
     animation: fade-in 0.1s ease-in-out forwards;
     .grid {
       animation: slide-up 0.3s ease-out forwards;
