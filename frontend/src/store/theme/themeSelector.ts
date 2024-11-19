@@ -1,4 +1,4 @@
-import { IStoreState } from '@/types/definations';
+import { IStoreState } from '@/types/definitions';
 import { createSelector } from '@reduxjs/toolkit';
 
 const selectTheme = (state: IStoreState) => state.theme;

@@ -12,7 +12,7 @@ import ExamAction from '@/components/exam-actions/ExamActions';
 import GridQuestions from '@/components/grid-questions/GridQuestions';
 
 /** types */
-import { IQuestion } from '@/types/definations';
+import { IQuestion } from '@/types/definitions';
 
 /** react */
 import { useState } from 'react';

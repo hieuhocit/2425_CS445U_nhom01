@@ -10,7 +10,7 @@ import Header from '@/components/header/Header';
 import QuestionDetails from '@/components/question-details/QuestionDetails';
 
 /** types */
-import { IQuestion } from '@/types/definations';
+import { IQuestion } from '@/types/definitions';
 
 export default function ListWrongPage() {
   const mode = useSelector(themeMode);

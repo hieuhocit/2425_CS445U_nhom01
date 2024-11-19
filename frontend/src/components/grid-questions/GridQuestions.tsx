@@ -2,7 +2,7 @@
 import styles from './GridQuestions.module.scss';
 
 /** types */
-import { IBehavior, IQuestion } from '@/types/definations';
+import { IBehavior, IQuestion } from '@/types/definitions';
 
 /** icons */
 import { IoCloseOutline } from 'react-icons/io5';
