@@ -17,18 +17,24 @@ export default function GridQuestions({
   onClose,
   behavior,
   onGoTo,
+  css,
+  close,
+  animation,
 }: {
   isDark: boolean;
   show: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   questions: IQuestion[] | null | undefined;
   behavior: IBehavior;
   onGoTo: (index: number) => void;
+  css?: object;
+  close: boolean;
+  animation: boolean;
 }) {
   const gridRef = useRef<null | HTMLDivElement>(null);
 
   function handleClose() {
-    if (gridRef.current) {
+    if (gridRef.current && typeof onClose === 'function') {
       gridRef.current.classList.remove(styles.show);
       gridRef.current.onanimationend = () => {
         onClose();
@@ -46,10 +52,11 @@ export default function GridQuestions({
       ref={gridRef}
       className={`${styles.gridQuestions} ${
         isDark ? styles.darkMode : undefined
-      } ${show ? styles.show : undefined}`}
+      } ${show ? styles.show : undefined} ${animation ? styles.animation : ''}`}
+      style={css}
     >
       {questions && questions.length > 0 && (
-        <div className={styles.grid}>
+        <div className={`${styles.grid}`}>
           {questions.map((q, index) => {
             const className = `${styles.question} ${
               behavior.type === 'view'
@@ -80,9 +87,11 @@ export default function GridQuestions({
           trị viên.
         </p>
       )}
-      <div onClick={handleClose} className={styles.close}>
-        <IoCloseOutline />
-      </div>
+      {close && (
+        <div onClick={handleClose} className={styles.close}>
+          <IoCloseOutline />
+        </div>
+      )}
     </div>
   );
 }
