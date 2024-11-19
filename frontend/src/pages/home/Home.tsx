@@ -86,10 +86,10 @@ export default function HomePage() {
               <FaGraduationCap className={styles.icon} />
               <p>Thi theo bộ đề</p>
             </div>
-            <div className={`${styles.item} ${styles.green}`}>
+            <Link to='/review' className={`${styles.item} ${styles.green}`}>
               <IoMdGrid className={styles.icon} />
               <p>200 câu hỏi</p>
-            </div>
+            </Link>
             <div className={`${styles.item} ${styles.solidGren}`}>
               <FaCubes className={styles.icon} />
               <p>Chủ đề</p>

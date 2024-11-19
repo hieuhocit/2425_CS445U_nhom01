@@ -15,6 +15,7 @@ import ListViolationPage from '@/pages/list-violation/ListViolation';
 import ViolationDetailsPage from '@/pages/list-violation/violation-details/ViolationDetails';
 import ListWrongPage from '@/pages/list-wrong/ListWrong';
 import ListRequiredPage from '@/pages/list-required/ListRequired';
+import ReviewPage from '@/pages/review/Review';
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: '/list-required',
         element: <ListRequiredPage />,
+      },
+      {
+        path: '/review',
+        element: <ReviewPage />,
       },
       {
         path: 'list-exam',
