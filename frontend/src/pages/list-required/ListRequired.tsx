@@ -145,6 +145,8 @@ export default function ListRequiredPage() {
           questions={requiredQuestion}
           behavior={{ type: 'view' }}
           onGoTo={handleGoToQuestion}
+          close={true}
+          animation={true}
         />
       )}
     </div>
