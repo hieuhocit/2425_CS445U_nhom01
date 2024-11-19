@@ -1,11 +1,5 @@
 import {
   Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
 } from '@nestjs/common';
 import { ExamsService } from './exams.service';
 

@@ -1,11 +1,6 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
+  Controller
+
 } from '@nestjs/common';
 import { AnswersService } from './answers.service';
 
