@@ -1,16 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('roles')
 export class RoleEntity {
-    @PrimaryGeneratedColumn()
-    id: string;
+  @PrimaryGeneratedColumn()
+  id: string;
 
-    @Column()
-    role_name: string;
+  @Column()
+  role_name: string;
 
-    @Column()
-    created_at: Date;
+  @Column()
+  created_at: Date;
 
-    @Column()
-    updated_at: Date;
+  @Column()
+  updated_at: Date;
 }

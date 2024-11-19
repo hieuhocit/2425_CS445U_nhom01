@@ -1,19 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('exams_question')
 export class ExamsQuestionEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    exam_id: string;
-    
-    @Column()
-    question_id: number;
+  @Column()
+  exam_id: string;
 
-    @Column()
-    created_at: Date;
+  @Column()
+  question_id: number;
 
-    @Column()
-    completed_at: Date;
+  @Column()
+  created_at: Date;
+
+  @Column()
+  completed_at: Date;
 }

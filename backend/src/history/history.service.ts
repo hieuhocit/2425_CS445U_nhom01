@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateHistoryDto } from './dto/create-history.dto';
-import { UpdateHistoryDto } from './dto/update-history.dto';
+
 
 @Injectable()
 export class HistoryService {
-  create(createHistoryDto: CreateHistoryDto) {
+  create() {
     return 'This action adds a new history';
   }
 
@@ -16,7 +15,7 @@ export class HistoryService {
     return `This action returns a #${id} history`;
   }
 
-  update(id: number, updateHistoryDto: UpdateHistoryDto) {
+  update(id: number) {
     return `This action updates a #${id} history`;
   }
 
