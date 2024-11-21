@@ -13,38 +13,41 @@ import QuestionDetails from '@/components/question-details/QuestionDetails';
 
 /** types */
 import { IQuestion } from '@/types/definitions';
-import { useSearchParams } from 'react-router-dom';
 
 /** react */
 import { useState } from 'react';
 
 export default function ReviewPage() {
   const mode = useSelector(themeMode);
-  const [searchParams, setSearchParams] = useSearchParams();
   const [showGridQuestions, setShowGridQuestions] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState<number>(
-    parseInt(searchParams.get('index') || '')
+  const [currentIndex, setCurrentIndex] = useState<number | undefined>(
+    undefined
   );
 
   const isDarkMode = mode === 'dark';
-  const currentQuestion = questions?.[currentIndex];
+
+  let currentQuestion = undefined;
+  if (currentIndex !== undefined) {
+    currentQuestion = questions?.[currentIndex];
+  }
 
   function handleNextQuestion() {
-    if (currentIndex === (questions as IQuestion[]).length - 1) return;
-    setCurrentIndex((prevIndex) => prevIndex + 1);
-    setSearchParams({ index: currentIndex + 1 + '' });
+    if (
+      currentIndex === undefined ||
+      currentIndex === (questions as IQuestion[]).length - 1
+    )
+      return;
+    setCurrentIndex(currentIndex + 1);
   }
 
   function handlePrevQuestion() {
-    if (currentIndex === 0) return;
-    setCurrentIndex((prevIndex) => prevIndex - 1);
-    setSearchParams({ index: currentIndex - 1 + '' });
+    if (currentIndex === undefined || currentIndex === 0) return;
+    setCurrentIndex(currentIndex - 1);
   }
 
   function handleGoToQuestion(index: number) {
     if (index < 0 || index > (questions as IQuestion[]).length - 1) return;
     setCurrentIndex(index);
-    setSearchParams({ index: index + '' });
   }
 
   return (
@@ -71,10 +74,10 @@ export default function ReviewPage() {
         {currentQuestion && (
           <div className={styles.list}>
             <QuestionDetails
-              key={(questions[currentIndex] as IQuestion).id}
+              key={(questions as IQuestion[])[currentIndex as number].id}
               isDarkMode={isDarkMode}
               behavior={{ type: 'view' }}
-              question={questions[currentIndex]}
+              question={(questions as IQuestion[])[currentIndex as number]}
             />
           </div>
         )}
@@ -83,8 +86,8 @@ export default function ReviewPage() {
         <ExamAction
           isDark={isDarkMode}
           min={0}
-          max={questions.length - 1}
-          currentIndex={currentIndex}
+          max={(questions as IQuestion[]).length - 1}
+          currentIndex={currentIndex as number}
           onNext={handleNextQuestion}
           onPrev={handlePrevQuestion}
           onShow={() => setShowGridQuestions(true)}
