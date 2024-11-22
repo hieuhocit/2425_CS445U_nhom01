@@ -5,37 +5,45 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
+  ParseIntPipe,
+  Body,
 } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
+import { UpdateQuestionDto } from './dto/update-question.dto';
+import { CreateQuestionDto } from './dto/create-question.dto';
 
 @Controller('questions')
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
-  @Post()
-  create() {
-    return this.questionsService.create();
+  @Get('/questionAll')
+  async getQuestions() {
+    return await this.questionsService.findAll()
   }
 
-  @Get()
-  findAll() {
-    return this.questionsService.findAll();
+  // Xem một User theo id trong hệ thống
+  @Get('/question/:id')
+  async getQuestionsById(@Param('id', ParseIntPipe) id: number) {
+    return await this.questionsService.findById(id)
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.questionsService.findOne(+id);
+  // Tạo một user trong hệ thống
+  @Post('/questionAdd')
+  async createQuestions(@Body() questionDto: CreateQuestionDto) {
+    return await this.questionsService.create(questionDto)
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-  ) {
-    return this.questionsService.update(+id);
+  // Cập nhật một User theo id trong hệ thống
+  @Put('/updateQuestion/:id')
+  async updateQuestions(@Param('id', ParseIntPipe) id: number, @Body() updateQuestionDto: UpdateQuestionDto) {
+    await this.questionsService.update(id, updateQuestionDto)
+    return this.getQuestionsById(id)
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.questionsService.remove(+id);
+  // Xóa một User theo id trong hệ thống
+  @Delete('/deleteQuestion/:id')
+  async deleteQuestion(@Param('id', ParseIntPipe) id: number) {
+    return await this.questionsService.delete(id)
   }
 }

@@ -1,5 +1,9 @@
 import {
   Controller,
+  Delete,
+  Get,
+  Post,
+  Put,
 } from '@nestjs/common';
 import { ExamsService } from './exams.service';
 
@@ -8,5 +12,7 @@ import { ExamsService } from './exams.service';
 export class ExamsController {
   constructor(private readonly examsService: ExamsService) {}
 
+  
+  
 
 }
