@@ -1,0 +1,237 @@
+@import "styles/colors";
+
+.listTopic {
+  background-color: $background-light-mode-1;
+  width: 100%;
+  min-height: 100vh;
+  padding-bottom: 48px;
+
+  .main {
+    .list {
+      width: 50%;
+      margin-inline: auto;
+      margin-top: 60px;
+      padding-block: 8px;
+
+      background-color: $background-light-mode-2;
+      border-radius: 24px;
+
+      li {
+        border-bottom: 1px solid $color-light-mode;
+        padding: 16px 24px;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .item {
+          text-decoration: none;
+          color: $color-light-mode;
+
+          display: flex;
+          align-items: center;
+          gap: 12px;
+
+          .iconContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 6.5px 8px;
+            border-radius: 6px;
+            .icon {
+              font-size: 1.75rem;
+              color: $color-dark-mode;
+            }
+
+            &.bgcPurple {
+              background-color: rgb(170, 102, 204);
+            }
+
+            &.bgcOrange {
+              background-color: rgb(255, 136, 0);
+            }
+
+            &.bgcSolidBlue {
+              background-color: rgb(0, 153, 204);
+            }
+
+            &.bgcLightGreen {
+              background-color: rgb(102, 153, 0);
+            }
+
+            &.bgcLightBlue {
+              background-color: rgb(0, 150, 255);
+            }
+
+            &.bgcLightGray {
+              background-color: #9a8c98;
+            }
+
+            &.bgcLightRed {
+              background-color: rgb(255, 68, 68);
+            }
+
+            &.bgcSolidGreen {
+              background-color: rgb(0, 143, 81);
+            }
+
+            &.bgcRed {
+              background-color: red;
+            }
+          }
+          .info {
+            .title {
+              font-size: 1.25rem;
+            }
+
+            .desc {
+              font-size: 0.95rem;
+              color: hsl(0, 0%, 30%);
+            }
+          }
+        }
+      }
+
+      @media (max-width: 1280px) {
+        & {
+          width: 60%;
+        }
+      }
+
+      @media (max-width: 1024px) {
+        & {
+          width: 65%;
+        }
+      }
+
+      @media (max-width: 768px) {
+        & {
+          width: 70%;
+        }
+      }
+
+      @media (max-width: 640px) {
+        & {
+          width: 75%;
+          li {
+            padding: 12px 24px;
+            .item {
+              .info {
+                .title {
+                  font-size: 1.2rem;
+                }
+                .desc {
+                  font-size: 0.9rem;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      @media (max-width: 550px) {
+        & {
+          width: 80%;
+          li {
+            padding: 12px 18px;
+            .item {
+              .info {
+                .title {
+                  font-size: 1.1rem;
+                }
+                .desc {
+                  font-size: 0.85rem;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      @media (max-width: 430px) {
+        & {
+          width: 85%;
+          li {
+            padding: 12px 16px;
+            .item {
+              .info {
+                .title {
+                  font-size: 1rem;
+                }
+                .desc {
+                  font-size: 0.85rem;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.darkMode {
+    background-color: $background-dark-mode-1;
+
+    .main {
+      .list {
+        background-color: $background-dark-mode-2;
+
+        li {
+          border-bottom: 1px solid $color-dark-mode;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          .item {
+            color: $color-dark-mode;
+
+            .iconContainer {
+              &.bgcPurple {
+                background-color: rgb(170, 102, 204);
+              }
+
+              &.bgcOrange {
+                background-color: rgb(255, 136, 0);
+              }
+
+              &.bgcSolidBlue {
+                background-color: rgb(0, 153, 204);
+              }
+
+              &.bgcLightGreen {
+                background-color: rgb(102, 153, 0);
+              }
+
+              &.bgcLightBlue {
+                background-color: rgb(0, 150, 255);
+              }
+
+              &.bgcLightGray {
+                background-color: #9a8c98;
+              }
+
+              &.bgcLightRed {
+                background-color: rgb(255, 68, 68);
+              }
+
+              &.bgcSolidGreen {
+                background-color: rgb(0, 143, 81);
+              }
+
+              &.bgcRed {
+                background-color: red;
+              }
+            }
+            .info {
+              .desc {
+                font-size: 0.95rem;
+                color: hsl(0, 0%, 70%);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
