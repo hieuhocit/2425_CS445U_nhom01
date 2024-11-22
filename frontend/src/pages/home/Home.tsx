@@ -90,10 +90,13 @@ export default function HomePage() {
               <IoMdGrid className={styles.icon} />
               <p>200 câu hỏi</p>
             </Link>
-            <div className={`${styles.item} ${styles.solidGren}`}>
+            <Link
+              to='/list-topic'
+              className={`${styles.item} ${styles.solidGren}`}
+            >
               <FaCubes className={styles.icon} />
               <p>Chủ đề</p>
-            </div>
+            </Link>
           </div>
 
           <div className={styles.card}>
