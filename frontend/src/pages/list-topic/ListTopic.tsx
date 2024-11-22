@@ -34,7 +34,7 @@ export default function ListTopicPage() {
       <main className={styles.main}>
         <ul className={styles.list}>
           <li>
-            <Link to='/' className={styles.item}>
+            <Link to='/list-topic/topicId' className={styles.item}>
               <div className={`${styles.iconContainer} ${styles.bgcPurple}`}>
                 <BsGrid3X2Gap className={styles.icon} />
               </div>
@@ -46,7 +46,7 @@ export default function ListTopicPage() {
             </Link>
           </li>
           <li>
-            <Link to='/' className={styles.item}>
+            <Link to='/list-topic/topicId' className={styles.item}>
               <div className={`${styles.iconContainer} ${styles.bgcOrange}`}>
                 <GiGiftOfKnowledge className={styles.icon} />
               </div>
@@ -60,7 +60,7 @@ export default function ListTopicPage() {
             </Link>
           </li>
           <li>
-            <Link to='/' className={styles.item}>
+            <Link to='/list-topic/topicId' className={styles.item}>
               <div className={`${styles.iconContainer} ${styles.bgcLightBlue}`}>
                 <IoCarSportSharp className={styles.icon} />
               </div>
@@ -72,7 +72,7 @@ export default function ListTopicPage() {
             </Link>
           </li>
           <li>
-            <Link to='/' className={styles.item}>
+            <Link to='/list-topic/topicId' className={styles.item}>
               <div
                 className={`${styles.iconContainer} ${styles.bgcLightGreen}`}
               >
@@ -86,7 +86,7 @@ export default function ListTopicPage() {
             </Link>
           </li>
           <li>
-            <Link to='/' className={styles.item}>
+            <Link to='/list-topic/topicId' className={styles.item}>
               <div className={`${styles.iconContainer} ${styles.bgcLightBlue}`}>
                 <IoSpeedometerOutline className={styles.icon} />
               </div>
@@ -98,7 +98,7 @@ export default function ListTopicPage() {
             </Link>
           </li>
           <li>
-            <Link to='/' className={styles.item}>
+            <Link to='/list-topic/topicId' className={styles.item}>
               <div className={`${styles.iconContainer} ${styles.bgcLightGray}`}>
                 <HiMiniWrenchScrewdriver className={styles.icon} />
               </div>
@@ -110,7 +110,7 @@ export default function ListTopicPage() {
             </Link>
           </li>
           <li>
-            <Link to='/' className={styles.item}>
+            <Link to='/list-topic/topicId' className={styles.item}>
               <div className={`${styles.iconContainer} ${styles.bgcLightRed}`}>
                 <GiDirectionSigns className={styles.icon} />
               </div>
@@ -122,7 +122,7 @@ export default function ListTopicPage() {
             </Link>
           </li>
           <li>
-            <Link to='/' className={styles.item}>
+            <Link to='/list-topic/topicId' className={styles.item}>
               <div
                 className={`${styles.iconContainer} ${styles.bgcSolidGreen}`}
               >
@@ -136,7 +136,7 @@ export default function ListTopicPage() {
             </Link>
           </li>
           <li>
-            <Link to='/' className={styles.item}>
+            <Link to='/list-topic/topicId' className={styles.item}>
               <div className={`${styles.iconContainer} ${styles.bgcRed}`}>
                 <FaRegHeart className={styles.icon} />
               </div>
