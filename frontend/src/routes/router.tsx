@@ -17,6 +17,7 @@ import ListWrongPage from '@/pages/list-wrong/ListWrong';
 import ListRequiredPage from '@/pages/list-required/ListRequired';
 import ReviewPage from '@/pages/review/Review';
 import ListTopicPage from '@/pages/list-topic/ListTopic';
+import TopicDetailsPage from '@/pages/list-topic/topic-details/TopicDetails';
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: '/list-topic',
         element: <ListTopicPage />,
+      },
+      {
+        path: '/list-topic/:topicId',
+        element: <TopicDetailsPage />,
       },
       {
         path: 'list-exam',
