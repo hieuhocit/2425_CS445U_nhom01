@@ -1,13 +1,5 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Delete } from '@nestjs/common';
 import { ExamsQuestionsService } from './exams_questions.service';
-
 
 @Controller('exams-questions')
 export class ExamsQuestionsController {
@@ -29,9 +21,7 @@ export class ExamsQuestionsController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string
-  ) {
+  update(@Param('id') id: string) {
     return this.examsQuestionsService.update(+id);
   }
 

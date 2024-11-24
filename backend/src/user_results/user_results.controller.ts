@@ -1,13 +1,5 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Delete } from '@nestjs/common';
 import { UserResultsService } from './user_results.service';
-
 
 @Controller('user-results')
 export class UserResultsController {
@@ -29,9 +21,7 @@ export class UserResultsController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string
-  ) {
+  update(@Param('id') id: string) {
     return this.userResultsService.update(+id);
   }
 

@@ -1,40 +1,18 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { HistoryService } from './history.service';
-
+import { HistoryGlobal } from 'src/global/history.global';
 
 @Controller('history')
 export class HistoryController {
   constructor(private readonly historyService: HistoryService) {}
 
-  @Post()
-  create() {
-    return this.historyService.create();
+  @Get('/')
+  async findAll(): Promise<HistoryGlobal[]> {
+    return await this.historyService.findAll();
   }
 
-  @Get()
-  findAll() {
-    return this.historyService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.historyService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string) {
-    return this.historyService.update(+id);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.historyService.remove(+id);
+  @Get('/userId=:id')
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<HistoryGlobal> {
+    return await this.historyService.findOne(id);
   }
 }
