@@ -1,0 +1,80 @@
+[33m4a63f0d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Merge pull request #29 from hieuhocit/design/topic-details-page
+[33maa2fd29[m design: Topic Details page
+[33m5ab60f5[m added route to navigate to Topic Details page
+[33mfe827dc[m Merge pull request #28 from hieuhocit/design/list-topic
+[33m8ed646e[m design List Topic page
+[33m32925d6[m added route to navigate to List Topic page
+[33mc2d2cfc[m Merge pull request #27 from hieuhocit/changed/review-page
+[33mcc8f943[m changed: use useState instead of searchParams
+[33mb40904b[m Merge pull request #26 from hieuhocit/design/review-questions-details
+[33m2a0f126[m design review question details
+[33md3de6e1[m Merge pull request #25 from hieuhocit/design/list-question
+[33m4d852f0[m design review page
+[33m4c3f021[m added route to navigate to review page
+[33mf52df61[m pass added parameters
+[33m70e9ace[m added parameters to make reuseable component
+[33mc3bb192[m updated definitions file
+[33m65c7fd4[m Merge pull request #23 from hieuhocit/new_branch
+[33ma162e8e[m First-commit
+[33m2b45a0a[m Update-first
+[33m03a2838[m Update-Code
+[33m1836152[m Updated Code
+[33m746b91a[m Merge pull request #17 from hieuhocit/design/list-answer-required
+[33m46e5b64[m design list required questions page
+[33m4c08237[m added route to navigate to list required questions
+[33m4794c42[m fix: render correctly message when empty array or null or undefined
+[33me55055d[m render list of question to check status of question & navigate quickly
+[33m7dfa9a4[m added exam actions component to navigate when user travel the list
+[33m798ec90[m fix: render correctly status and user answer or true answer
+[33m2ef82ae[m Merge pull request #16 from hieuhocit/design/list-wrong
+[33m6befc89[m Design list wrong answer page
+[33m2cb85f1[m added QuestionDetails Component
+[33m37b9e5b[m added route to navigate to list wrong answer
+[33m2d0a924[m added types for Answer & Question
+[33m3420192[m Merge pull request #15 from hieuhocit/design/list-violation-page
+[33m3e419d1[m design violation details page
+[33m3412f0d[m design list violation page
+[33m8e3e083[m added routes to navigate to list violation & violation details page
+[33md7062e4[m Merge pull request #14 from hieuhocit/design/list-law-page
+[33m2eac866[m design list law page
+[33m69f0891[m added route to navigate to list law page
+[33m418ecac[m Merge pull request #13 from hieuhocit/design/sign_details_page
+[33m02c0055[m design sign details page
+[33m80b33f4[m fix relative follow path not route
+[33m457ff42[m added route to navigate to List Sign Details Page
+[33mc1043fa[m Merge pull request #12 from hieuhocit/design/list-sign
+[33m96c681c[m design list sign page
+[33mea73b05[m added dark mode for header component
+[33mfe5f9eb[m added route to navigate to List Sign Page
+[33m66b477e[m separate header into an individual component
+[33m96b5ce9[m Merge pull request #11 from hieuhocit/design/responsive_setting_page
+[33mb2e0cf5[m responsive setting page
+[33m930a9e6[m Merge pull request #10 from hieuhocit/design/setting-page
+[33md2d7777[m design setting page
+[33m26d6063[m added route to setting page
+[33m443e02b[m Merge pull request #9 from hieuhocit/design/add_new_feature_to_homepage
+[33m0037767[m added UI profile
+[33ma624fc5[m Merge pull request #8 from hieuhocit/design/homepage
+[33m103bb6b[m added mode light & dark for website with redux store
+[33mbd3446c[m added rtk & react-redux packages
+[33mcb7d55c[m design homepage
+[33mc57057a[m updated actions/setup-node@v3 with node-version 20
+[33m8895d17[m Merge pull request #5 from hieuhocit/hieuhocit-patch-1
+[33m22990c2[m Update version of action/checkout
+[33mb162f22[m fix path to index file
+[33medaf0e1[m setting react-router and checking if it's working on the production environment (Netlify) or not.
+[33m66079c3[m setting path aliases
+[33m1311290[m Updated .gitignore
+[33me9d780e[m Changed title & clear template created by vite
+[33ma646d1d[m Merge pull request #3 from hieuhocit/hieuhocit-patch-1
+[33m9316901[m Update frontend.yml
+[33mc7ac076[m Merge pull request #4 from hieuhocit/main
+[33mcda18aa[m Setting to deploy with netlify
+[33m9046b7d[m Github action with netlify
+[33m3bafcc6[m Merge pull request #1 from hieuhocit/hieuhocit-patch-1
+[33m568741a[m Merge pull request #2 from hieuhocit/hieuhocit-patch-2
+[33m79d9021[m Not test in the frontend yet
+[33m3fdfda1[m Create backend.yml
+[33m2922d36[m Create frontend.yml
+[33mc3a5ec4[m Added README.md file
+[33m82fdcaf[m Initial setup project

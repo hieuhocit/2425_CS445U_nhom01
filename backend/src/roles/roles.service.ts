@@ -1,25 +1,18 @@
-import { Injectable } from '@nestjs/common';
-
+import { Inject, Injectable } from '@nestjs/common';
+import { IRoleRepository } from 'src/interface/IRoleRepository';
 
 @Injectable()
 export class RolesService {
-  create() {
-    return 'This action adds a new role';
+  constructor(
+    @Inject('IRoleRepository')
+    private rolesRepository: IRoleRepository,
+  ) {}
+
+  async findRoleAll() {
+    return await this.rolesRepository.findAll();
   }
 
-  findAll() {
-    return `This action returns all roles`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} role`;
-  }
-
-  update(id: number) {
-    return `This action updates a #${id} role`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} role`;
+  async findRoleById(id: number) {
+    return await this.rolesRepository.findById(id);
   }
 }

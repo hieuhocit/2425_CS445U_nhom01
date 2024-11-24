@@ -1,25 +1,18 @@
-import { Injectable } from '@nestjs/common';
-
+import { Inject, Injectable } from '@nestjs/common';
+import { IHistoryRepository } from 'src/interface/IHistoryRepository';
 
 @Injectable()
 export class HistoryService {
-  create() {
-    return 'This action adds a new history';
+  constructor(
+    @Inject('IHistoryRepository')
+    private historyRepository: IHistoryRepository,
+  ) {}
+
+  async findAll() {
+    return await this.historyRepository.findAll();
   }
 
-  findAll() {
-    return `This action returns all history`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} history`;
-  }
-
-  update(id: number) {
-    return `This action updates a #${id} history`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} history`;
+  async findOne(id: number) {
+    return await this.historyRepository.findById(id);
   }
 }

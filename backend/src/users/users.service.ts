@@ -1,25 +1,39 @@
-import { Injectable } from '@nestjs/common';
-
+import { Inject, Injectable } from '@nestjs/common';
+import { UserGlobal } from 'src/global/users.global';
+import { UserDto } from './dto/user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { IUserRepository } from 'src/interface/IUserRepository';
 
 @Injectable()
 export class UsersService {
-  create() {
-    return 'This action adds a new user';
+  constructor(
+    @Inject('IUserRepository')
+    private usersRepository: IUserRepository,
+  ) {}
+
+  // Xem tất cả User trong hệ thống
+  async getAllUsers() {
+    return await this.usersRepository.findAll();
   }
 
-  findAll() {
-    return `This action returns all users`;
+  // Xem một User theo id trong hệ thống
+  async getUserById(id: number) {
+    return await this.usersRepository.findById(id);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  // Tạo một user trong hệ thống
+  async createUsers(userDto: UserDto): Promise<UserGlobal> {
+    return await this.usersRepository.create(userDto);
   }
 
-  update(id: number) {
-    return `This action updates a #${id} user`;
+  // Cập nhật một User theo id trong hệ thống
+  async updateUsers(id: number, updateUsersDto: UpdateUserDto) {
+    await this.usersRepository.update(id, updateUsersDto);
+    return this.getUserById(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  // Xóa một User theo id trong hệ thống
+  async deleteUsers(id: number): Promise<boolean> {
+    return await this.usersRepository.delete(id);
   }
 }
