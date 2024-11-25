@@ -1,0 +1,105 @@
+@import "styles/colors";
+
+.listExam {
+  background-color: $background-light-mode-1;
+  width: 100%;
+  min-height: 100vh;
+
+  .main {
+    padding-bottom: 48px;
+    .description {
+      text-align: center;
+      font-size: 1.1rem;
+      margin: 48px 16px 32px;
+    }
+
+    .list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, 145px);
+      grid-template-rows: repeat(auto-fit, 110px);
+      justify-content: center;
+      gap: 16px;
+      margin-inline: 48px;
+
+      .item {
+        a {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          color: $color-light-mode;
+          background-color: $background-light-mode-2;
+
+          border-radius: 16px;
+          padding: 24px 32px;
+          height: 110px;
+
+          transition: transform 0.25s ease-in-out;
+
+          h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+          }
+
+          &:hover,
+          &:active {
+            transform: scale(1.025);
+          }
+        }
+      }
+    }
+
+    @media (max-width: 460px) {
+      & {
+        &.main {
+          .description {
+            font-size: 1.1rem;
+          }
+
+          .list {
+            margin-inline: 24px;
+            grid-template-columns: repeat(2, minmax(120px, 1fr));
+            .item {
+              a {
+                font-size: 1.2rem;
+              }
+            }
+          }
+        }
+      }
+    }
+    @media (max-width: 300px) {
+      & {
+        &.main {
+          .list {
+            grid-template-columns: repeat(1, minmax(150px, 1fr));
+          }
+        }
+      }
+    }
+  }
+
+  &.darkMode {
+    background-color: $background-dark-mode-1;
+
+    .main {
+      .description {
+        color: $color-dark-mode;
+      }
+
+      .list {
+        .item {
+          a {
+            color: $color-dark-mode;
+            background-color: $background-dark-mode-2;
+            h2 {
+            }
+          }
+        }
+      }
+    }
+  }
+}
