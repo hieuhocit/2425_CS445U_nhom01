@@ -1,0 +1,130 @@
+@import "styles/colors";
+
+.examResult {
+  background-color: $background-light-mode-1;
+  width: 100%;
+  min-height: 100vh;
+  padding-bottom: 48px;
+
+  .main {
+    .head {
+      margin-block: 32px 24px;
+      .summary {
+        width: 50%;
+        margin-inline: auto;
+
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+        .record {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+
+          font-size: 1.25rem;
+
+          .icon {
+            font-size: 1.75rem;
+          }
+          p {
+            span {
+              font-weight: 600;
+            }
+            .result {
+              text-transform: uppercase;
+            }
+          }
+        }
+
+        @media (max-width: 1280px) {
+          & {
+            width: 60%;
+          }
+        }
+
+        @media (max-width: 1024px) {
+          & {
+            width: 65%;
+          }
+        }
+
+        @media (max-width: 768px) {
+          & {
+            width: 70%;
+          }
+        }
+
+        @media (max-width: 640px) {
+          & {
+            width: 75%;
+          }
+        }
+
+        @media (max-width: 550px) {
+          & {
+            width: 80%;
+          }
+        }
+
+        @media (max-width: 430px) {
+          & {
+            width: 90%;
+          }
+        }
+      }
+    }
+    .body {
+      .list {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+
+      & > p {
+        margin-top: 48px;
+        margin-inline: 16px;
+        text-align: center;
+        font-size: 1.25rem;
+      }
+    }
+  }
+
+  &.darkMode {
+    background-color: $background-dark-mode-1;
+
+    .head {
+      .summary {
+        .record {
+          p {
+            color: $color-dark-mode;
+          }
+        }
+      }
+
+      .main {
+        .body {
+          & > p {
+            color: $color-dark-mode;
+          }
+        }
+      }
+    }
+  }
+
+  .colorGreen {
+    color: #70e000;
+  }
+  .colorRed {
+    color: #ef233c;
+  }
+  .colorBlue {
+    color: #0496ff;
+  }
+  .colorGray {
+    color: #6c757d;
+  }
+  .colorTurquoise {
+    color: #00b4d8;
+  }
+}
