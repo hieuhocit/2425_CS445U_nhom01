@@ -82,10 +82,13 @@ export default function HomePage() {
               <FaRandom className={styles.icon} />
               <p>Đề ngẫu nhiên</p>
             </div>
-            <div className={`${styles.item} ${styles.lightPurple}`}>
+            <Link
+              to='/list-exam'
+              className={`${styles.item} ${styles.lightPurple}`}
+            >
               <FaGraduationCap className={styles.icon} />
               <p>Thi theo bộ đề</p>
-            </div>
+            </Link>
             <Link to='/review' className={`${styles.item} ${styles.green}`}>
               <IoMdGrid className={styles.icon} />
               <p>200 câu hỏi</p>
