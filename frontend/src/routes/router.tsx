@@ -5,7 +5,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import Layout from '@/Layout';
 
 /** Pages */
-import ListExam from '@/pages/list-exam/ListExam';
+import ListExamPage from '@/pages/list-exam/ListExam';
 import HomePage from '@/pages/home/Home';
 import SettingPage from '@/pages/setting/Setting';
 import ListSignPage from '@/pages/list-sign/ListSign';
@@ -18,6 +18,7 @@ import ListRequiredPage from '@/pages/list-required/ListRequired';
 import ReviewPage from '@/pages/review/Review';
 import ListTopicPage from '@/pages/list-topic/ListTopic';
 import TopicDetailsPage from '@/pages/list-topic/topic-details/TopicDetails';
+import ExamPage from '@/pages/exam/Exam';
 
 const router = createBrowserRouter([
   {
@@ -74,7 +75,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'list-exam',
-        element: <ListExam />,
+        element: <ListExamPage />,
+      },
+      {
+        path: 'list-exam/:examId',
+        element: <ExamPage />,
       },
     ],
   },

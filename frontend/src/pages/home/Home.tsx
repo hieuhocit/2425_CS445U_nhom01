@@ -78,10 +78,13 @@ export default function HomePage() {
         </header>
         <main className={styles.main}>
           <div className={styles.card}>
-            <div className={`${styles.item} ${styles.purple}`}>
+            <Link
+              to='/list-exam/examRandomId'
+              className={`${styles.item} ${styles.purple}`}
+            >
               <FaRandom className={styles.icon} />
               <p>Đề ngẫu nhiên</p>
-            </div>
+            </Link>
             <Link
               to='/list-exam'
               className={`${styles.item} ${styles.lightPurple}`}

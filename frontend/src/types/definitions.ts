@@ -18,7 +18,7 @@ export interface IQuestion {
   answers: IAnswer[];
   required: boolean;
   instruction?: string | undefined | null;
-  idTrueAnswer: string;
+  idTrueAnswer?: string;
   idSelectedAnswer?: string | undefined | null;
 }
 
