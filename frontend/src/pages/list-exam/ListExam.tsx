@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 /** components */
 import Header from '@/components/header/Header';
 
-export default function ListExam() {
+export default function ListExamPage() {
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 

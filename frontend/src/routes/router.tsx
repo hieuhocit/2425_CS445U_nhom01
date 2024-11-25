@@ -5,7 +5,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import Layout from '@/Layout';
 
 /** Pages */
-import ListExam from '@/pages/list-exam/ListExam';
+import ListExamPage from '@/pages/list-exam/ListExam';
 import HomePage from '@/pages/home/Home';
 import SettingPage from '@/pages/setting/Setting';
 import ListSignPage from '@/pages/list-sign/ListSign';
@@ -74,7 +74,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'list-exam',
-        element: <ListExam />,
+        element: <ListExamPage />,
       },
     ],
   },
