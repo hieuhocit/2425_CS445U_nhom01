@@ -15,10 +15,13 @@ import QuestionDetails from '@/components/question-details/QuestionDetails';
 import { IQuestion } from '@/types/definitions';
 
 /** react */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /** utils */
 import { convertMsToHHMMSS } from '@/utils/time';
+
+/** react-router */
+import { useNavigate } from 'react-router-dom';
 
 export default function ExamPage() {
   const [questions, setQuestions] = useState(DUMMY_DATA);
@@ -26,6 +29,9 @@ export default function ExamPage() {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const [ms, setMs] = useState(1000 * 60 * 20);
+  const intervalIdRef = useRef<number | undefined>(undefined);
+
+  const navigate = useNavigate();
 
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
@@ -33,14 +39,19 @@ export default function ExamPage() {
   const currentQuestion: IQuestion | undefined = questions?.[currentIndex];
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setMs((prevMs) => prevMs - 1000);
+    intervalIdRef.current = window.setInterval(() => {
+      if (ms > 0) {
+        setMs((prevMs) => prevMs - 1000);
+      } else {
+        // Nếu hết thời gian thì tự động nộp bài
+        handleSubmitExam();
+      }
     }, 1000);
 
     return () => {
-      clearInterval(intervalId);
+      clearInterval(intervalIdRef.current);
     };
-  }, []);
+  }, [ms]);
 
   function handleNextQuestion() {
     if (
@@ -71,7 +82,40 @@ export default function ExamPage() {
     setQuestions(cloneQuestions);
   }
 
-  function handleSubmitExam() {}
+  function handleSubmitExam() {
+    // Handle data before send to server
+    if (!questions) return;
+    // Send result to server
+    // Get response from server and handle error
+
+    // Suppose data sent back from the server has true answers, the number of true answers, the number of false answers, the number of required true answers,...
+    questions[0].idTrueAnswer = '2';
+    questions[1].idTrueAnswer = 'id2';
+    questions[2].idTrueAnswer = 'id3';
+    const data: {
+      questions: IQuestion[];
+      totalTrueAnswer: number;
+      totalFalseAnswer: number;
+      totalRequiredAnswerTrue: number;
+      totalSkipAnswer: number;
+      totalQuestion: number;
+    } = {
+      questions: JSON.parse(JSON.stringify(questions)),
+      totalTrueAnswer: questions.filter(
+        (q) => q.idSelectedAnswer === q.idTrueAnswer
+      ).length,
+      totalFalseAnswer: questions.filter((q) =>
+        q.idSelectedAnswer ? q.idSelectedAnswer !== q.idTrueAnswer : false
+      ).length,
+      totalRequiredAnswerTrue: questions.filter((q) =>
+        q.required ? q.idSelectedAnswer === q.idTrueAnswer : false
+      ).length,
+      totalSkipAnswer: questions.filter((q) => !q.idSelectedAnswer).length,
+      totalQuestion: questions.length,
+    };
+    // Navigate to result page
+    navigate(`result`, { state: { data } });
+  }
 
   return (
     <div className={`${styles.exam} ${isDarkMode ? styles.darkMode : ''}`}>
@@ -204,4 +248,30 @@ const question2: IQuestion = {
   required: false,
 };
 
-const DUMMY_DATA: IQuestion[] | null = [question1, question2];
+const question3: IQuestion = {
+  id: '3',
+  title:
+    'Câu 41: Biển báo hiệu hình tròn có nền xanh lam có hình vẽ màu trắng là loại biển gì dưới đây?',
+  image: 'https://beta.gplx.app/images/questions/q74.png',
+  answers: [
+    {
+      id: 'id1',
+      title: 'Biển báo nguy hiểm.',
+    },
+    {
+      id: 'id2',
+      title: 'Biển báo cấm.',
+    },
+    {
+      id: 'id3',
+      title: 'Biển báo hiệu lệnh phải thi hành.',
+    },
+    {
+      id: 'id4',
+      title: 'Biển báo chỉ dẫn.',
+    },
+  ],
+  required: false,
+};
+
+const DUMMY_DATA: IQuestion[] | null = [question1, question2, question3];

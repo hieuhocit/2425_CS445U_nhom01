@@ -10,16 +10,18 @@ import { Link } from 'react-router-dom';
 export default function Header({
   title,
   isDark,
+  path,
 }: {
   title: string;
   isDark: boolean;
+  path?: string;
 }) {
   return (
     <header
       className={`${styles.header} ${isDark ? styles.darkMode : undefined}`}
     >
       <nav className={styles.nav}>
-        <Link to='..' relative='path' className={styles.back}>
+        <Link to={path ? path : '..'} relative='path' className={styles.back}>
           <IoIosArrowBack className={styles.icon} />
         </Link>
       </nav>
