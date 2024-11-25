@@ -77,6 +77,10 @@ export default function QuestionDetails({
                 checked =
                   answer.id === question.idTrueAnswer ? true : undefined;
               }
+            } else {
+              // Nếu đg làm bài thi
+              // thì hiển thị câu trả lời người dùng đã chọn (checked) nếu có.
+              checked = answer.id === question.idSelectedAnswer;
             }
 
             return (
