@@ -28,12 +28,12 @@ export default function ListExamPage() {
           </p>
           <ul className={styles.list}>
             <li className={styles.item}>
-              <Link to='/list-exam'>
+              <Link to='/list-exam/examId1'>
                 <h2>Đề số 01</h2>
               </Link>
             </li>
             <li className={styles.item}>
-              <Link to='/list-exam'>
+              <Link to='/list-exam/examId2'>
                 <h2>Đề số 02</h2>
               </Link>
             </li>

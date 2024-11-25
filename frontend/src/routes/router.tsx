@@ -18,6 +18,7 @@ import ListRequiredPage from '@/pages/list-required/ListRequired';
 import ReviewPage from '@/pages/review/Review';
 import ListTopicPage from '@/pages/list-topic/ListTopic';
 import TopicDetailsPage from '@/pages/list-topic/topic-details/TopicDetails';
+import ExamPage from '@/pages/exam/Exam';
 
 const router = createBrowserRouter([
   {
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
       {
         path: 'list-exam',
         element: <ListExamPage />,
+      },
+      {
+        path: 'list-exam/:examId',
+        element: <ExamPage />,
       },
     ],
   },
