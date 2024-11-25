@@ -15,19 +15,32 @@ import QuestionDetails from '@/components/question-details/QuestionDetails';
 import { IQuestion } from '@/types/definitions';
 
 /** react */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+/** utils */
+import { convertMsToHHMMSS } from '@/utils/time';
 
 export default function ExamPage() {
   const [questions, setQuestions] = useState(DUMMY_DATA);
-
-  const mode = useSelector(themeMode);
-
   const [showGridQuestions, setShowGridQuestions] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
+  const [ms, setMs] = useState(1000 * 60 * 20);
+
+  const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
   const currentQuestion: IQuestion | undefined = questions?.[currentIndex];
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setMs((prevMs) => prevMs - 1000);
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   function handleNextQuestion() {
     if (
@@ -58,11 +71,37 @@ export default function ExamPage() {
     setQuestions(cloneQuestions);
   }
 
+  function handleSubmitExam() {}
+
   return (
     <div className={`${styles.exam} ${isDarkMode ? styles.darkMode : ''}`}>
       <Header title='Đề số 01' isDark={isDarkMode} />
 
       <main className={styles.main}>
+        <div className={styles.head}>
+          <div className={styles.top}>
+            <div className={styles.timer}>
+              <p>
+                Thời gian: <span>{convertMsToHHMMSS(ms)}</span>
+              </p>
+            </div>
+            <div className={styles.actions}>
+              <button
+                onClick={() => {
+                  const ok = confirm('Bạn có chắc bạn muốn nộp bài không?');
+                  if (ok) handleSubmitExam();
+                }}
+                type='button'
+              >
+                Nộp bài
+              </button>
+            </div>
+          </div>
+          <div className={styles.bottom}>
+            <p>{`${currentIndex + 1}/${questions?.length}`}</p>
+          </div>
+        </div>
+
         <div className={styles.body}>
           {!currentQuestion && (
             <p>
