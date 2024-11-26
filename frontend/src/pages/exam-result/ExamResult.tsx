@@ -13,7 +13,7 @@ import QuestionDetails from '@/components/question-details/QuestionDetails';
 import { IQuestion } from '@/types/definitions';
 
 /** react-router */
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 /** icons */
 import {
@@ -27,6 +27,7 @@ import { GoGoal } from 'react-icons/go';
 
 export default function ExamResultPage() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const data: {
     questions: IQuestion[];
@@ -50,61 +51,65 @@ export default function ExamResultPage() {
       <Header title='Kết quả bài thi' isDark={isDarkMode} path='/list-exam' />
       <main className={styles.main}>
         <div className={styles.head}>
-          <div className={styles.summary}>
-            <div className={styles.record}>
-              <FaRegCircleCheck
-                className={`${styles.icon} ${styles.colorGreen}`}
-              />
-              <p>
-                Số câu đúng: <span>{data.totalTrueAnswer}</span>
-              </p>
+          {questions && questions.length > 0 && (
+            <div className={styles.summary}>
+              <div className={styles.record}>
+                <FaRegCircleCheck
+                  className={`${styles.icon} ${styles.colorGreen}`}
+                />
+                <p>
+                  Số câu đúng: <span>{data.totalTrueAnswer}</span>
+                </p>
+              </div>
+              <div className={styles.record}>
+                <FaRegCircleXmark
+                  className={`${styles.icon} ${styles.colorRed}`}
+                />
+                <p>
+                  Số câu sai: <span>{data.totalFalseAnswer}</span>
+                </p>
+              </div>
+              <div className={styles.record}>
+                <FaCircleCheck
+                  className={`${styles.icon} ${styles.colorBlue}`}
+                />
+                <p>
+                  Số câu liệt đúng: <span>{data.totalRequiredAnswerTrue}</span>
+                </p>
+              </div>
+              <div className={styles.record}>
+                <FaRegCircle className={`${styles.icon} ${styles.colorGray}`} />
+                <p>
+                  Số câu không làm: <span>{data.totalSkipAnswer}</span>
+                </p>
+              </div>
+              <div className={styles.record}>
+                <FaInfinity
+                  className={`${styles.icon} ${styles.colorTurquoise}`}
+                />
+                <p>
+                  Tổng số câu hỏi: <span>{data.totalQuestion}</span>
+                </p>
+              </div>
+              <div className={styles.record}>
+                <GoGoal className={`${styles.icon} ${styles.colorRed}`} />
+                <p>
+                  Kết quả:{' '}
+                  <span
+                    className={`${styles.result} ${
+                      data.totalRequiredAnswerTrue && data.totalTrueAnswer >= 2
+                        ? styles.colorGreen
+                        : styles.colorRed
+                    }`}
+                  >
+                    {data.totalRequiredAnswerTrue && data.totalTrueAnswer >= 2
+                      ? 'ĐẠT'
+                      : 'CHƯA ĐẠT'}
+                  </span>
+                </p>
+              </div>
             </div>
-            <div className={styles.record}>
-              <FaRegCircleXmark
-                className={`${styles.icon} ${styles.colorRed}`}
-              />
-              <p>
-                Số câu sai: <span>{data.totalFalseAnswer}</span>
-              </p>
-            </div>
-            <div className={styles.record}>
-              <FaCircleCheck className={`${styles.icon} ${styles.colorBlue}`} />
-              <p>
-                Số câu liệt đúng: <span>{data.totalRequiredAnswerTrue}</span>
-              </p>
-            </div>
-            <div className={styles.record}>
-              <FaRegCircle className={`${styles.icon} ${styles.colorGray}`} />
-              <p>
-                Số câu không làm: <span>{data.totalSkipAnswer}</span>
-              </p>
-            </div>
-            <div className={styles.record}>
-              <FaInfinity
-                className={`${styles.icon} ${styles.colorTurquoise}`}
-              />
-              <p>
-                Tổng số câu hỏi: <span>{data.totalQuestion}</span>
-              </p>
-            </div>
-            <div className={styles.record}>
-              <GoGoal className={`${styles.icon} ${styles.colorRed}`} />
-              <p>
-                Kết quả:{' '}
-                <span
-                  className={`${styles.result} ${
-                    data.totalRequiredAnswerTrue && data.totalTrueAnswer >= 2
-                      ? styles.colorGreen
-                      : styles.colorRed
-                  }`}
-                >
-                  {data.totalRequiredAnswerTrue && data.totalTrueAnswer >= 2
-                    ? 'ĐẠT'
-                    : 'CHƯA ĐẠT'}
-                </span>
-              </p>
-            </div>
-          </div>
+          )}
         </div>
 
         <div className={styles.body}>
@@ -136,6 +141,13 @@ export default function ExamResultPage() {
           )}
         </div>
       </main>
+      <footer className={styles.footer}>
+        {questions && questions.length > 0 && (
+          <div className={styles.actions}>
+            <button onClick={() => navigate('/list-exam')}>Quay lại</button>
+          </div>
+        )}
+      </footer>
     </div>
   );
 }
