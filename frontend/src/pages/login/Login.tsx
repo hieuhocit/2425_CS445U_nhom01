@@ -20,7 +20,7 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 /** toastify */
 import { toast } from 'react-toastify';
 
-export async function action({ params, request }: ActionFunctionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
 
   const username = formData.get('username');
