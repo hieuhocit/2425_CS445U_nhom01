@@ -156,20 +156,17 @@ export default function HomePage() {
             )}
             {!user && (
               <>
-                <Link
+               <Link
                   to='/register'
                   className={`${styles.item} ${styles.register}`}
                 >
                   <FaRegRegistered className={styles.icon} />
                   <p>Đăng ký</p>
                 </Link>
-                <div
-                  onClick={handleClick}
-                  className={`${styles.item} ${styles.login}`}
-                >
+                <Link to='/login' className={`${styles.item} ${styles.login}`}>
                   <IoIosLogIn className={styles.icon} />
                   <p>Đăng nhập</p>
-                </div>
+                </Link>
               </>
             )}
             <div

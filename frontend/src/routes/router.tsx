@@ -20,6 +20,7 @@ import ListTopicPage from '@/pages/list-topic/ListTopic';
 import TopicDetailsPage from '@/pages/list-topic/topic-details/TopicDetails';
 import ExamPage from '@/pages/exam/Exam';
 import ExamResultPage from '@/pages/exam-result/ExamResult';
+import LoginPage, { action as loginAction } from '@/pages/login/Login';
 import RegisterPage, {
   action as registerAction,
 } from '@/pages/register/Register';
@@ -90,10 +91,15 @@ const router = createBrowserRouter([
         element: <ExamResultPage />,
       },
       {
+        path: '/login',
+        element: <LoginPage />,
+        action: loginAction,
+      },
+      {
         path: '/register',
         element: <RegisterPage />,
         action: registerAction,
-      },
+      }
     ],
   },
 ]);
