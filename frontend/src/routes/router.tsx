@@ -20,6 +20,7 @@ import ListTopicPage from '@/pages/list-topic/ListTopic';
 import TopicDetailsPage from '@/pages/list-topic/topic-details/TopicDetails';
 import ExamPage from '@/pages/exam/Exam';
 import ExamResultPage from '@/pages/exam-result/ExamResult';
+import LoginPage, { action as loginAction } from '@/pages/login/Login';
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,11 @@ const router = createBrowserRouter([
       {
         path: 'list-exam/:examId/result',
         element: <ExamResultPage />,
+      },
+      {
+        path: '/login',
+        element: <LoginPage />,
+        action: loginAction,
       },
     ],
   },
