@@ -1,0 +1,34 @@
+@import "styles/colors";
+
+.history {
+  background-color: $background-light-mode-1;
+  width: 100%;
+  min-height: 100vh;
+  padding-bottom: 48px;
+
+  .main {
+    .list {
+      margin-top: 60px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    & > p {
+      margin-top: 48px;
+      margin-inline: 16px;
+      text-align: center;
+      font-size: 1.25rem;
+    }
+  }
+
+  &.darkMode {
+    background-color: $background-dark-mode-1;
+    .main {
+      & > p {
+        color: $color-dark-mode;
+      }
+    }
+  }
+}
