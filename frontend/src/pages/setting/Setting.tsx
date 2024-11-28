@@ -1,33 +1,47 @@
 /** styles */
 import styles from './Setting.module.scss';
 
-/** react */
-import { useState } from 'react';
-
 /** react-router */
 import { useNavigate } from 'react-router-dom';
 
-/** Icons */
-import { useSelector } from 'react-redux';
+/** react */
+import { useState } from 'react';
 
 /** redux */
 import { themeMode } from '@/store/theme/themeSelector';
+import { useDispatch, useSelector } from 'react-redux';
+import { licenseSelector } from '@/store/setting/settingSelector';
+import { changeLicense } from '@/store/setting/settingSlice';
 
 /** components */
 import Header from '@/components/header/Header';
 
+/** types */
+import { ILicense } from '../../types/definitions';
+
 export default function SettingPage() {
-  const [selectedOption, setSelectedOption] = useState('Hạng A1');
+  const license = useSelector(licenseSelector);
+  const [selectedOption, setSelectedOption] = useState<ILicense>(license);
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
-  function handleSelectedOption(e: React.ChangeEvent<HTMLInputElement>) {
-    setSelectedOption(e.target.value);
+  function handleOnChange(
+    name: string,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) {
+    setSelectedOption({ id: e.target.value, name: name });
   }
 
   function handleSave() {
+    dispatch(
+      changeLicense({
+        license: selectedOption,
+      })
+    );
     navigate('/');
   }
 
@@ -44,8 +58,8 @@ export default function SettingPage() {
             <li>
               <label className={styles.item}>
                 <input
-                  onChange={handleSelectedOption}
-                  checked={selectedOption === 'Hạng A1'}
+                  onChange={handleOnChange.bind(null, 'Hạng A1')}
+                  checked={selectedOption.id === 'Hạng A1'}
                   type='radio'
                   name='level'
                   value='Hạng A1'
@@ -61,8 +75,8 @@ export default function SettingPage() {
             <li>
               <label className={styles.item}>
                 <input
-                  onChange={handleSelectedOption}
-                  checked={selectedOption === 'Hạng A2'}
+                  onChange={handleOnChange.bind(null, 'Hạng A2')}
+                  checked={selectedOption.id === 'Hạng A2'}
                   type='radio'
                   name='level'
                   value='Hạng A2'
@@ -76,8 +90,8 @@ export default function SettingPage() {
             <li>
               <label className={styles.item}>
                 <input
-                  onChange={handleSelectedOption}
-                  checked={selectedOption === 'Hạng A3'}
+                  onChange={handleOnChange.bind(null, 'Hạng A3')}
+                  checked={selectedOption.id === 'Hạng A3'}
                   type='radio'
                   name='level'
                   value='Hạng A3'
@@ -91,8 +105,8 @@ export default function SettingPage() {
             <li>
               <label className={styles.item}>
                 <input
-                  onChange={handleSelectedOption}
-                  checked={selectedOption === 'Hạng A4'}
+                  onChange={handleOnChange.bind(null, 'Hạng A4')}
+                  checked={selectedOption.id === 'Hạng A4'}
                   type='radio'
                   name='level'
                   value='Hạng A4'
@@ -106,8 +120,8 @@ export default function SettingPage() {
             <li>
               <label className={styles.item}>
                 <input
-                  onChange={handleSelectedOption}
-                  checked={selectedOption === 'Hạng B1'}
+                  onChange={handleOnChange.bind(null, 'Hạng B1')}
+                  checked={selectedOption.id === 'Hạng B1'}
                   type='radio'
                   name='level'
                   value='Hạng B1'
@@ -124,8 +138,8 @@ export default function SettingPage() {
             <li>
               <label className={styles.item}>
                 <input
-                  onChange={handleSelectedOption}
-                  checked={selectedOption === 'Hạng B2'}
+                  onChange={handleOnChange.bind(null, 'Hạng B2')}
+                  checked={selectedOption.id === 'Hạng B2'}
                   type='radio'
                   name='level'
                   value='Hạng B2'
@@ -142,8 +156,8 @@ export default function SettingPage() {
             <li>
               <label className={styles.item}>
                 <input
-                  onChange={handleSelectedOption}
-                  checked={selectedOption === 'Hạng C'}
+                  onChange={handleOnChange.bind(null, 'Hạng C')}
+                  checked={selectedOption.id === 'Hạng C'}
                   type='radio'
                   name='level'
                   value='Hạng C'
@@ -157,8 +171,8 @@ export default function SettingPage() {
             <li>
               <label className={styles.item}>
                 <input
-                  onChange={handleSelectedOption}
-                  checked={selectedOption === 'Hạng D'}
+                  onChange={handleOnChange.bind(null, 'Hạng D')}
+                  checked={selectedOption.id === 'Hạng D'}
                   type='radio'
                   name='level'
                   value='Hạng D'
@@ -172,8 +186,8 @@ export default function SettingPage() {
             <li>
               <label className={styles.item}>
                 <input
-                  onChange={handleSelectedOption}
-                  checked={selectedOption === 'Hạng E'}
+                  onChange={handleOnChange.bind(null, 'Hạng E')}
+                  checked={selectedOption.id === 'Hạng E'}
                   type='radio'
                   name='level'
                   value='Hạng E'
@@ -187,8 +201,8 @@ export default function SettingPage() {
             <li>
               <label className={styles.item}>
                 <input
-                  onChange={handleSelectedOption}
-                  checked={selectedOption === 'Hạng F'}
+                  onChange={handleOnChange.bind(null, 'Hạng F')}
+                  checked={selectedOption.id === 'Hạng F'}
                   type='radio'
                   name='level'
                   value='Hạng F'
