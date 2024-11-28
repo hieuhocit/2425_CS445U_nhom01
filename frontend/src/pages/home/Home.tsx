@@ -154,10 +154,13 @@ export default function HomePage() {
           <div className={styles.card}>
             {isLoggedIn && (
               <>
-                <div className={`${styles.item} ${styles.history}`}>
+                <Link
+                  to='/exam-history'
+                  className={`${styles.item} ${styles.history}`}
+                >
                   <MdHistory className={styles.icon} />
                   <p>Xem lịch sử thi</p>
-                </div>
+                </Link>
                 <div
                   onClick={handleLogout}
                   className={`${styles.item} ${styles.login}`}
