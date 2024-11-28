@@ -24,6 +24,7 @@ import LoginPage from '@/pages/login/Login';
 import RegisterPage, {
   action as registerAction,
 } from '@/pages/register/Register';
+import ProfilePage from '@/pages/profile/Profile';
 
 const router = createBrowserRouter([
   {
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
         path: '/register',
         element: <RegisterPage />,
         action: registerAction,
+      },
+      {
+        path: '/profile',
+        element: <ProfilePage />,
       },
     ],
   },
