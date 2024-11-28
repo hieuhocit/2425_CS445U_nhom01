@@ -26,6 +26,7 @@ import RegisterPage, {
 } from '@/pages/register/Register';
 import ExamHistoryPage from '@/pages/exam-history/ExamHistory';
 import DetailsExamHistoryPage from '@/pages/exam-history/details-exam-history/DetailsExamHistory';
+import ProfilePage from '@/pages/profile/Profile';
 
 const router = createBrowserRouter([
   {
@@ -100,6 +101,10 @@ const router = createBrowserRouter([
         path: '/register',
         element: <RegisterPage />,
         action: registerAction,
+      },
+      {
+        path: '/profile',
+        element: <ProfilePage />,
       },
       {
         path: '/exam-history',
