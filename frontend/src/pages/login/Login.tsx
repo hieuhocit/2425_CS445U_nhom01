@@ -9,7 +9,7 @@ import { themeMode } from '@/store/theme/themeSelector';
 import Header from '@/components/header/Header';
 
 /** react-router */
-import { ActionFunctionArgs, Form, Link, redirect } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 /** react */
 import { useState } from 'react';
@@ -19,34 +19,42 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 
 /** toastify */
 import { toast } from 'react-toastify';
-
-export async function action({ request }: ActionFunctionArgs) {
-  const formData = await request.formData();
-
-  const username = formData.get('username');
-  const password = formData.get('password');
-
-  if (username === 'admin' && password === '123') {
-    toast.success('Đăng nhập thành công!');
-    return redirect('/');
-  }
-
-  toast.error('Thông tin tài khoản hoặc mật khẩu không chính xác!');
-  return null;
-}
+import { useLoginMutation } from '@/services/authApi';
 
 export default function LoginPage() {
+  const [login] = useLoginMutation();
   const [showPassword, setShowPassword] = useState(false);
   const mode = useSelector(themeMode);
 
+  const navigate = useNavigate();
+
   const isDarkMode = mode === 'dark';
+
+  async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const username = formData.get('username') as string;
+    const password = formData.get('password') as string;
+
+    try {
+      const res = await login({
+        username,
+        password,
+      }).unwrap();
+
+      toast.success(res.message);
+      navigate('/');
+    } catch (error: any) {
+      toast.error(error.data.message);
+    }
+  }
 
   return (
     <div className={`${styles.login} ${isDarkMode ? styles.darkMode : ''}`}>
       <Header title='Đăng nhập' isDark={isDarkMode} />
 
       <main className={styles.main}>
-        <Form className={styles.form} method='POST'>
+        <form onSubmit={handleLogin} className={styles.form} method='POST'>
           <div className={styles.inputContainer}>
             <label htmlFor='username'>Tên người dùng</label>
             <input
@@ -89,7 +97,7 @@ export default function LoginPage() {
             <span>Chưa có tài khoản?</span>{' '}
             <Link to='/register'>Đăng ký ngay</Link>
           </div>
-        </Form>
+        </form>
       </main>
     </div>
   );
