@@ -51,7 +51,8 @@ export default function HomePage() {
   const dispatch = useDispatch();
   const [logout] = useLogoutMutation();
 
-  const isLoggedIn = useSelector(loginSelector);
+  //const isLoggedIn = useSelector(loginSelector);
+  const isLoggedIn = true;
 
   const isDarkMode = mode === 'dark';
 
@@ -194,10 +195,10 @@ export default function HomePage() {
               <p>{isDarkMode ? 'Sáng' : 'Tối'}</p>
             </div>
             {isLoggedIn && (
-              <div className={`${styles.item} ${styles.profile}`}>
+              <Link to='/profile' className={`${styles.item} ${styles.profile}`}>
                 <CgProfile className={styles.icon} />
                 <p>Hồ sơ</p>
-              </div>
+              </Link>
             )}
           </div>
         </main>
