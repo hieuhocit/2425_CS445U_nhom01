@@ -2,10 +2,6 @@ export interface ITheme {
   mode: 'dark' | 'light';
 }
 
-export interface IStoreState {
-  theme: ITheme;
-}
-
 export interface IAnswer {
   id: string;
   title: string;
@@ -25,3 +21,26 @@ export interface IQuestion {
 export interface IBehavior {
   type: 'view' | 'exam';
 }
+
+export interface ILicense {
+  id: string;
+  name: string;
+}
+
+export interface ISetting {
+  license: ILicense;
+}
+
+export type User = {
+  username: string;
+  isAdmin: boolean;
+  firstName: string;
+  lastName: string;
+  access_token: string;
+};
+
+export type AuthState = {
+  user: User | null;
+  isLoggedIn: boolean;
+  token: string | null;
+};

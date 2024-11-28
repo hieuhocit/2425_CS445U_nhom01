@@ -35,16 +35,23 @@ import { CgProfile } from 'react-icons/cg';
 import { useDispatch, useSelector } from 'react-redux';
 import { themeMode } from '@/store/theme/themeSelector';
 import { toggleMode } from '@/store/theme/themeSlice';
-import { useState } from 'react';
+import { licenseSelector } from '@/store/setting/settingSelector';
 
 /** react-router */
 import { Link } from 'react-router-dom';
+import { loginSelector } from '@/store/auth/authSelector';
+import { useLogoutMutation } from '@/services/authApi';
+
+/** toastify */
+import { toast } from 'react-toastify';
 
 export default function HomePage() {
   const mode = useSelector(themeMode);
+  const license = useSelector(licenseSelector);
   const dispatch = useDispatch();
+  const [logout] = useLogoutMutation();
 
-  const [user, setUser] = useState(true);
+  const isLoggedIn = useSelector(loginSelector);
 
   const isDarkMode = mode === 'dark';
 
@@ -52,8 +59,14 @@ export default function HomePage() {
     dispatch(toggleMode());
   }
 
-  function handleClick() {
-    setUser(!user);
+  async function handleLogout() {
+    try {
+      const res = await logout().unwrap();
+      toast.success(res.message);
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã có lỗi xảy ra');
+    }
   }
 
   return (
@@ -65,7 +78,7 @@ export default function HomePage() {
       >
         <header className={styles.header}>
           <div className={styles.top}>
-            <h1 className={styles.title}>Ôn thi GPLX hạng A1</h1>
+            <h1 className={styles.title}>Ôn thi GPLX {license.name}</h1>
             <Link to='/setting'>
               <IoMdSettings className={styles.icon} />
             </Link>
@@ -113,7 +126,7 @@ export default function HomePage() {
               <FaHeart className={styles.icon} />
               <p>20 câu liệt</p>
             </Link>
-            {user && (
+            {isLoggedIn && (
               <Link
                 to='/list-wrong'
                 className={`${styles.item} ${styles.solidOrange}`}
@@ -139,14 +152,14 @@ export default function HomePage() {
           </div>
 
           <div className={styles.card}>
-            {user && (
+            {isLoggedIn && (
               <>
                 <div className={`${styles.item} ${styles.history}`}>
                   <MdHistory className={styles.icon} />
                   <p>Xem lịch sử thi</p>
                 </div>
                 <div
-                  onClick={handleClick}
+                  onClick={handleLogout}
                   className={`${styles.item} ${styles.login}`}
                 >
                   <IoIosLogOut className={styles.icon} />
@@ -154,9 +167,9 @@ export default function HomePage() {
                 </div>
               </>
             )}
-            {!user && (
+            {!isLoggedIn && (
               <>
-               <Link
+                <Link
                   to='/register'
                   className={`${styles.item} ${styles.register}`}
                 >
@@ -180,7 +193,7 @@ export default function HomePage() {
               )}
               <p>{isDarkMode ? 'Sáng' : 'Tối'}</p>
             </div>
-            {user && (
+            {isLoggedIn && (
               <div className={`${styles.item} ${styles.profile}`}>
                 <CgProfile className={styles.icon} />
                 <p>Hồ sơ</p>

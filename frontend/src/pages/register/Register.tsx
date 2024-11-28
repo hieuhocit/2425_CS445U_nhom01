@@ -23,12 +23,20 @@ import { toast } from 'react-toastify';
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
 
+  const firstName = formData.get('firstName');
+  const lastName = formData.get('lastName');
   const username = formData.get('username');
   const password = formData.get('password');
   const confirmPassword = formData.get('confirmPassword');
 
   // Validate
-  if (username === '' || password === '' || confirmPassword === '') {
+  if (
+    firstName === '' ||
+    lastName === '' ||
+    username === '' ||
+    password === '' ||
+    confirmPassword === ''
+  ) {
     toast.error('Vui lòng nhập đầy đủ thông tin!');
     return null;
   } else if (username === 'admin') {
@@ -56,12 +64,32 @@ export default function RegisterPage() {
       <main className={styles.main}>
         <Form className={styles.form} method='POST'>
           <div className={styles.inputContainer}>
-            <label htmlFor='username'>Tên người dùng</label>
+            <label htmlFor='lastName'>Họ</label>
+            <input
+              id='lastName'
+              name='lastName'
+              type='text'
+              placeholder='Nhập họ'
+              autoComplete='off'
+            />
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor='firstName'>Tên</label>
+            <input
+              id='firstName'
+              name='firstName'
+              type='text'
+              placeholder='Nhập tên'
+              autoComplete='off'
+            />
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor='username'>Tên đăng nhập</label>
             <input
               id='username'
               name='username'
               type='text'
-              placeholder='Tên người dùng'
+              placeholder='Nhập tên đăng nhập'
               autoComplete='off'
             />
           </div>
