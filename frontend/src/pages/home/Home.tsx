@@ -51,8 +51,7 @@ export default function HomePage() {
   const dispatch = useDispatch();
   const [logout] = useLogoutMutation();
 
-  //const isLoggedIn = useSelector(loginSelector);
-  const isLoggedIn = true;
+  const isLoggedIn = useSelector(loginSelector);
 
   const isDarkMode = mode === 'dark';
 
