@@ -63,8 +63,9 @@ export default function HomePage() {
     try {
       const res = await logout().unwrap();
       toast.success(res.message);
-    } catch (error: any) {
-      toast.error(error.data.message);
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã có lỗi xảy ra');
     }
   }
 

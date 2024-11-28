@@ -44,8 +44,9 @@ export default function LoginPage() {
 
       toast.success(res.message);
       navigate('/');
-    } catch (error: any) {
-      toast.error(error.data.message);
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi');
     }
   }
 
