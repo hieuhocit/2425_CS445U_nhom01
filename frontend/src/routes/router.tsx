@@ -28,6 +28,7 @@ import ExamHistoryPage from '@/pages/exam-history/ExamHistory';
 import DetailsExamHistoryPage from '@/pages/exam-history/details-exam-history/DetailsExamHistory';
 import ProfilePage from '@/pages/profile/Profile';
 import AdminPage from '@/pages/admin/Admin';
+import Statistical from '@/components/statistical/Statistical';
 
 const router = createBrowserRouter([
   {
@@ -119,6 +120,10 @@ const router = createBrowserRouter([
         path: '/admin',
         element: <AdminPage />,
         children: [
+          {
+            index: true,
+            element: <Statistical />,
+          },
           {
             path: 'user-management',
             element: <h1>User management</h1>,
