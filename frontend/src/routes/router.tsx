@@ -27,6 +27,8 @@ import RegisterPage, {
 import ExamHistoryPage from '@/pages/exam-history/ExamHistory';
 import DetailsExamHistoryPage from '@/pages/exam-history/details-exam-history/DetailsExamHistory';
 import ProfilePage from '@/pages/profile/Profile';
+import AdminPage from '@/pages/admin/Admin';
+import Statistical from '@/components/statistical/Statistical';
 
 const router = createBrowserRouter([
   {
@@ -113,6 +115,28 @@ const router = createBrowserRouter([
       {
         path: '/exam-history/:examId',
         element: <DetailsExamHistoryPage />,
+      },
+      {
+        path: '/admin',
+        element: <AdminPage />,
+        children: [
+          {
+            index: true,
+            element: <Statistical />,
+          },
+          {
+            path: 'user-management',
+            element: <h1>User management</h1>,
+          },
+          {
+            path: 'exam-management',
+            element: <h1>Exam management</h1>,
+          },
+          {
+            path: 'question-management',
+            element: <h1>Question management</h1>,
+          },
+        ],
       },
     ],
   },

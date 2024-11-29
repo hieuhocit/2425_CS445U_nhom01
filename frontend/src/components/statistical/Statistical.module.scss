@@ -1,0 +1,199 @@
+@import "styles/colors";
+
+.statistical {
+  .showAll {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 32px;
+    .item {
+      background-color: $background-light-mode-2;
+      padding: 16px;
+      border-radius: 6px;
+
+      $not-important-color: #8d99ae;
+
+      $color-green: #38b000;
+      $color-red: #ff4d6d;
+
+      $color-blue: #0077b6;
+      $color-turquoise: #036666;
+      $color-purple: #6818a5;
+      $color-brown: #7f5539;
+
+      $bgc-blue: #90e0ef;
+      $bgc-turquoise: hsl(143, 43%, 83%);
+      $bgc-purple: hsl(280, 100%, 85%);
+      $bgc-brown: #e6ccb2;
+
+      .top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        position: relative;
+        gap: 16px;
+        padding-left: 24px;
+
+        .info {
+          h2 {
+            font-size: 1.25rem;
+            color: $not-important-color;
+            font-weight: 600;
+            margin-bottom: 8px;
+          }
+          p {
+            font-size: 1.65rem;
+            font-weight: 600;
+          }
+        }
+        .iconContainer {
+          padding: 6px 8px;
+          background-blend-mode: overlay;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .icon {
+            font-size: 1.75rem;
+          }
+        }
+
+        .bar {
+          display: block;
+          position: absolute;
+          top: 50%;
+          left: 0;
+          bottom: 0;
+          height: 100%;
+          width: 4px;
+          transform: translateY(-50%);
+          border-radius: 50px;
+        }
+      }
+      .bottom {
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+
+        font-size: 1.05rem;
+
+        .icon {
+        }
+        .description {
+          color: $not-important-color;
+          span {
+            display: inline-block;
+            margin-inline: 4px;
+          }
+        }
+      }
+
+      .colorBrown {
+        color: $color-brown;
+      }
+      .backgroundBrown1 {
+        background-color: $color-brown;
+      }
+      .backgroundBrown2 {
+        background-color: $bgc-brown;
+      }
+
+      .colorPurple {
+        color: $color-purple;
+      }
+      .backgroundPurple1 {
+        background-color: $color-purple;
+      }
+      .backgroundPurple2 {
+        background-color: $bgc-purple;
+      }
+
+      .colorTurquoise {
+        color: $color-turquoise;
+      }
+      .backgroundTurquoise1 {
+        background-color: $color-turquoise;
+      }
+      .backgroundTurquoise2 {
+        background-color: $bgc-turquoise;
+      }
+
+      .colorBlue {
+        color: $color-blue;
+      }
+      .backgroundBlue1 {
+        background-color: $color-blue;
+      }
+      .backgroundBlue2 {
+        background-color: $bgc-blue;
+      }
+
+      .colorGreen {
+        color: $color-green;
+      }
+
+      .colorRed {
+        color: $color-red;
+      }
+    }
+  }
+
+  .chart {
+    margin-top: 40px;
+    background-color: $background-light-mode-2;
+
+    padding: 16px;
+    border-radius: 6px;
+
+    h2 {
+      color: hsl(0, 0%, 35%);
+      color: #495057;
+      font-size: 1.2rem;
+      font-weight: normal;
+      margin-bottom: 12px;
+    }
+  }
+
+  &.darkMode {
+    .showAll {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 32px;
+      .item {
+        background-color: $background-dark-mode-2;
+        padding: 16px;
+        border-radius: 6px;
+
+        $not-important-color: #edf6f9;
+        $color-green: #70e000;
+
+        .top {
+          .info {
+            h2 {
+              color: $not-important-color;
+            }
+            p {
+              color: $color-dark-mode;
+            }
+          }
+        }
+        .bottom {
+          .description {
+            color: $not-important-color;
+          }
+        }
+
+        .colorGreen {
+          color: $color-green;
+        }
+      }
+    }
+
+    .chart {
+      background-color: $background-dark-mode-2;
+
+      h2 {
+        color: hsl(0, 0%, 90%);
+      }
+    }
+  }
+}

@@ -1,0 +1,129 @@
+@import "styles/colors";
+
+.admin {
+  background-color: $background-light-mode-1;
+  width: 100%;
+  min-height: 100vh;
+
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+
+    z-index: 999;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    background-color: $background-light-mode-2;
+    border-bottom: 1px solid black;
+
+    .nav {
+      width: 78.4px;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .back {
+        cursor: pointer;
+        color: $color-light-mode;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+        transition: background-color 0.3s ease-out;
+        border-radius: 50%;
+
+        svg {
+          font-size: 1.65rem;
+        }
+
+        &:hover,
+        &:active {
+          background-color: $background-light-mode-3;
+        }
+      }
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #1976d2;
+      .icon {
+        font-size: 2rem;
+        transform-origin: center;
+      }
+
+      p {
+        font-size: 1.25rem;
+      }
+    }
+
+    .title {
+      flex: 1;
+      text-align: center;
+      font-size: 1.5rem;
+
+      @media (max-width: 550px) {
+        & {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .main {
+    display: flex;
+
+    .placeholder {
+      width: 300px;
+      transition: width 0.3s ease-in-out;
+      &.collapsed {
+        width: 78.4px;
+      }
+      @media (max-width: 600px) {
+        & {
+          display: none;
+        }
+      }
+    }
+    .content {
+      flex: 1;
+      padding: 32px 24px;
+      margin-top: 60px;
+    }
+  }
+
+  &.darkMode {
+    background-color: $background-dark-mode-1;
+
+    .header {
+      background-color: $background-dark-mode-2;
+      box-shadow: 0px 0px 10px 1px $background-dark-mode-4;
+
+      .nav {
+        .back {
+          color: $color-dark-mode;
+
+          &:hover,
+          &:active {
+            background-color: $background-dark-mode-4;
+          }
+        }
+      }
+
+      .logo {
+        color: #90caf9;
+      }
+
+      .title {
+        color: $color-dark-mode;
+      }
+    }
+  }
+}

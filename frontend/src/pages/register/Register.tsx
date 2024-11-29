@@ -102,14 +102,14 @@ export default function RegisterPage() {
                 type={showPassword ? 'text' : 'password'}
                 placeholder='Mật khẩu'
               />
-              {!showPassword ? (
+              {showPassword ? (
                 <FaRegEye
-                  onClick={() => setShowPassword(true)}
+                  onClick={() => setShowPassword(false)}
                   className={styles.icon}
                 />
               ) : (
                 <FaRegEyeSlash
-                  onClick={() => setShowPassword(false)}
+                  onClick={() => setShowPassword(true)}
                   className={styles.icon}
                 />
               )}
@@ -124,14 +124,14 @@ export default function RegisterPage() {
                 type={showConfirmPassword ? 'text' : 'password'}
                 placeholder='Nhập lại mật khẩu'
               />
-              {!showConfirmPassword ? (
+              {showConfirmPassword ? (
                 <FaRegEye
-                  onClick={() => setShowConfirmPassword(true)}
+                  onClick={() => setShowConfirmPassword(false)}
                   className={styles.icon}
                 />
               ) : (
                 <FaRegEyeSlash
-                  onClick={() => setShowConfirmPassword(false)}
+                  onClick={() => setShowConfirmPassword(true)}
                   className={styles.icon}
                 />
               )}
