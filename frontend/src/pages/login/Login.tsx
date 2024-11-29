@@ -75,14 +75,14 @@ export default function LoginPage() {
                 type={showPassword ? 'text' : 'password'}
                 placeholder='Mật khẩu'
               />
-              {!showPassword ? (
+              {showPassword ? (
                 <FaRegEye
-                  onClick={() => setShowPassword(true)}
+                  onClick={() => setShowPassword(false)}
                   className={styles.icon}
                 />
               ) : (
                 <FaRegEyeSlash
-                  onClick={() => setShowPassword(false)}
+                  onClick={() => setShowPassword(true)}
                   className={styles.icon}
                 />
               )}
