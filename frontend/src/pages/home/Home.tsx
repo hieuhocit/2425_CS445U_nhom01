@@ -29,6 +29,7 @@ import {
   MdOutlineLightMode,
 } from 'react-icons/md';
 
+import { RiAdminFill } from 'react-icons/ri';
 import { CgProfile } from 'react-icons/cg';
 
 /** react-redux */
@@ -39,7 +40,7 @@ import { licenseSelector } from '@/store/setting/settingSelector';
 
 /** react-router */
 import { Link } from 'react-router-dom';
-import { loginSelector } from '@/store/auth/authSelector';
+import { isAdminSelector, loginSelector } from '@/store/auth/authSelector';
 import { useLogoutMutation } from '@/services/authApi';
 
 /** toastify */
@@ -52,6 +53,7 @@ export default function HomePage() {
   const [logout] = useLogoutMutation();
 
   const isLoggedIn = useSelector(loginSelector);
+  const isAdmin = useSelector(isAdminSelector);
 
   const isDarkMode = mode === 'dark';
 
@@ -197,12 +199,28 @@ export default function HomePage() {
               <p>{isDarkMode ? 'Sáng' : 'Tối'}</p>
             </div>
             {isLoggedIn && (
-              <Link to='/profile' className={`${styles.item} ${styles.profile}`}>
+              <Link
+                to='/profile'
+                className={`${styles.item} ${styles.profile}`}
+              >
                 <CgProfile className={styles.icon} />
                 <p>Hồ sơ</p>
               </Link>
             )}
           </div>
+
+          {isLoggedIn && isAdmin && (
+            <>
+              <div className={styles.card} style={{ alignItems: 'flex-start' }}>
+                <>
+                  <Link to='/admin' className={`${styles.item} ${styles.red}`}>
+                    <RiAdminFill className={styles.icon} />
+                    <p>Quản trị viên</p>
+                  </Link>
+                </>
+              </div>
+            </>
+          )}
         </main>
       </div>
     </>
