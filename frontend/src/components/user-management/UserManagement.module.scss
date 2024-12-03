@@ -1,0 +1,17 @@
+@import "styles/colors";
+
+.management {
+  width: 100%;
+
+  .wrapper {
+    background-color: $background-light-mode-2;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  &.darkMode {
+    .wrapper {
+      background-color: $background-dark-mode-2;
+    }
+  }
+}
