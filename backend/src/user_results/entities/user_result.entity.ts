@@ -9,10 +9,16 @@ export class UserResultEntity {
   user_id: number;
 
   @Column()
-  exam_id: string;
+  exam_id: number;
 
   @Column()
-  history_id: string;
+  total_questions: number;
+
+  @Column()
+  correct_questions: number;
+
+  @Column()
+  wrong_questions: number;
 
   @Column()
   score: number;

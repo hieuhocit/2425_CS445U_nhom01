@@ -13,6 +13,14 @@ export class CreateExamDto {
 
   @IsDate()
   @Type(() => Date)
+  start_time: Date;
+
+  @IsDate()
+  @Type(() => Date)
+  end_time: Date;
+
+  @IsDate()
+  @Type(() => Date)
   created_at: Date;
 
   @IsDate()

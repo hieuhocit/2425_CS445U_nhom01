@@ -18,6 +18,11 @@ export class ExamsService {
     return await this.examRepository.findById(id);
   }
 
+  async findQuestionByExamId(id: number) {
+    return await this.examRepository.findQuestionByExamId(id);
+  }
+
+
   async create(createExamDto: CreateExamDto) {
     return await this.examRepository.create(createExamDto);
   }
@@ -29,5 +34,9 @@ export class ExamsService {
 
   async delete(id: number) {
     return await this.examRepository.delete(id);
+  }
+
+  async findUserByExamId(id: number) {
+    return await this.examRepository.findQuestionByExamId(id);
   }
 }

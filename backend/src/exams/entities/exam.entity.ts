@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { QuestionEntity } from 'src/questions/entities/question.entity';
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('exams')
 export class ExamEntity extends BaseEntity {
@@ -6,14 +7,11 @@ export class ExamEntity extends BaseEntity {
   id: number;
 
   @Column()
-  title: string;
+  name: string;
 
-  @Column()
-  user_id: number;
-
-  @Column()
+  @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 
-  @Column()
-  completed_at: Date;
+  @OneToMany(() => QuestionEntity, question => question.exam)
+  questions: QuestionEntity[];
 }

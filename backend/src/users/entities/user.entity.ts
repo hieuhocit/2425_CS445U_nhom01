@@ -6,10 +6,7 @@ export class UserEntity extends BaseEntity {
   id: number;
 
   @Column()
-  username: string;
-
-  @Column()
-  password: string;
+  avatar: string;
 
   @Column()
   fullName: string;
@@ -21,16 +18,10 @@ export class UserEntity extends BaseEntity {
   phone_number: string;
 
   @Column()
+  gender: boolean;
+
+  @Column()
   birthday: string;
-
-  @Column()
-  verify_email: string;
-
-  @Column()
-  role_id: string;
-
-  @Column()
-  history_id: string;
 
   @Column()
   created_at: Date;

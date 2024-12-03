@@ -11,14 +11,22 @@ import {
 import { ExamsService } from './exams.service';
 import { ExamGlobal } from 'src/global/exam.global';
 import { CreateExamDto } from './dto/create-exam.dto';
+import { QuestionGlobal } from 'src/global/question.global';
 
-@Controller('exams')
+@Controller('/api/exams')
 export class ExamsController {
   constructor(private readonly examsService: ExamsService) {}
 
   @Get('/')
   async getExams(): Promise<ExamGlobal[]> {
     return await this.examsService.findAll();
+  }
+
+  @Get('/:examId/questions')
+  async getExamQuestion(
+    @Param('id', ParseIntPipe) examId: number,
+  ): Promise<QuestionGlobal> {
+    return await this.examsService.findQuestionByExamId(examId);
   }
 
   @Get('/:id')
