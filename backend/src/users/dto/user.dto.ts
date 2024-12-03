@@ -1,7 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsString } from 'class-validator';
-import { RoleEntity } from 'src/roles/entities/role.entity';
-import { JoinColumn, OneToOne } from 'typeorm';
+import { IsBoolean, IsDate, IsString } from 'class-validator';
 
 export class UserDto {
   @IsString()
@@ -9,6 +7,9 @@ export class UserDto {
 
   @IsString()
   password: string;
+
+  @IsString()
+  avatar: string;
 
   @IsString()
   email: string;
@@ -19,18 +20,14 @@ export class UserDto {
   @IsString()
   birthday: string;
 
+  @IsBoolean()
+  gender: boolean;
+
   @IsString()
   verify_email: string;
 
   @IsString()
-  @OneToOne(() => RoleEntity)
-  role_id: string;
-
-  @JoinColumn()
-  role: RoleEntity;
-
-  @IsString()
-  history_id: string;
+  permission: string;
 
   @IsDate()
   @Type(() => Date)

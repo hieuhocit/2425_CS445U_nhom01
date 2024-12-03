@@ -6,7 +6,7 @@ export class ExamsQuestionEntity {
   id: number;
 
   @Column()
-  exam_id: string;
+  exam_id: number;
 
   @Column()
   question_id: number;

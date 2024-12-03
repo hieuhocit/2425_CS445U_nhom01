@@ -3,21 +3,20 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { UserResultsModule } from './user_results/user_results.module';
-import { RolesModule } from './roles/roles.module';
 import { QuestionsModule } from './questions/questions.module';
 import { HistoryModule } from './history/history.module';
 import { ExamsModule } from './exams/exams.module';
 import { ExamsQuestionsModule } from './exams_questions/exams_questions.module';
-import { AnswersModule } from './answers/answers.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { UserEntity } from './users/entities/user.entity';
-import { UserResultEntity } from './user_results/entities/user_result.entity';
-import { RoleEntity } from './roles/entities/role.entity';
-import { QuestionEntity } from './questions/entities/question.entity';
-import { ExamEntity } from './exams/entities/exam.entity';
-import { ExamsQuestionEntity } from './exams_questions/entities/exams_question.entity';
-import { HistoryEntity } from './history/entities/history.entity';
+import { ExamsResultModule } from './exams_result/exams_result.module';
+import { TopicsModule } from './topics/topics.module';
+import { MistakeQuestionsModule } from './mistake_questions/mistake_questions.module';
+import { QuestionTopicsModule } from './question_topics/question_topics.module';
+import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './constants/constant';
+import { AccountsModule } from './accounts/accounts.module';
 
 @Module({
   imports: [
@@ -28,25 +27,26 @@ import { HistoryEntity } from './history/entities/history.entity';
       username: 'root',
       password: '123456',
       database: 'driving_license_test',
-      entities: [
-        UserEntity,
-        UserResultEntity,
-        RoleEntity,
-        QuestionEntity,
-        ExamEntity,
-        ExamsQuestionEntity,
-        HistoryEntity,
-      ],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
+    }),
+    JwtModule.register({
+      global: true,
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: 90000 },
     }),
     UsersModule,
     UserResultsModule,
-    RolesModule,
     QuestionsModule,
     HistoryModule,
     ExamsModule,
     ExamsQuestionsModule,
-    AnswersModule,
+    ExamsResultModule,
+    TopicsModule,
+    MistakeQuestionsModule,
+    QuestionTopicsModule,
+    AuthModule,
+    AccountsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

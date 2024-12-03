@@ -1,41 +1,44 @@
 export class UserGlobal {
   id?: number;
-  userName?: string;
+  username?: string;
   password?: string;
+  avatar?: string;
   fullName?: string;
   email?: string;
   phone_number?: string;
+  gender?: boolean;
   birthday?: string;
   verify_email?: string;
-  role_id?: string;
-  history_id?: string;
+  permission?: string;
   created_at?: Date;
   updated_at?: Date;
 
-  constructor(
-    id: number,
-    userName: string,
-    password: string,
-    fullName: string,
-    email: string,
-    phone_number: string,
-    birthday: string,
-    verify_email: string,
-    role_id: string,
-    history_id: string,
-    created_at: Date,
-    updated_at: Date,
-  ) {
+  constructor({
+    id,
+    username,
+    password,
+    avatar,
+    fullName,
+    email,
+    phone_number,
+    gender,
+    birthday,
+    verify_email,
+    permission,
+    created_at,
+    updated_at,
+  }) {
     this.id = id;
-    this.userName = userName;
+    this.username = username;
     this.password = password;
+    this.avatar = avatar;
     this.fullName = fullName;
     this.email = email;
-    this.birthday = birthday;
     this.phone_number = phone_number;
+    this.gender = gender;
+    this.birthday = birthday;
     this.verify_email = verify_email;
-    this.role_id = role_id;
-    this.history_id = history_id;
+    this.permission = permission;
     this.created_at = created_at;
     this.updated_at = updated_at;
   }

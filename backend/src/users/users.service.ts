@@ -36,4 +36,8 @@ export class UsersService {
   async deleteUsers(id: number): Promise<boolean> {
     return await this.usersRepository.delete(id);
   }
+
+  async findUsersByExan(examId: number) {
+    return await this.usersRepository.findUserByExam(examId);
+  }
 }

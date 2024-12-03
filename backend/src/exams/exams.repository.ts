@@ -16,4 +16,10 @@ export class ExamsReposiotry
   ) {
     super(examsRepository);
   }
+  async findQuestionByExamId(id: number) {
+    return this.examsRepository.find({
+      where: { id },
+      order: { id: 'ASC' },
+    });
+  }
 }
