@@ -26,6 +26,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const firstName = formData.get('firstName');
   const lastName = formData.get('lastName');
   const username = formData.get('username');
+  const email = formData.get('email');
   const password = formData.get('password');
   const confirmPassword = formData.get('confirmPassword');
 
@@ -35,7 +36,8 @@ export async function action({ request }: ActionFunctionArgs) {
     lastName === '' ||
     username === '' ||
     password === '' ||
-    confirmPassword === ''
+    confirmPassword === '' ||
+    email === ''
   ) {
     toast.error('Vui lòng nhập đầy đủ thông tin!');
     return null;
@@ -81,6 +83,15 @@ export default function RegisterPage() {
               type='text'
               placeholder='Nhập tên'
               autoComplete='off'
+            />
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor='email'>Email</label>
+            <input
+              id='email'
+              name='email'
+              type='email'
+              placeholder='Nhập email'
             />
           </div>
           <div className={styles.inputContainer}>
