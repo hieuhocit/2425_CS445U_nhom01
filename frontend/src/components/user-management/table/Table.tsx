@@ -5,21 +5,29 @@ import styles from './Table.module.scss';
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 
 interface IUser {
+  id: string;
   image: string;
   first_name: string;
   last_name: string;
   email: string;
   role: string;
+  username: string;
 }
 
 export default function Table({
   isDark,
   users,
   rows,
+  onOpenView,
+  onOpenUpdate,
+  onDelete,
 }: {
   isDark: boolean;
   users: IUser[];
   rows: number;
+  onOpenView: (id: string) => void;
+  onOpenUpdate: (id: string) => void;
+  onDelete: (id: string) => void;
 }) {
   const minHeight = (rows + 1) * 65 + (rows + 2) * 16 + 16 + 'px';
 
@@ -32,7 +40,7 @@ export default function Table({
         <thead className={styles.thead}>
           <tr>
             <th>Ảnh</th>
-            <th>Họ tên</th>
+            <th>Tài khoản</th>
             <th>Email</th>
             <th>Vai trò</th>
             <th>Hoạt động</th>
@@ -50,9 +58,7 @@ export default function Table({
                 </div>
               </td>
               <td>
-                <p
-                  className={styles.name}
-                >{`${user.last_name} ${user.first_name}`}</p>
+                <p className={styles.username}>{user.username}</p>
               </td>
               <td>
                 <p className={styles.email}>{user.email}</p>
@@ -68,14 +74,17 @@ export default function Table({
               </td>
               <td>
                 <div className={styles.operation}>
-                  <button>
+                  <button onClick={onOpenView.bind(null, user.id)}>
                     <FaEye className={styles.icon} />
                   </button>
-                  <button>
+                  <button onClick={onOpenUpdate.bind(null, user.id)}>
                     <FaEdit className={styles.icon} />
                   </button>
                   <button>
-                    <FaTrash className={styles.icon} />
+                    <FaTrash
+                      onClick={onDelete.bind(null, user.id)}
+                      className={styles.icon}
+                    />
                   </button>
                 </div>
               </td>
