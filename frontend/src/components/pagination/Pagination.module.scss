@@ -10,7 +10,6 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding-inline: 24px;
     width: fit-content;
 
     %round {
@@ -71,6 +70,65 @@
           border: 1px solid rgba(25, 118, 210, 0.5);
           background-color: rgba(25, 118, 210, 0.12);
           cursor: default;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    & {
+      .pagination {
+        .arrow {
+          min-width: 34px;
+          min-height: 34px;
+          font-size: 1.1rem;
+        }
+
+        .numbers {
+          .number {
+            min-width: 34px;
+            min-height: 34px;
+            font-size: 1.1rem;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 550px) {
+    & {
+      .pagination {
+        .arrow {
+          font-size: 1rem;
+        }
+
+        .numbers {
+          .number {
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 450px) {
+    & {
+      padding-inline: 6px;
+      .pagination {
+        gap: 5px;
+        .arrow {
+          min-width: 32px;
+          min-height: 32px;
+          font-size: 0.85rem;
+        }
+
+        .numbers {
+          gap: 5px;
+          .number {
+            min-width: 32px;
+            min-height: 32px;
+            font-size: 0.85rem;
+          }
         }
       }
     }
