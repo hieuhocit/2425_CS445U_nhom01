@@ -16,6 +16,7 @@ $background-light-mode-4: #71c9ce;
 %share-custom-scrollbar-light {
   &::-webkit-scrollbar {
     height: 8px;
+    width: 8px;
   }
 
   &::-webkit-scrollbar-track {
@@ -37,6 +38,7 @@ $background-light-mode-4: #71c9ce;
 %share-custom-scrollbar-dark {
   &::-webkit-scrollbar {
     height: 8px;
+    width: 8px;
   }
 
   &::-webkit-scrollbar-track {
