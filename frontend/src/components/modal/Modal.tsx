@@ -26,20 +26,28 @@ export default function Modal({
     if (!modal) return;
 
     if (isOpen) {
-      modal.showModal();
+      // modal.showModal();
+      modal.show();
     } else {
       modal.close();
     }
   }, [isOpen]);
 
   return createPortal(
-    <dialog
-      ref={dialogRef}
-      className={`${styles.dialog} ${isDark ? styles.darkMode : ''}`}
-    >
-      <IoCloseOutline onClick={onClose} className={styles.close} />
-      {children}
-    </dialog>,
+    <>
+      <dialog
+        ref={dialogRef}
+        className={`${styles.dialog} ${isDark ? styles.darkMode : ''}`}
+      >
+        <IoCloseOutline onClick={onClose} className={styles.close} />
+        {children}
+      </dialog>
+      <div
+        className={`${styles.backdrop} ${
+          isOpen ? styles.opening : styles.closing
+        } ${isDark ? styles.darkMode : ''}`}
+      ></div>
+    </>,
     document.getElementById('modal') as HTMLDivElement
   );
 }
