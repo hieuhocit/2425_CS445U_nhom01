@@ -4,6 +4,9 @@ import styles from './Table.module.scss';
 /** icons */
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 
+/** images */
+import imagePlaceholder from '@/assets/images/image-placeholder.jpg';
+
 interface IUser {
   id: string;
   image: string;
@@ -52,7 +55,7 @@ export default function Table({
               <td>
                 <div className={styles.imageContainer}>
                   <img
-                    src={user.image}
+                    src={user.image ? user.image : imagePlaceholder}
                     alt={user.first_name + ' ' + user.last_name}
                   />
                 </div>
