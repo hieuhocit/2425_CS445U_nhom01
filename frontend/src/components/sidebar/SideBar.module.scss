@@ -9,7 +9,7 @@ $active-color: #42a5f5;
   bottom: 0;
   width: 300px;
   background-color: $background-light-mode-2;
-  border-right: 1px solid black;
+  border-right: 1px solid #48cae4;
 
   z-index: 999;
 
@@ -190,6 +190,8 @@ $active-color: #42a5f5;
   &.darkMode {
     background-color: $background-dark-mode-2;
     color: $color-dark-mode;
+
+    border-right: 1px solid #8d99ae;
 
     .nav {
       a {

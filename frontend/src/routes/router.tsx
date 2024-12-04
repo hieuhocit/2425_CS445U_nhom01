@@ -29,6 +29,7 @@ import DetailsExamHistoryPage from '@/pages/exam-history/details-exam-history/De
 import ProfilePage from '@/pages/profile/Profile';
 import AdminPage from '@/pages/admin/Admin';
 import Statistical from '@/components/statistical/Statistical';
+import UserManagement from '@/components/user-management/UserManagement';
 
 const router = createBrowserRouter([
   {
@@ -126,7 +127,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'user-management',
-            element: <h1>User management</h1>,
+            element: <UserManagement />,
           },
           {
             path: 'exam-management',

@@ -11,3 +11,47 @@ $background-light-mode-1: #e3fdfd;
 $background-light-mode-2: #cbf1f5;
 $background-light-mode-3: #a6e3e9;
 $background-light-mode-4: #71c9ce;
+
+// Custom scroll bar
+%share-custom-scrollbar-light {
+  &::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $background-light-mode-3;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    background-color: $background-light-mode-4;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(183, 49%, 43%);
+  }
+}
+
+%share-custom-scrollbar-dark {
+  &::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $background-dark-mode-2;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    background-color: $background-dark-mode-3;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: $background-dark-mode-4;
+  }
+}
