@@ -3,14 +3,74 @@
 .management {
   width: 100%;
 
-  .wrapper {
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 24px;
+
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    button {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      background-color: $background-light-mode-3;
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #2b2d42;
+
+      transition: background-color 0.3s ease-in-out;
+
+      &:hover,
+      &:active {
+        background-color: $background-light-mode-4;
+      }
+    }
+
+    @media (max-width: 768px) {
+      & {
+        h2 {
+          font-size: 1.3rem;
+        }
+
+        button {
+          padding: 12px 14px;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+
+  .body {
     background-color: $background-light-mode-2;
     border-radius: 6px;
     overflow: hidden;
   }
 
   &.darkMode {
-    .wrapper {
+    .head {
+      h2 {
+        color: $color-dark-mode;
+      }
+      button {
+        color: $color-dark-mode;
+        background-color: $background-dark-mode-3;
+
+        &:hover,
+        &:active {
+          background-color: $background-dark-mode-4;
+        }
+      }
+    }
+    .body {
       background-color: $background-dark-mode-2;
     }
   }
