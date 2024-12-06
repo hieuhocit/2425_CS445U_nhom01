@@ -4,13 +4,14 @@ import styles from './ExamResult.module.scss';
 /** react-redux */
 import { useSelector } from 'react-redux';
 import { themeMode } from '@/store/theme/themeSelector';
+import { currentLicenseSelector } from '@/store/setting/settingSelector';
 
 /** components */
 import Header from '@/components/header/Header';
 import QuestionDetails from '@/components/question-details/QuestionDetails';
 
 /** types */
-import { IQuestion } from '@/types/definitions';
+import { IAnswer, IQuestion } from '@/types/definitions';
 
 /** react-router */
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -29,16 +30,37 @@ export default function ExamResultPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const data: {
-    questions: IQuestion[];
-    totalTrueAnswer: number;
-    totalFalseAnswer: number;
-    totalRequiredAnswerTrue: number;
-    totalSkipAnswer: number;
-    totalQuestion: number;
-  } = location.state?.data;
+  const currentLicense = useSelector(currentLicenseSelector);
 
-  const questions = data?.questions;
+  const { questions }: { questions: IQuestion[] } = location.state;
+
+  const totalTrueAnswer = questions.filter((q) => {
+    const trueAnswer = (q.answers as IAnswer[]).find((a) => a.correct);
+    return q.idSelectedAnswer === trueAnswer?.id;
+  }).length;
+
+  const totalFalseAnswer = questions.filter((q) => {
+    const trueAnswer = (q.answers as IAnswer[]).find((a) => a.correct);
+    return q.idSelectedAnswer && q.idSelectedAnswer !== trueAnswer?.id;
+  }).length;
+
+  const totalRequiredAnswerTrue = questions.filter((q) => {
+    if (q.required) {
+      const trueAnswer = (q.answers as IAnswer[]).find((a) => a.correct);
+      return q.idSelectedAnswer === trueAnswer?.id;
+    }
+    return false;
+  }).length;
+
+  const totalSkipAnswer = questions.filter((q) => {
+    return !q.idSelectedAnswer;
+  }).length;
+
+  const totalQuestion = questions.length;
+
+  const isWrongRequiredAnswer =
+    totalRequiredAnswerTrue !== questions.filter((q) => q.required).length;
+
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
@@ -58,7 +80,7 @@ export default function ExamResultPage() {
                   className={`${styles.icon} ${styles.colorGreen}`}
                 />
                 <p>
-                  Số câu đúng: <span>{data.totalTrueAnswer}</span>
+                  Số câu đúng: <span>{totalTrueAnswer}</span>
                 </p>
               </div>
               <div className={styles.record}>
@@ -66,7 +88,7 @@ export default function ExamResultPage() {
                   className={`${styles.icon} ${styles.colorRed}`}
                 />
                 <p>
-                  Số câu sai: <span>{data.totalFalseAnswer}</span>
+                  Số câu sai: <span>{totalFalseAnswer}</span>
                 </p>
               </div>
               <div className={styles.record}>
@@ -74,13 +96,13 @@ export default function ExamResultPage() {
                   className={`${styles.icon} ${styles.colorBlue}`}
                 />
                 <p>
-                  Số câu liệt đúng: <span>{data.totalRequiredAnswerTrue}</span>
+                  Số câu liệt đúng: <span>{totalRequiredAnswerTrue}</span>
                 </p>
               </div>
               <div className={styles.record}>
                 <FaRegCircle className={`${styles.icon} ${styles.colorGray}`} />
                 <p>
-                  Số câu không làm: <span>{data.totalSkipAnswer}</span>
+                  Số câu không làm: <span>{totalSkipAnswer}</span>
                 </p>
               </div>
               <div className={styles.record}>
@@ -88,7 +110,7 @@ export default function ExamResultPage() {
                   className={`${styles.icon} ${styles.colorTurquoise}`}
                 />
                 <p>
-                  Tổng số câu hỏi: <span>{data.totalQuestion}</span>
+                  Tổng số câu hỏi: <span>{totalQuestion}</span>
                 </p>
               </div>
               <div className={styles.record}>
@@ -97,12 +119,14 @@ export default function ExamResultPage() {
                   Kết quả:{' '}
                   <span
                     className={`${styles.result} ${
-                      data.totalRequiredAnswerTrue && data.totalTrueAnswer >= 2
+                      isWrongRequiredAnswer &&
+                      totalTrueAnswer >= currentLicense.pass
                         ? styles.colorGreen
                         : styles.colorRed
                     }`}
                   >
-                    {data.totalRequiredAnswerTrue && data.totalTrueAnswer >= 2
+                    {isWrongRequiredAnswer &&
+                    totalTrueAnswer >= currentLicense.pass
                       ? 'ĐẠT'
                       : 'CHƯA ĐẠT'}
                   </span>

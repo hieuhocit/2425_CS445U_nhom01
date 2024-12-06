@@ -1,0 +1,147 @@
+@import "styles/colors";
+
+.form {
+  width: 100%;
+  background-color: $background-light-mode-2;
+  padding: 2rem;
+  border-radius: 16px;
+
+  .inputContainer {
+    margin-bottom: 16px;
+
+    label {
+      cursor: text;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    input {
+      margin-top: 6px;
+      display: block;
+      width: 100%;
+      font-size: 1rem;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      outline: none;
+
+      transition: box-shadow 0.15s ease-in;
+
+      &:active,
+      &:focus {
+        box-shadow: 0px 5px 10px 0px $background-dark-mode-4;
+      }
+    }
+
+    .inputImage {
+      display: none;
+    }
+
+    .pickImage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 100%;
+      min-height: 200px;
+      max-height: 500px;
+      margin-top: 8px;
+      cursor: pointer;
+
+      border: 1px dashed $background-light-mode-4;
+      border-radius: 6px;
+      overflow: hidden;
+
+      &.view {
+        pointer-events: none;
+        cursor: default;
+      }
+
+      p {
+        font-weight: normal;
+        font-size: 1rem;
+        opacity: 0.68;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+
+    div {
+      position: relative;
+      .icon {
+        position: absolute;
+        top: 50%;
+        right: 16px;
+        font-size: 1.3rem;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+    }
+  }
+
+  .actions {
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+
+    button {
+      width: 100%;
+      border: none;
+      outline: none;
+      background-color: $background-light-mode-3;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 10px 0;
+      border-radius: 6px;
+
+      transition: background-color 0.25s ease-in-out;
+
+      &:hover,
+      &:active {
+        background-color: $background-light-mode-4;
+      }
+    }
+  }
+
+  &.darkMode {
+    background-color: $background-dark-mode-2;
+    color: $color-dark-mode;
+
+    .inputContainer {
+      input {
+        color: $color-dark-mode;
+        background-color: $background-dark-mode-4;
+
+        &:active,
+        &:focus {
+          box-shadow: 0px 5px 10px 0px $background-light-mode-4;
+        }
+      }
+      div {
+        .icon {
+          color: $color-dark-mode;
+        }
+      }
+    }
+
+    .actions {
+      button {
+        color: $color-dark-mode;
+        background-color: $background-dark-mode-4;
+        transition: background-color 0.25s ease-in-out;
+
+        &:hover,
+        &:active {
+          background-color: $background-dark-mode-3;
+        }
+      }
+    }
+  }
+}

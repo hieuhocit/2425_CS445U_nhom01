@@ -55,6 +55,11 @@
           flex-grow: 0;
           width: 20px;
           height: 20px;
+          cursor: pointer;
+
+          &:disabled {
+            cursor: default;
+          }
         }
         span {
           font-size: 1.1rem;

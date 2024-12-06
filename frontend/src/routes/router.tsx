@@ -30,6 +30,7 @@ import ProfilePage from '@/pages/profile/Profile';
 import AdminPage from '@/pages/admin/Admin';
 import Statistical from '@/components/statistical/Statistical';
 import UserManagement from '@/components/user-management/UserManagement';
+import ExamManagement from '@/components/exam-management/ExamManagement';
 
 const router = createBrowserRouter([
   {
@@ -57,11 +58,11 @@ const router = createBrowserRouter([
         element: <ListLawPage />,
       },
       {
-        path: '/list-law/list-violation',
+        path: '/list-law/:lawId/list-violation',
         element: <ListViolationPage />,
       },
       {
-        path: '/list-law/list-violation/:violationId',
+        path: '/list-law/:lawId/list-violation/:violationId',
         element: <ViolationDetailsPage />,
       },
       {
@@ -131,7 +132,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'exam-management',
-            element: <h1>Exam management</h1>,
+            element: <ExamManagement />,
           },
           {
             path: 'question-management',

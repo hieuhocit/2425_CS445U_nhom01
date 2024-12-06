@@ -3,9 +3,24 @@ import { RootState } from '../store';
 
 const selectSetting = (state: RootState) => state.setting;
 
-const licenseSelector = createSelector(
+const licensesSelector = createSelector(
   selectSetting,
-  (setting) => setting.license
+  (setting) => setting.licenses
 );
 
-export { selectSetting, licenseSelector };
+const currentLicenseSelector = createSelector(
+  selectSetting,
+  (setting) => setting.currentLicense
+);
+
+const violationTypeSelector = createSelector(
+  selectSetting,
+  (setting) => setting.violationType
+);
+
+export {
+  selectSetting,
+  licensesSelector,
+  currentLicenseSelector,
+  violationTypeSelector,
+};

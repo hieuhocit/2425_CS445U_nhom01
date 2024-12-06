@@ -20,6 +20,7 @@ export default function GridQuestions({
   css,
   close,
   animation,
+  currentIndex,
 }: {
   isDark: boolean;
   show: boolean;
@@ -30,6 +31,7 @@ export default function GridQuestions({
   css?: object;
   close: boolean;
   animation: boolean;
+  currentIndex?: number;
 }) {
   const gridRef = useRef<null | HTMLDivElement>(null);
 
@@ -64,7 +66,7 @@ export default function GridQuestions({
                 : q.idSelectedAnswer
                 ? styles.done
                 : ''
-            }`;
+            } ${currentIndex === index ? styles.current : ''}`;
 
             return (
               <div

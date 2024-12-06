@@ -16,91 +16,70 @@ export default function DetailsExamHistoryPage() {
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
-  const question1: IQuestion = {
-    id: '1',
-    title: 'Câu 2: “Làn đường” là gì?',
-    answers: [
-      {
-        id: '1',
-        title:
-          'Là một phần của phần đường xe chạy được chia theo chiều dọc của đường, sử dụng cho xe chạy.',
-      },
-      {
-        id: '2',
-        title:
-          'Là một phần của phần đường xe chạy được chia theo chiều dọc của đường, có bề rộng đủ cho xe chạy an toàn.',
-      },
-      {
-        id: '3',
-        title:
-          'Là một phần của phần đường xe chạy được chia theo chiều dọc của đường, có đủ bề rộng cho xe ô tô chạy an toàn.',
-      },
-    ],
-    instruction: 'Hướng dẫn: Có bề rộng đủ cho xe chạy an toàn.',
-    idTrueAnswer: '2',
-    idSelectedAnswer: '1',
-    required: true,
-  };
-
-  const question2: IQuestion = {
-    id: '2',
-    title:
-      'Câu 443: Trong các biển dưới đây biển nào là biển “Hết mọi lệnh cấm”?',
-    image: 'https://beta.gplx.app/images/questions/q443.png',
-    answers: [
-      {
-        id: 'id1',
-        title: 'Biển 1.',
-      },
-      {
-        id: 'id2',
-        title: 'Biển 2.',
-      },
-      {
-        id: 'id3',
-        title: 'Biển 3.',
-      },
-      {
-        id: 'id4',
-        title: 'Cả ba biển',
-      },
-    ],
-    instruction: `Hướng dẫn: Biển 1: DP.134 “Hết hạn chế tốc độ tối đa”; Biển 2:DP.135 “Hết tất cả các lệnh cấm”; Biển 3: R.307 “Hết hạn chế tốc độ tối thiểu”.`,
-    idTrueAnswer: 'id2',
-    idSelectedAnswer: 'id4',
-    required: false,
-  };
-
-  const question3: IQuestion = {
-    id: '2',
-    title:
-      'Câu 443: Trong các biển dưới đây biển nào là biển “Hết mọi lệnh cấm”?',
-    image: 'https://beta.gplx.app/images/questions/q443.png',
-    answers: [
-      {
-        id: 'id1',
-        title: 'Biển 1.',
-      },
-      {
-        id: 'id2',
-        title: 'Biển 2.',
-      },
-      {
-        id: 'id3',
-        title: 'Biển 3.',
-      },
-      {
-        id: 'id4',
-        title: 'Cả ba biển',
-      },
-    ],
-    instruction: `Hướng dẫn: Biển 1: DP.134 “Hết hạn chế tốc độ tối đa”; Biển 2:DP.135 “Hết tất cả các lệnh cấm”; Biển 3: R.307 “Hết hạn chế tốc độ tối thiểu”.`,
-    idTrueAnswer: 'id2',
-    idSelectedAnswer: 'id2',
-    required: false,
-  };
-
-  const wrongQuestions: IQuestion[] | null = [question1, question2, question3];
+  const questions: IQuestion[] | null = [
+    {
+      image: '',
+      text: 'Phần của đường bộ được sử dụng cho các phương tiện giao thông qua lại là gì?',
+      tip: 'Lề đường không sử dụng cho các phương tiện giao thông qua lại.',
+      required: false,
+      id: 1,
+      topic_id: 1,
+      license_ids: [6, 7, 8, 9, 10, 5, 3, 4, 1, 2],
+      exam_ids: [1, 9, 27, 47, 63, 67, 83, 85, 100],
+      answers: [
+        {
+          text: 'Phần mặt đường và lề đường.',
+          correct: false,
+          id: 1,
+          question_id: 1,
+        },
+        {
+          text: 'Phần đường xe chạy.',
+          correct: true,
+          id: 2,
+          question_id: 1,
+        },
+        {
+          text: 'Phần đường xe cơ giới.',
+          correct: false,
+          id: 3,
+          question_id: 1,
+        },
+      ],
+      idSelectedAnswer: 1,
+    },
+    {
+      image: '',
+      text: '“Làn đường” là gì?',
+      tip: 'Có bề rộng đủ cho xe chạy an toàn.',
+      required: false,
+      id: 2,
+      topic_id: 1,
+      license_ids: [6, 7, 8, 9, 10, 5, 3, 4, 1, 2],
+      exam_ids: [2, 10, 28, 48, 64, 68, 84, 86, 101],
+      answers: [
+        {
+          text: 'Là một phần của phần đường xe chạy được chia theo chiều dọc của đường, sử dụng cho xe chạy.',
+          correct: false,
+          id: 4,
+          question_id: 2,
+        },
+        {
+          text: 'Là một phần của phần đường xe chạy được chia theo chiều dọc của đường, có bề rộng đủ cho xe chạy an toàn.',
+          correct: true,
+          id: 5,
+          question_id: 2,
+        },
+        {
+          text: 'Là một phần của phần đường xe chạy được chia theo chiều dọc của đường, có đủ bề rộng cho xe ô tô chạy an toàn.',
+          correct: false,
+          id: 6,
+          question_id: 2,
+        },
+      ],
+      idSelectedAnswer: 5,
+    },
+  ];
 
   return (
     <div
@@ -110,9 +89,9 @@ export default function DetailsExamHistoryPage() {
     >
       <Header title='Lịch sử thi đề A1' isDark={isDarkMode} />
       <main className={styles.main}>
-        {wrongQuestions && wrongQuestions.length > 0 && (
+        {questions && questions.length > 0 && (
           <div className={styles.list}>
-            {wrongQuestions.map((question) => (
+            {questions.map((question) => (
               <QuestionDetails
                 key={question.id}
                 isDarkMode={isDarkMode}
@@ -123,8 +102,7 @@ export default function DetailsExamHistoryPage() {
           </div>
         )}
 
-        {(!wrongQuestions ||
-          (wrongQuestions && wrongQuestions.length === 0)) && (
+        {(!questions || (questions && questions.length === 0)) && (
           <p>Đã xảy ra lỗi, vui lòng kiểm tra lại </p>
         )}
       </main>

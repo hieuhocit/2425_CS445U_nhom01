@@ -2,7 +2,7 @@
 import styles from './QuestionDetails.module.scss';
 
 /** types */
-import { IBehavior, IQuestion } from '@/types/definitions';
+import { IAnswer, IBehavior, IQuestion } from '@/types/definitions';
 
 export default function QuestionDetails({
   isDarkMode,
@@ -13,9 +13,9 @@ export default function QuestionDetails({
   isDarkMode: boolean;
   behavior: IBehavior;
   question: IQuestion;
-  onChange?: (questionId: string, answerId: string) => void;
+  onChange?: (questionId: number, answerId: number) => void;
 }) {
-  function handleSelectedAnswer(questionId: string, answerId: string) {
+  function handleSelectedAnswer(questionId: number, answerId: number) {
     if (typeof onChange === 'function' && behavior.type === 'exam') {
       onChange(questionId, answerId);
     }
@@ -33,24 +33,33 @@ export default function QuestionDetails({
           question.required ? styles.required : undefined
         }`}
       >
-        {question.title}
+        {`Câu ${question.id}: ${question.text}`}
       </h2>
 
       {question?.image && (
         <div className={styles.imageContainer}>
-          <img src={question.image} alt={question.title} />
+          <img
+            src={`https://beta.gplx.app/images/questions/${question.image}`}
+            alt={question.text}
+          />
         </div>
       )}
 
       <div className={styles.answers}>
-        {question?.answers?.length > 0 &&
+        {question?.answers &&
+          question?.answers?.length > 0 &&
           question.answers.map((answer, index) => {
             let className = '';
+
+            // lấy câu trả lời đúng
+            const trueAnswer = (question.answers as IAnswer[]).find(
+              (a) => a.correct
+            );
 
             // Nếu là câu trả lời của người dùng
             if (answer.id === question.idSelectedAnswer) {
               // Kiểm tra nếu câu trả lời là đúng
-              if (question.idSelectedAnswer === question.idTrueAnswer) {
+              if (question.idSelectedAnswer === trueAnswer?.id) {
                 className = styles.correctAnswer;
               } else {
                 // Ngược lại nếu sai
@@ -59,8 +68,7 @@ export default function QuestionDetails({
             } else {
               // Nếu không phải câu trả lời người dùng
               // thì kiểm tra có phải là câu trả lời đúng không nếu đúng thì hiển thị
-              className =
-                answer.id === question.idTrueAnswer ? styles.trueAnswer : '';
+              className = answer.id === trueAnswer?.id ? styles.trueAnswer : '';
             }
 
             let checked = undefined;
@@ -74,8 +82,7 @@ export default function QuestionDetails({
                   answer.id === question.idSelectedAnswer ? true : undefined;
               } else {
                 // Nếu không có câu trả lời của người dùng thì hiển thị câu trả lời đúng
-                checked =
-                  answer.id === question.idTrueAnswer ? true : undefined;
+                checked = answer.id === trueAnswer?.id ? true : undefined;
               }
             } else {
               // Nếu đg làm bài thi
@@ -88,7 +95,7 @@ export default function QuestionDetails({
                 <label className={className}>
                   <input
                     type='radio'
-                    name={question.id}
+                    name={question.id + ''}
                     defaultValue={answer.id}
                     checked={checked}
                     disabled={behavior.type === 'view'}
@@ -96,7 +103,7 @@ export default function QuestionDetails({
                       handleSelectedAnswer(question.id, answer.id)
                     }
                   />
-                  <span>{`${index + 1}. ${answer.title}`}</span>
+                  <span>{`${index + 1}. ${answer.text}`}</span>
                 </label>
               </div>
             );
@@ -110,9 +117,9 @@ export default function QuestionDetails({
         )}
       </div>
 
-      {behavior.type === 'view' && question?.instruction && (
+      {behavior.type === 'view' && question?.tip && (
         <div className={styles.instruction}>
-          <p>{question.instruction}</p>
+          <p>Hướng dẫn: {question.tip}</p>
         </div>
       )}
     </div>

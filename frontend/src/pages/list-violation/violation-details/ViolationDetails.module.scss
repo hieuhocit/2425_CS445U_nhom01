@@ -25,15 +25,51 @@
           font-size: 1.1rem;
           line-height: 1.4;
           margin-bottom: 2px;
+          margin-left: 12px;
         }
 
         h2 {
           font-size: 1.4rem;
-          margin-bottom: 4px;
+          margin-bottom: 8px;
+        }
+
+        div {
+          display: flex;
+          flex-direction: column;
+          gap: 3px;
+
+          margin-top: 12px;
+          margin-bottom: 16px;
+          border-bottom: 1px dashed black;
+          padding-bottom: 12px;
+          margin-left: 12px;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          h3 {
+            font-size: 1.1rem;
+          }
+          p {
+            font-size: 1.1rem;
+            color: red;
+            margin-left: 0;
+          }
+          a {
+            width: max-content;
+            color: $color-light-mode;
+            font-size: 1.1rem;
+            color: hsl(240, 100%, 70%);
+          }
         }
 
         .bold {
           font-weight: bold;
+        }
+
+        .smaller {
+          font-size: 1.05rem;
         }
 
         .colorRed {
@@ -65,6 +101,18 @@
 
           .colorRed {
             color: red;
+          }
+
+          div {
+            border-bottom: 1px dashed white;
+
+            &:last-child {
+              border-bottom: none;
+            }
+
+            h3 {
+              color: $color-dark-mode;
+            }
           }
         }
       }
