@@ -58,11 +58,11 @@ const router = createBrowserRouter([
         element: <ListLawPage />,
       },
       {
-        path: '/list-law/list-violation',
+        path: '/list-law/:lawId/list-violation',
         element: <ListViolationPage />,
       },
       {
-        path: '/list-law/list-violation/:violationId',
+        path: '/list-law/:lawId/list-violation/:violationId',
         element: <ViolationDetailsPage />,
       },
       {
