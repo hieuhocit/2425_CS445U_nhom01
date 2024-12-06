@@ -1,11 +1,12 @@
 import { ISetting } from '@/types/definitions';
 import { createSlice } from '@reduxjs/toolkit';
 
+/** DUMMY DATA */
+import { licenses } from '@/data/data';
+
 const initialState: ISetting = {
-  license: {
-    id: 'Hạng A1',
-    name: 'Hạng A1',
-  },
+  currentLicense: licenses[0],
+  licenses: licenses,
 };
 
 const settingSlice = createSlice({
@@ -13,7 +14,7 @@ const settingSlice = createSlice({
   initialState: initialState,
   reducers: {
     changeLicense: (state, action) => {
-      state.license = action.payload.license;
+      state.currentLicense = action.payload.currentLicense;
     },
   },
 });
