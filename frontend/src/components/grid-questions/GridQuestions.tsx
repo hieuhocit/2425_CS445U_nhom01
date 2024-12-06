@@ -31,7 +31,7 @@ export default function GridQuestions({
   css?: object;
   close: boolean;
   animation: boolean;
-  currentIndex: number;
+  currentIndex?: number;
 }) {
   const gridRef = useRef<null | HTMLDivElement>(null);
 
