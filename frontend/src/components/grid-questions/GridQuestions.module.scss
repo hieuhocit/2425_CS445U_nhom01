@@ -98,6 +98,10 @@
         color: white;
         background-color: hsl(120, 100%, 35%);
       }
+      &.current {
+        color: white;
+        background-color: #fdc500;
+      }
     }
 
     @media (min-height: 1100px) {
@@ -279,6 +283,10 @@
         &.true {
           color: white;
           background-color: hsl(120, 100%, 35%);
+        }
+        &.current {
+          color: white;
+          background-color: #fdc500;
         }
       }
     }
