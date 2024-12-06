@@ -5,7 +5,7 @@ import styles from './Exam.module.scss';
 import { useSelector } from 'react-redux';
 import { themeMode } from '@/store/theme/themeSelector';
 import { currentLicenseSelector } from '@/store/setting/settingSelector';
-import { questionsSelector } from '@/store/data/dataSelector';
+import { examsSelector, questionsSelector } from '@/store/data/dataSelector';
 
 /** components */
 import Header from '@/components/header/Header';
@@ -33,11 +33,14 @@ export default function ExamPage() {
   const { examId } = useParams();
 
   const questionsData = useSelector(questionsSelector);
+  const examsData = useSelector(examsSelector);
+
+  const exam = examsData.find((e) => e.id === Number(examId));
 
   // GET Questions match Exam id && License id
   const filteredQuestions = questionsData.filter(
     (q) =>
-      q.exam_ids.includes(Number(examId)) &&
+      q.exam_ids.includes(exam?.id as number) &&
       q.license_ids.includes(currentLicense.id)
   );
 
@@ -114,7 +117,7 @@ export default function ExamPage() {
 
   return (
     <div className={`${styles.exam} ${isDarkMode ? styles.darkMode : ''}`}>
-      <Header title='Đề số 01' isDark={isDarkMode} />
+      <Header title={`Đề số ${exam?.title}`} isDark={isDarkMode} />
 
       <main className={styles.main}>
         <div className={styles.head}>
