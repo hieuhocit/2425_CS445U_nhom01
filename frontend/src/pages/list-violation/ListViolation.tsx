@@ -2,18 +2,31 @@
 import styles from './ListViolation.module.scss';
 
 /** react-router */
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 /** react-redux */
 import { useSelector } from 'react-redux';
 import { themeMode } from '@/store/theme/themeSelector';
+import { violationTypeSelector } from '@/store/setting/settingSelector';
 
 /** components */
 import Header from '@/components/header/Header';
 
+/** DUMMY DATA */
+import { lawTopics, violations } from '@/data/data';
+
 export default function ListViolationPage() {
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
+
+  const { lawId } = useParams();
+  const violationType = useSelector(violationTypeSelector);
+
+  const lawTopic = lawTopics.find((l) => l.id === Number(lawId));
+
+  const filteredViolations = violations.filter(
+    (v) => v.law_topic_id === lawTopic?.id && v.violation_type === violationType
+  );
 
   return (
     <div
@@ -21,47 +34,21 @@ export default function ListViolationPage() {
         isDarkMode ? styles.darkMode : undefined
       }`}
     >
-      <Header title='Hiệu lệnh, chỉ dẫn' isDark={isDarkMode} />
+      <Header
+        title={lawTopic?.display as string}
+        isDark={isDarkMode}
+        path='/list-law'
+      />
 
       <main className={styles.main}>
         <ul className={styles.list}>
-          <li>
-            <h2>
-              Không chấp hành hiệu lệnh, chỉ dẫn của biển báo hiệu, vạch kẻ
-              đường
-            </h2>
-            <p>Phạt tiền từ 100.000 đồng đến 200.000 đồng.</p>
-            <Link to='/list-law/list-violation/violationId'>Xem chi tiết</Link>
-          </li>
-          <li>
-            <h2>
-              Không chấp hành hiệu lệnh, hướng dẫn của người điều khiển giao
-              thông hoặc người kiểm soát giao thông
-            </h2>
-            <p>Phạt tiền từ 600.000 đồng đến 1.000.000 đồng.</p>
-            <Link to='/'>Xem chi tiết</Link>
-          </li>
-          <li>
-            <h2>
-              Không chấp hành hiệu lệnh, chỉ dẫn của biển báo hiệu, vạch kẻ
-              đường khi đi qua đường ngang, cầu chung
-            </h2>
-            <p>Phạt tiền từ 200.000 đồng đến 300.000 đồng.</p>
-            <Link to='/'>Xem chi tiết</Link>
-          </li>
-          <li>
-            <h2>Vượt đường ngang, cầu chung khi đèn đỏ đã bật sáng</h2>
-            <p>Phạt tiền từ 600.000 đồng đến 1.000.000 đồng.</p>
-            <Link to='/'>Xem chi tiết</Link>
-          </li>
-          <li>
-            <h2>
-              Không chấp hành hiệu lệnh, chỉ dẫn của nhân viên gác đường ngang,
-              cầu chung khi đi qua đường ngang, cầu chung
-            </h2>
-            <p>Phạt tiền từ 600.000 đồng đến 1.000.000 đồng.</p>
-            <Link to='/'>Xem chi tiết</Link>
-          </li>
+          {filteredViolations.map((v) => (
+            <li key={v.id}>
+              <h2>{v.violation}</h2>
+              <p>{v.fines}</p>
+              <Link to={`${v.id}`}>Xem chi tiết</Link>
+            </li>
+          ))}
         </ul>
       </main>
     </div>
