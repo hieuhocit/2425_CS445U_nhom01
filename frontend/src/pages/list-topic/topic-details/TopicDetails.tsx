@@ -13,13 +13,16 @@ import ExamAction from '@/components/exam-actions/ExamActions';
 import QuestionDetails from '@/components/question-details/QuestionDetails';
 
 /** types */
-import { IQuestion } from '@/types/definitions';
+import { IQuestion, ITopic } from '@/types/definitions';
 
 /** react */
 import { useState } from 'react';
 
 /** react-router */
 import { useParams } from 'react-router-dom';
+
+/** topics */
+import { topics } from '@/data/data';
 
 export default function TopicDetailsPage() {
   const mode = useSelector(themeMode);
@@ -29,12 +32,14 @@ export default function TopicDetailsPage() {
   const questionsData = useSelector(questionsSelector);
   const { topicId } = useParams();
 
+  const topic = topics.find((t) => t.id === Number(topicId)) as ITopic;
+
   const questions =
-    Number(topicId) === 0
+    topic.id === 0
       ? questionsData
-      : Number(topicId) === 8
+      : topic.id === 8
       ? questionsData.filter((q) => q.required)
-      : questionsData.filter((q) => q.topic_id === Number(topicId));
+      : questionsData.filter((q) => q.topic_id === topic.id);
 
   const isDarkMode = mode === 'dark';
 
@@ -63,7 +68,7 @@ export default function TopicDetailsPage() {
     <div
       className={`${styles.topicDetails} ${isDarkMode ? styles.darkMode : ''}`}
     >
-      <Header title='Toàn bộ câu hỏi' isDark={isDarkMode} />
+      <Header title={topic.display} isDark={isDarkMode} />
 
       <main className={styles.main}>
         {!currentQuestion && (
@@ -105,6 +110,7 @@ export default function TopicDetailsPage() {
           onGoTo={handleGoToQuestion}
           close={true}
           animation={true}
+          currentIndex={currentIndex}
         />
       )}
     </div>
