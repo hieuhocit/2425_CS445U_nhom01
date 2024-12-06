@@ -36,21 +36,29 @@ import { CgProfile } from 'react-icons/cg';
 import { useDispatch, useSelector } from 'react-redux';
 import { themeMode } from '@/store/theme/themeSelector';
 import { toggleMode } from '@/store/theme/themeSlice';
-import { licenseSelector } from '@/store/setting/settingSelector';
+import { currentLicenseSelector } from '@/store/setting/settingSelector';
+import { examsSelector, questionsSelector } from '@/store/data/dataSelector';
 
 /** react-router */
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { isAdminSelector, loginSelector } from '@/store/auth/authSelector';
 import { useLogoutMutation } from '@/services/authApi';
 
 /** toastify */
 import { toast } from 'react-toastify';
 
+/** Utils */
+import { getRandomExamId } from '@/utils/randomExam';
+
 export default function HomePage() {
   const mode = useSelector(themeMode);
-  const license = useSelector(licenseSelector);
+  const currentLicense = useSelector(currentLicenseSelector);
   const dispatch = useDispatch();
   const [logout] = useLogoutMutation();
+  const navigate = useNavigate();
+
+  const questions = useSelector(questionsSelector);
+  const exams = useSelector(examsSelector);
 
   const isLoggedIn = useSelector(loginSelector);
   const isAdmin = useSelector(isAdminSelector);
@@ -71,6 +79,10 @@ export default function HomePage() {
     }
   }
 
+  function handleNavigateToRandomExam() {
+    navigate(`/list-exam/${getRandomExamId(exams)}`);
+  }
+
   return (
     <>
       <div
@@ -80,7 +92,9 @@ export default function HomePage() {
       >
         <header className={styles.header}>
           <div className={styles.top}>
-            <h1 className={styles.title}>Ôn thi GPLX {license.name}</h1>
+            <h1 className={styles.title}>
+              Ôn thi GPLX hạng {currentLicense.code}
+            </h1>
             <Link to='/setting'>
               <IoMdSettings className={styles.icon} />
             </Link>
@@ -93,13 +107,13 @@ export default function HomePage() {
         </header>
         <main className={styles.main}>
           <div className={styles.card}>
-            <Link
-              to='/list-exam/examRandomId'
+            <div
+              onClick={handleNavigateToRandomExam}
               className={`${styles.item} ${styles.purple}`}
             >
               <FaRandom className={styles.icon} />
               <p>Đề ngẫu nhiên</p>
-            </Link>
+            </div>
             <Link
               to='/list-exam'
               className={`${styles.item} ${styles.lightPurple}`}
@@ -109,7 +123,7 @@ export default function HomePage() {
             </Link>
             <Link to='/review' className={`${styles.item} ${styles.green}`}>
               <IoMdGrid className={styles.icon} />
-              <p>200 câu hỏi</p>
+              <p>{questions.length} câu hỏi</p>
             </Link>
             <Link
               to='/list-topic'
@@ -126,7 +140,7 @@ export default function HomePage() {
               className={`${styles.item} ${styles.red}`}
             >
               <FaHeart className={styles.icon} />
-              <p>20 câu liệt</p>
+              <p>{questions.filter((q) => q.required).length} câu liệt</p>
             </Link>
             {isLoggedIn && (
               <Link
