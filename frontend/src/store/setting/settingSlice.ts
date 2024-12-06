@@ -7,6 +7,7 @@ import { licenses } from '@/data/data';
 const initialState: ISetting = {
   currentLicense: licenses[0],
   licenses: licenses,
+  violationType: 1,
 };
 
 const settingSlice = createSlice({
@@ -16,8 +17,11 @@ const settingSlice = createSlice({
     changeLicense: (state, action) => {
       state.currentLicense = action.payload.currentLicense;
     },
+    changeViolationType: (state, action) => {
+      state.violationType = action.payload.violationType;
+    },
   },
 });
 
-export const { changeLicense } = settingSlice.actions;
+export const { changeLicense, changeViolationType } = settingSlice.actions;
 export default settingSlice.reducer;

@@ -5,6 +5,7 @@ export interface ITheme {
 export interface ISetting {
   currentLicense: ILicense;
   licenses: ILicense[];
+  violationType: 1 | 2 | 3;
 }
 
 export type User = {
