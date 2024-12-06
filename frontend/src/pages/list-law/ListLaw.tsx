@@ -5,14 +5,13 @@ import styles from './ListLaw.module.scss';
 import { Link } from 'react-router-dom';
 
 /** react-redux */
-import { useSelector } from 'react-redux';
-
-/** react */
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { violationTypeSelector } from '@/store/setting/settingSelector';
+import { changeViolationType } from '@/store/setting/settingSlice';
+import { themeMode } from '@/store/theme/themeSelector';
 
 /** components */
 import Header from '@/components/header/Header';
-import { themeMode } from '@/store/theme/themeSelector';
 
 /** icons */
 import { GiTrafficCone } from 'react-icons/gi';
@@ -27,14 +26,36 @@ import { PiBeerBottleFill } from 'react-icons/pi';
 import { ImProfile } from 'react-icons/im';
 import { GiWhiteBook } from 'react-icons/gi';
 
+/** DUMMY DATA */
+import { lawTopics } from '@/data/data';
+
+const icons = [
+  <GiTrafficCone className={styles.icon} />,
+  <PiTrafficSignThin className={styles.icon} />,
+  <BsSignNoParking className={styles.icon} />,
+  <GrAnnounce className={styles.icon} />,
+  <MdSpeed className={styles.icon} />,
+  <TbTruckDelivery className={styles.icon} />,
+  <FaTools className={styles.icon} />,
+  <FaRoadCircleXmark className={styles.icon} />,
+  <PiBeerBottleFill className={styles.icon} />,
+  <ImProfile className={styles.icon} />,
+  <GiWhiteBook className={styles.icon} />,
+];
+
 export default function ListLawPage() {
-  const [selectedOption, setSelectedOption] = useState('Xe máy');
+  const violationType = useSelector(violationTypeSelector);
+  const dispatch = useDispatch();
 
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
-  function handleSelectOption(e: React.ChangeEvent<HTMLInputElement>) {
-    setSelectedOption(e.target.value);
+  function handleChangeViolationType(e: React.ChangeEvent<HTMLInputElement>) {
+    dispatch(
+      changeViolationType({
+        violationType: Number(e.target.value),
+      })
+    );
   }
 
   return (
@@ -49,11 +70,11 @@ export default function ListLawPage() {
           <div className={styles.option}>
             <label>
               <input
-                onChange={handleSelectOption}
-                checked={selectedOption === 'Xe máy'}
+                onChange={handleChangeViolationType}
+                checked={violationType === 1}
                 type='radio'
                 name='vehicle'
-                value={'Xe máy'}
+                value={1}
               />
               <span>Xe máy</span>
             </label>
@@ -61,11 +82,11 @@ export default function ListLawPage() {
           <div className={styles.option}>
             <label>
               <input
-                onChange={handleSelectOption}
-                checked={selectedOption === 'Xe ô tô'}
+                onChange={handleChangeViolationType}
+                checked={violationType === 2}
                 type='radio'
                 name='vehicle'
-                value={'Xe ô tô'}
+                value={2}
               />
               <span>Xe ô tô</span>
             </label>
@@ -73,86 +94,28 @@ export default function ListLawPage() {
           <div className={styles.option}>
             <label>
               <input
-                onChange={handleSelectOption}
-                checked={selectedOption === 'Khác'}
+                onChange={handleChangeViolationType}
+                checked={violationType === 3}
                 type='radio'
                 name='vehicle'
-                value={'Khác'}
+                value={3}
               />
               <span>Khác</span>
             </label>
           </div>
         </div>
         <ul className={styles.list}>
-          <li>
-            <Link
-              to='/list-law/list-violation?violationType=1&violationGroup=1'
-              className={styles.item}
-            >
-              <GiTrafficCone className={styles.icon} />
-              <h2>Hiệu lệnh, chỉ dẫn</h2>
-            </Link>
-          </li>
-          <li>
-            <Link to='/' className={styles.item}>
-              <PiTrafficSignThin className={styles.icon} />
-              <h2>Chuyển hướng, nhường đường</h2>
-            </Link>
-          </li>
-          <li>
-            <Link to='/' className={styles.item}>
-              <BsSignNoParking className={styles.icon} />
-              <h2>Dừng xe, đỗ xe</h2>
-            </Link>
-          </li>
-          <li>
-            <Link to='/' className={styles.item}>
-              <GrAnnounce className={styles.icon} />
-              <h2>Thiết bị ưu tiên, còi</h2>
-            </Link>
-          </li>
-          <li>
-            <Link to='/' className={styles.item}>
-              <MdSpeed className={styles.icon} />
-              <h2>Tốc độ, khoảng cách an toàn</h2>
-            </Link>
-          </li>
-          <li>
-            <Link to='/' className={styles.item}>
-              <TbTruckDelivery className={styles.icon} />
-              <h2>Vận chuyển người, hàng hóa</h2>
-            </Link>
-          </li>
-          <li>
-            <Link to='/' className={styles.item}>
-              <FaTools className={styles.icon} />
-              <h2>Trang thiết bị phương tiện</h2>
-            </Link>
-          </li>
-          <li>
-            <Link to='/' className={styles.item}>
-              <FaRoadCircleXmark className={styles.icon} />
-              <h2>Đường cấm, đường một chiều</h2>
-            </Link>
-          </li>
-          <li>
-            <Link to='/' className={styles.item}>
-              <PiBeerBottleFill className={styles.icon} />
-              <h2>Nồng độ cồn, chất kích thích</h2>
-            </Link>
-          </li>
-          <li>
-            <Link to='/' className={styles.item}>
-              <ImProfile className={styles.icon} />
-              <h2>Giấy tờ xe</h2>
-            </Link>
-          </li>
-          <li>
-            <Link to='/' className={styles.item}>
-              <GiWhiteBook className={styles.icon} />
-              <h2>Khác</h2>
-            </Link>
-          </li>
+          {lawTopics.map((lt, index) => (
+            <li key={lt.id}>
+              <Link
+                to={`/list-law/${lt.id}/list-violation`}
+                className={styles.item}
+              >
+                {icons[index]}
+                <h2>{lt.display}</h2>
+              </Link>
+            </li>
+          ))}
         </ul>
       </main>
     </div>
