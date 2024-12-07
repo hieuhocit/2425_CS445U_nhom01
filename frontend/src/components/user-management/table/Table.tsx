@@ -7,15 +7,8 @@ import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 /** images */
 import imagePlaceholder from '@/assets/images/image-placeholder.jpg';
 
-interface IUser {
-  id: string;
-  image: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  role: string;
-  username: string;
-}
+/** types */
+import { User } from '@/types/definitions';
 
 export default function Table({
   isDark,
@@ -26,11 +19,11 @@ export default function Table({
   onDelete,
 }: {
   isDark: boolean;
-  users: IUser[];
+  users: User[];
   rows: number;
-  onOpenView: (id: string) => void;
-  onOpenUpdate: (id: string) => void;
-  onDelete: (id: string) => void;
+  onOpenView: (id: number) => void;
+  onOpenUpdate: (id: number) => void;
+  onDelete: (id: number) => void;
 }) {
   const minHeight = (rows + 1) * 65 + (rows + 2) * 16 + 16 + 'px';
 
@@ -55,7 +48,7 @@ export default function Table({
               <td>
                 <div className={styles.imageContainer}>
                   <img
-                    src={user.image ? user.image : imagePlaceholder}
+                    src={user.avatar ? user.avatar : imagePlaceholder}
                     alt={user.first_name + ' ' + user.last_name}
                   />
                 </div>
@@ -69,10 +62,10 @@ export default function Table({
               <td>
                 <span
                   className={`${styles.role} ${
-                    user.role === 'ADMIN' ? styles.admin : styles.member
+                    user.permission === 'ADMIN' ? styles.admin : styles.member
                   }`}
                 >
-                  <p>{user.role.toLocaleLowerCase()}</p>
+                  <p>{(user.permission as string).toLocaleLowerCase()}</p>
                 </span>
               </td>
               <td>
