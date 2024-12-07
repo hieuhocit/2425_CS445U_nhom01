@@ -23,7 +23,7 @@ import { IExam } from '@/types/definitions';
 /** DUMMY DATA */
 import { exams } from '@/data/data';
 
-export default function UserManagement() {
+export default function ExamManagement() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
 
