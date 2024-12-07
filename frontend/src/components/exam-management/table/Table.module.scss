@@ -59,50 +59,15 @@
             font-size: 1.1rem;
           }
 
-          .imageContainer {
-            max-width: 80px;
-            width: 50px;
-            height: 50px;
-            overflow: hidden;
-            border-radius: 6px;
-
-            img {
-              width: 100%;
-              object-fit: cover;
-              object-position: top center;
-            }
-          }
-
-          .name,
-          .username {
+          .title {
             max-width: 150px;
           }
 
-          .email {
+          .licenses {
             max-width: 250px;
-          }
-
-          .role {
-            display: inline-block;
-            padding: 8px 8px;
-            border-radius: 6px;
-            text-align: center;
-            width: 95px;
-            max-width: 95px;
-
-            p {
-              text-transform: capitalize;
-              font-size: 1.1rem;
-            }
-
-            &.admin {
-              color: $color-dark-mode;
-              background-color: #ef233c;
-            }
-            &.member {
-              color: $color-dark-mode;
-              background-color: #0096c7;
-            }
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
 
           .operation {
@@ -151,6 +116,10 @@
 
           td {
             p {
+              color: $color-dark-mode;
+            }
+
+            .licenses {
               color: $color-dark-mode;
             }
 

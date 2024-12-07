@@ -4,33 +4,26 @@ import styles from './Table.module.scss';
 /** icons */
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 
-/** images */
-import imagePlaceholder from '@/assets/images/image-placeholder.jpg';
+/** types */
+import { IExam } from '@/types/definitions';
 
-interface IUser {
-  id: string;
-  image: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  role: string;
-  username: string;
-}
+/** DUMMY DATA */
+import { licenses } from '@/data/data';
 
 export default function Table({
   isDark,
-  users,
+  exams,
   rows,
   onOpenView,
   onOpenUpdate,
   onDelete,
 }: {
   isDark: boolean;
-  users: IUser[];
+  exams: IExam[];
   rows: number;
-  onOpenView: (id: string) => void;
-  onOpenUpdate: (id: string) => void;
-  onDelete: (id: string) => void;
+  onOpenView: (id: number) => void;
+  onOpenUpdate: (id: number) => void;
+  onDelete: (id: number) => void;
 }) {
   const minHeight = (rows + 1) * 65 + (rows + 2) * 16 + 16 + 'px';
 
@@ -42,50 +35,44 @@ export default function Table({
       <table className={`${styles.table} ${isDark ? styles.darkMode : ''}`}>
         <thead className={styles.thead}>
           <tr>
-            <th>Ảnh</th>
-            <th>Tài khoản</th>
-            <th>Email</th>
-            <th>Vai trò</th>
+            <th>Tiêu đề</th>
+            <th>Thuộc giấy phép</th>
             <th>Hoạt động</th>
           </tr>
         </thead>
         <tbody className={styles.tbody}>
-          {users.map((user, index) => (
-            <tr key={index}>
+          {exams.map((exam) => (
+            <tr key={exam.id}>
               <td>
-                <div className={styles.imageContainer}>
-                  <img
-                    src={user.image ? user.image : imagePlaceholder}
-                    alt={user.first_name + ' ' + user.last_name}
-                  />
+                <p className={styles.title}>
+                  {Number(exam.title) ? 'Đề số ' : ''}
+                  {exam.title}
+                </p>
+              </td>
+              <td>
+                <div className={styles.licenses}>
+                  {exam.license_ids.map((license_id, index) => {
+                    const license = licenses.find((lc) => lc.id === license_id);
+                    return (
+                      <span key={license_id}>
+                        Hạng {license?.code}
+                        {index < exam.license_ids.length - 1 ? ', ' : ' '}
+                      </span>
+                    );
+                  })}
                 </div>
               </td>
               <td>
-                <p className={styles.username}>{user.username}</p>
-              </td>
-              <td>
-                <p className={styles.email}>{user.email}</p>
-              </td>
-              <td>
-                <span
-                  className={`${styles.role} ${
-                    user.role === 'ADMIN' ? styles.admin : styles.member
-                  }`}
-                >
-                  <p>{user.role.toLocaleLowerCase()}</p>
-                </span>
-              </td>
-              <td>
                 <div className={styles.operation}>
-                  <button onClick={onOpenView.bind(null, user.id)}>
+                  <button onClick={onOpenView.bind(null, exam.id)}>
                     <FaEye className={styles.icon} />
                   </button>
-                  <button onClick={onOpenUpdate.bind(null, user.id)}>
+                  <button onClick={onOpenUpdate.bind(null, exam.id)}>
                     <FaEdit className={styles.icon} />
                   </button>
                   <button>
                     <FaTrash
-                      onClick={onDelete.bind(null, user.id)}
+                      onClick={onDelete.bind(null, exam.id)}
                       className={styles.icon}
                     />
                   </button>

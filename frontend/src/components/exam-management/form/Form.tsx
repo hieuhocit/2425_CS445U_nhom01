@@ -1,58 +1,44 @@
 /** styles */
 import styles from './Form.module.scss';
 
-/** react */
-import { useState } from 'react';
+/** types */
+import { IExam } from '@/types/definitions';
 
-/** icons */
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+/** DUMMY DATA */
+import { licenses } from '@/data/data';
 
-interface IUser {
-  id: string;
-  image: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  role: string;
-  username: string;
-}
+type onSubmit =
+  | null
+  | ((id: number, data: FormData) => void)
+  | ((data: FormData) => void);
 
 export default function Form({
   isDark,
-  user,
+  exam,
   behavior,
   onCancel,
   onSubmit,
 }: {
   isDark: boolean;
-  user?: IUser | null;
+  exam?: IExam | null;
   behavior: 'view' | 'update' | 'add';
   onCancel: () => void;
-  onSubmit: null | ((id: string, data: FormData) => void);
+  onSubmit: onSubmit;
 }) {
-  const [selectedImage, setSelectedImage] = useState<File | undefined>(
-    undefined
-  );
-  const [showPassword, setShowPassword] = useState(false);
-
-  function handleChangeImage(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = e.target.files;
-    const image = files?.[0];
-    if (!image) return;
-    setSelectedImage(image);
-  }
-
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!onSubmit || behavior === 'view') return;
 
     const formData = new FormData(e.target as HTMLFormElement);
 
-    if (behavior === 'update' && selectedImage) {
-      formData.set('image', selectedImage);
+    if (behavior === 'update') {
+      (onSubmit as (id: number, data: FormData) => void)(
+        (exam as IExam).id,
+        formData
+      );
+    } else if (behavior === 'add') {
+      (onSubmit as (data: FormData) => void)(formData);
     }
-
-    onSubmit(user?.id as string, formData);
   }
 
   return (
@@ -62,96 +48,39 @@ export default function Form({
       className={`${styles.form} ${isDark ? styles.darkMode : ''}`}
     >
       <div className={styles.inputContainer}>
-        <label htmlFor='lastName'>Họ</label>
+        <label htmlFor='title'>Tiêu đề</label>
         <input
-          id='lastName'
-          name='lastName'
+          id='title'
+          name='title'
           type='text'
-          placeholder='Nhập họ'
+          placeholder='Nhập tiêu đề'
           autoComplete='off'
-          defaultValue={user?.last_name || ''}
+          defaultValue={exam?.title || ''}
+          disabled={behavior === 'view'}
         />
       </div>
       <div className={styles.inputContainer}>
-        <label htmlFor='firstName'>Tên</label>
-        <input
-          id='firstName'
-          name='firstName'
-          type='text'
-          placeholder='Nhập tên'
-          autoComplete='off'
-          defaultValue={user?.first_name || ''}
-        />
-      </div>
-      <div className={styles.inputContainer}>
-        <label htmlFor='email'>Email</label>
-
-        <input
-          id='email'
-          name='email'
-          type='email'
-          placeholder='Nhập email'
-          defaultValue={user?.email || ''}
-        />
-      </div>
-      <div className={styles.inputContainer}>
-        <label htmlFor='username'>Tên đăng nhập</label>
-        <input
-          id='username'
-          name='username'
-          type='text'
-          placeholder='Nhập tên đăng nhập'
-          autoComplete='off'
-          defaultValue={user?.username || ''}
-        />
-      </div>
-      {behavior === 'add' && (
-        <div className={styles.inputContainer}>
-          <label htmlFor='password'>Mật khẩu</label>
-          <div>
-            <input
-              id='password'
-              name='password'
-              type={showPassword ? 'text' : 'password'}
-              placeholder='Mật khẩu'
-            />
-            {showPassword ? (
-              <FaRegEye
-                onClick={() => setShowPassword(false)}
-                className={styles.icon}
+        <label htmlFor=''>Chọn giấy phép</label>
+        <div className={styles.checkboxes}>
+          {licenses.map((lc) => (
+            <div
+              key={lc.id}
+              className={`${styles.checkbox} ${
+                behavior === 'view' ? styles.disabled : ''
+              }`}
+            >
+              <input
+                type='checkbox'
+                id={lc.id + ''}
+                name={'licenses'}
+                value={lc.id + ''}
+                defaultChecked={exam?.license_ids.includes(lc.id)}
+                disabled={behavior === 'view'}
               />
-            ) : (
-              <FaRegEyeSlash
-                onClick={() => setShowPassword(true)}
-                className={styles.icon}
-              />
-            )}
-          </div>
+              <label htmlFor={lc.id + ''}>Hạng {lc.code}</label>
+            </div>
+          ))}
         </div>
-      )}
-
-      <div className={styles.inputContainer}>
-        <label>Hình ảnh</label>
-        <input
-          className={styles.inputImage}
-          id='image'
-          name='image'
-          type='file'
-          onChange={handleChangeImage}
-        />
-        <label
-          className={`${styles.pickImage} ${
-            behavior === 'view' ? styles.view : ''
-          }`}
-          htmlFor='image'
-        >
-          <ImageCustom
-            behavior={behavior}
-            imageUrl={
-              selectedImage ? URL.createObjectURL(selectedImage) : user?.image
-            }
-          />
-        </label>
       </div>
 
       <div className={styles.actions}>
@@ -165,26 +94,5 @@ export default function Form({
         )}
       </div>
     </form>
-  );
-}
-
-function ImageCustom({
-  behavior,
-  imageUrl,
-}: {
-  behavior: 'view' | 'update' | 'add';
-  imageUrl: string | undefined | null;
-}) {
-  if (behavior === 'view') {
-    return imageUrl ? (
-      <img src={imageUrl} alt='preview image' />
-    ) : (
-      <p>Không có hình ảnh</p>
-    );
-  }
-  return imageUrl ? (
-    <img src={imageUrl} alt='preview image' />
-  ) : (
-    <p>Chọn hình ảnh</p>
   );
 }

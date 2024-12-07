@@ -17,10 +17,17 @@ import Form from './form/Form';
 /** toastify */
 import { toast } from 'react-toastify';
 
-export default function ExamManagement() {
+/** types */
+import { IExam } from '@/types/definitions';
+
+/** DUMMY DATA */
+import { exams } from '@/data/data';
+
+export default function UserManagement() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+
+  const [selectedExam, setSelectedExam] = useState<IExam | null>(null);
   const [behavior, setBehavior] = useState<'view' | 'add' | 'update'>('view');
 
   const mode = useSelector(themeMode);
@@ -29,65 +36,48 @@ export default function ExamManagement() {
   // Gọi API paginate ở đây
   // Hiện tại đang giả sử đã có sẵn data
   const ROWS = 4;
-  const currentUsers = users.slice(
+  const currentExams = exams.slice(
     (currentPage - 1) * ROWS,
     (currentPage - 1) * ROWS + ROWS
   );
-  const totalPages = Math.ceil(users.length / ROWS);
+  const totalPages = Math.ceil(exams.length / ROWS);
 
   // Operation
-  function handleDeleteUser(id: string) {
+  function handleDeleteExam(id: number) {
     // Call API
-    const deletedUser = users.find((u) => u.id === id);
+    const deletedUser = exams.find((u) => u.id === id);
     if (!deletedUser) return;
 
     // Message
-    toast.success('Xoá người dùng thành công');
+    toast.success('Xoá đề thi thành công');
   }
 
-  function handleAddUser(id: string, formData: FormData) {
+  function handleAddExam(formData: FormData) {
     // Validate data
-    const firstName = formData.get('firstName');
-    const lastName = formData.get('lastName');
-    const username = formData.get('username');
-    const email = formData.get('email');
-    const image = formData.get('image');
-    const password = formData.get('password');
+    const title = formData.get('title');
+    const licenses = formData.getAll('licenses');
 
-    console.log(id, image);
+    console.log(title, licenses);
 
-    if (
-      firstName === '' ||
-      lastName === '' ||
-      username === '' ||
-      password === '' ||
-      email === ''
-    ) {
+    if (title === '' || licenses.length === 0) {
       toast.error('Vui lòng nhập đầy đủ thông tin!');
-      return null;
-    } else if (email === 'hieuhocit2309@gmail.com') {
-      toast.error('Email đã tồn tại!');
-      return null;
-    } else if (username === 'admin') {
-      toast.error('Tên đăng nhập đã tồn tại!');
       return null;
     }
 
-    toast.success('Thêm người dùng thành công');
+    toast.success('Thêm đề thi thành công');
     handleCloseModal();
     // Call API
   }
 
-  function handleUpdateUser(id: string, formData: FormData) {
+  function handleUpdateExam(id: number, formData: FormData) {
     // Validate data
     const firstName = formData.get('firstName');
     const lastName = formData.get('lastName');
     const username = formData.get('username');
     const email = formData.get('email');
-    const image = formData.get('image');
     const password = formData.get('password');
 
-    console.log(id, image);
+    console.log(id, Object.fromEntries(formData));
 
     if (
       firstName === '' ||
@@ -101,14 +91,14 @@ export default function ExamManagement() {
     }
 
     // Call API;
-    toast.success('Cập nhật người dùng thành công');
+    toast.success('Cập nhật đề thi thành công');
     handleCloseModal();
   }
 
   // Modal
   function handleCloseModal() {
     setShowModal(false);
-    setSelectedUser(null);
+    setSelectedExam(null);
   }
 
   function handleOpenModalAdd() {
@@ -116,20 +106,20 @@ export default function ExamManagement() {
     setBehavior('add');
   }
 
-  function handleOpenModalView(id: string) {
-    const viewedUser = users.find((u) => u.id === id);
+  function handleOpenModalView(id: number) {
+    const exam = exams.find((e) => e.id === id);
 
-    if (!viewedUser) return;
-    setSelectedUser(viewedUser);
+    if (!exam) return;
+    setSelectedExam(exam);
     setShowModal(true);
     setBehavior('view');
   }
 
-  function handleOpenModalUpdate(id: string) {
-    const updatedUser = users.find((u) => u.id === id);
+  function handleOpenModalUpdate(id: number) {
+    const exam = exams.find((e) => e.id === id);
 
-    if (!updatedUser) return;
-    setSelectedUser(updatedUser);
+    if (!exam) return;
+    setSelectedExam(exam);
     setShowModal(true);
     setBehavior('update');
   }
@@ -165,11 +155,11 @@ export default function ExamManagement() {
         <div className={styles.body}>
           <Table
             isDark={isDarkMode}
-            users={currentUsers}
+            exams={currentExams}
             rows={ROWS}
             onOpenView={handleOpenModalView}
             onOpenUpdate={handleOpenModalUpdate}
-            onDelete={handleDeleteUser}
+            onDelete={handleDeleteExam}
           />
           <Pagination
             isDark={isDarkMode}
@@ -187,13 +177,13 @@ export default function ExamManagement() {
             onCancel={handleCloseModal}
             isDark={isDarkMode}
             behavior={behavior}
-            user={behavior === 'add' ? null : selectedUser}
+            exam={behavior === 'add' ? null : selectedExam}
             onSubmit={
               behavior === 'view'
                 ? null
                 : behavior === 'add'
-                ? handleAddUser
-                : handleUpdateUser
+                ? handleAddExam
+                : handleUpdateExam
             }
           />
         )}
@@ -201,289 +191,3 @@ export default function ExamManagement() {
     </>
   );
 }
-
-interface IUser {
-  id: string;
-  image: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  role: string;
-  username: string;
-}
-
-const users: IUser[] = [
-  {
-    image: '',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-].map((user, index) => ({
-  ...user,
-  id: user.username + index,
-  username: user.username + index,
-}));
