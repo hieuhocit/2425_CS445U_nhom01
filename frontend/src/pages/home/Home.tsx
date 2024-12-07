@@ -38,11 +38,13 @@ import { themeMode } from '@/store/theme/themeSelector';
 import { toggleMode } from '@/store/theme/themeSlice';
 import { currentLicenseSelector } from '@/store/setting/settingSelector';
 import { examsSelector, questionsSelector } from '@/store/data/dataSelector';
+import { loginSelector, permissionSelector } from '@/store/auth/authSelector';
+
+/** services */
+import { useLogoutMutation } from '@/services/authApi';
 
 /** react-router */
 import { Link, useNavigate } from 'react-router-dom';
-import { isAdminSelector, loginSelector } from '@/store/auth/authSelector';
-import { useLogoutMutation } from '@/services/authApi';
 
 /** toastify */
 import { toast } from 'react-toastify';
@@ -61,7 +63,9 @@ export default function HomePage() {
   const exams = useSelector(examsSelector);
 
   const isLoggedIn = useSelector(loginSelector);
-  const isAdmin = useSelector(isAdminSelector);
+  const permission = useSelector(permissionSelector);
+
+  const isAdmin = permission === 'ADMIN';
 
   const isDarkMode = mode === 'dark';
 

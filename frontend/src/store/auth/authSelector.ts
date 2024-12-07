@@ -5,9 +5,9 @@ const selectAuth = (state: RootState) => state.auth;
 
 const userSelector = createSelector(selectAuth, (auth) => auth.user);
 const loginSelector = createSelector(selectAuth, (auth) => auth.isLoggedIn);
-const isAdminSelector = createSelector(
+const permissionSelector = createSelector(
   selectAuth,
-  (auth) => auth.user?.isAdmin
+  (auth) => auth.user?.permission
 );
 
-export { selectAuth, userSelector, loginSelector, isAdminSelector };
+export { selectAuth, userSelector, loginSelector, permissionSelector };

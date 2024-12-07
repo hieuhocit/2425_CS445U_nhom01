@@ -9,17 +9,26 @@ export interface ISetting {
 }
 
 export type User = {
+  id: number;
   username: string;
-  isAdmin: boolean;
-  firstName: string;
-  lastName: string;
+
+  first_name: string;
+  last_name: string;
+  avatar: string;
+  email: string;
+  created_at: string;
+  updated_at: string;
+  permission: 'ADMIN' | 'MEMBER' | null;
+
   access_token: string;
+  refresh_token: string;
 };
 
 export type AuthState = {
   user: User | null;
   isLoggedIn: boolean;
-  token: string | null;
+  access_token: string | null;
+  refresh_token: string | null;
 };
 
 export interface IExam {

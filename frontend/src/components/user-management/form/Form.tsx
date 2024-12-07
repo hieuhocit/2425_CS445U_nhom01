@@ -7,15 +7,13 @@ import { useState } from 'react';
 /** icons */
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 
-interface IUser {
-  id: string;
-  image: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  role: string;
-  username: string;
-}
+/** types */
+import { User } from '@/types/definitions';
+
+type onSubmit =
+  | null
+  | ((id: number, data: FormData) => void)
+  | ((data: FormData) => void);
 
 export default function Form({
   isDark,
@@ -25,10 +23,10 @@ export default function Form({
   onSubmit,
 }: {
   isDark: boolean;
-  user?: IUser | null;
+  user?: User | null;
   behavior: 'view' | 'update' | 'add';
   onCancel: () => void;
-  onSubmit: null | ((id: string, data: FormData) => void);
+  onSubmit: onSubmit;
 }) {
   const [selectedImage, setSelectedImage] = useState<File | undefined>(
     undefined
@@ -48,11 +46,16 @@ export default function Form({
 
     const formData = new FormData(e.target as HTMLFormElement);
 
-    if (behavior === 'update' && selectedImage) {
-      formData.set('image', selectedImage);
-    }
+    if (behavior === 'update') {
+      if (selectedImage) formData.set('image', selectedImage);
 
-    onSubmit(user?.id as string, formData);
+      (onSubmit as (id: number, data: FormData) => void)(
+        (user as User).id,
+        formData
+      );
+    } else if (behavior === 'add') {
+      (onSubmit as (data: FormData) => void)(formData);
+    }
   }
 
   return (
@@ -70,6 +73,7 @@ export default function Form({
           placeholder='Nhập họ'
           autoComplete='off'
           defaultValue={user?.last_name || ''}
+          disabled={behavior === 'view'}
         />
       </div>
       <div className={styles.inputContainer}>
@@ -81,6 +85,7 @@ export default function Form({
           placeholder='Nhập tên'
           autoComplete='off'
           defaultValue={user?.first_name || ''}
+          disabled={behavior === 'view'}
         />
       </div>
       <div className={styles.inputContainer}>
@@ -92,6 +97,7 @@ export default function Form({
           type='email'
           placeholder='Nhập email'
           defaultValue={user?.email || ''}
+          disabled={behavior === 'view'}
         />
       </div>
       <div className={styles.inputContainer}>
@@ -103,6 +109,7 @@ export default function Form({
           placeholder='Nhập tên đăng nhập'
           autoComplete='off'
           defaultValue={user?.username || ''}
+          disabled={behavior === 'view' || behavior === 'update'}
         />
       </div>
       {behavior === 'add' && (
@@ -148,7 +155,7 @@ export default function Form({
           <ImageCustom
             behavior={behavior}
             imageUrl={
-              selectedImage ? URL.createObjectURL(selectedImage) : user?.image
+              selectedImage ? URL.createObjectURL(selectedImage) : user?.avatar
             }
           />
         </label>

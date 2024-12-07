@@ -17,10 +17,13 @@ import Form from './form/Form';
 /** toastify */
 import { toast } from 'react-toastify';
 
+/** types */
+import { User } from '@/types/definitions';
+
 export default function UserManagement() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [behavior, setBehavior] = useState<'view' | 'add' | 'update'>('view');
 
   const mode = useSelector(themeMode);
@@ -36,7 +39,7 @@ export default function UserManagement() {
   const totalPages = Math.ceil(users.length / ROWS);
 
   // Operation
-  function handleDeleteUser(id: string) {
+  function handleDeleteUser(id: number) {
     // Call API
     const deletedUser = users.find((u) => u.id === id);
     if (!deletedUser) return;
@@ -45,7 +48,7 @@ export default function UserManagement() {
     toast.success('Xoá người dùng thành công');
   }
 
-  function handleAddUser(id: string, formData: FormData) {
+  function handleAddUser(formData: FormData) {
     // Validate data
     const firstName = formData.get('firstName');
     const lastName = formData.get('lastName');
@@ -54,7 +57,7 @@ export default function UserManagement() {
     const image = formData.get('image');
     const password = formData.get('password');
 
-    console.log(id, image);
+    console.log(image);
 
     if (
       firstName === '' ||
@@ -78,7 +81,7 @@ export default function UserManagement() {
     // Call API
   }
 
-  function handleUpdateUser(id: string, formData: FormData) {
+  function handleUpdateUser(id: number, formData: FormData) {
     // Validate data
     const firstName = formData.get('firstName');
     const lastName = formData.get('lastName');
@@ -116,7 +119,7 @@ export default function UserManagement() {
     setBehavior('add');
   }
 
-  function handleOpenModalView(id: string) {
+  function handleOpenModalView(id: number) {
     const viewedUser = users.find((u) => u.id === id);
 
     if (!viewedUser) return;
@@ -125,7 +128,7 @@ export default function UserManagement() {
     setBehavior('view');
   }
 
-  function handleOpenModalUpdate(id: string) {
+  function handleOpenModalUpdate(id: number) {
     const updatedUser = users.find((u) => u.id === id);
 
     if (!updatedUser) return;
@@ -202,288 +205,292 @@ export default function UserManagement() {
   );
 }
 
-interface IUser {
-  id: string;
-  image: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  role: string;
-  username: string;
-}
-
-const users: IUser[] = [
+const users: User[] = [
   {
-    image: '',
+    username: 'hieuhocit0',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar: '',
     email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'ADMIN',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 1,
   },
   {
-    image:
+    username: 'hieuhocit1',
+    first_name: 'Hiếu',
+    last_name: 'Trần',
+    avatar:
       'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
     email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'MEMBER',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 2,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit2',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar:
+      'https://i.pinimg.com/736x/71/70/bf/7170bf6475b589f09e2757d1fbdef232.jpg',
     email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'ADMIN',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 3,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit3',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar: '',
     email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'ADMIN',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 4,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit4',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar:
+      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
     email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'MEMBER',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 5,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit5',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar:
+      'https://i.pinimg.com/736x/71/70/bf/7170bf6475b589f09e2757d1fbdef232.jpg',
     email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'ADMIN',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 6,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit6',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar: '',
     email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'ADMIN',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 7,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit7',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar:
+      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
     email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'MEMBER',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 8,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit8',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar:
+      'https://i.pinimg.com/736x/71/70/bf/7170bf6475b589f09e2757d1fbdef232.jpg',
     email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'ADMIN',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 9,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit9',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar: '',
     email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'ADMIN',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 10,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit10',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar:
+      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
     email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'MEMBER',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 11,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit11',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar:
+      'https://i.pinimg.com/736x/71/70/bf/7170bf6475b589f09e2757d1fbdef232.jpg',
     email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'ADMIN',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 12,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit12',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar: '',
     email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'ADMIN',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 13,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit13',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar:
+      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
     email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'MEMBER',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 14,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit14',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar:
+      'https://i.pinimg.com/736x/71/70/bf/7170bf6475b589f09e2757d1fbdef232.jpg',
     email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'ADMIN',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 15,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit15',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar: '',
     email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'ADMIN',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 16,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit16',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar:
+      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
     email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'MEMBER',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 17,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit17',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar:
+      'https://i.pinimg.com/736x/71/70/bf/7170bf6475b589f09e2757d1fbdef232.jpg',
     email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'ADMIN',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 18,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit18',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar: '',
     email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'ADMIN',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 19,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit19',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar:
+      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
     email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'MEMBER',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 20,
   },
   {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
+    username: 'hieuhocit20',
     first_name: 'Hiếu',
     last_name: 'Trần',
+    avatar:
+      'https://i.pinimg.com/736x/71/70/bf/7170bf6475b589f09e2757d1fbdef232.jpg',
     email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
+    created_at: '2024-11-08 19:00:26.146',
+    updated_at: '2024-11-08 19:00:26.146',
+    permission: 'ADMIN',
+    access_token: 'hieuhocit',
+    refresh_token: 'refresh_token',
+    id: 21,
   },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'MEMBER',
-    username: 'hieuhocit',
-  },
-  {
-    image:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    email: 'hieuhocit2309@gmail.com',
-    role: 'ADMIN',
-    username: 'trantrunghieu',
-  },
-].map((user, index) => ({
-  ...user,
-  id: user.username + index,
-  username: user.username + index,
-}));
+];
