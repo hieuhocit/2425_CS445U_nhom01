@@ -1,0 +1,147 @@
+@import "styles/colors";
+
+.tableContainer {
+  overflow-x: auto;
+  @extend %share-custom-scrollbar-light;
+
+  .table {
+    padding: 0 16px;
+    width: 100%;
+    min-width: 780px;
+    border-spacing: 0 16px;
+
+    tr {
+      height: 65px;
+    }
+
+    th,
+    td {
+      text-align: start;
+      padding: 6px 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &:first-child {
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+      }
+      &:last-child {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+      }
+    }
+
+    .thead {
+      th {
+        font-size: 1.3rem;
+        font-weight: 600;
+      }
+    }
+
+    .tbody {
+      tr {
+        transition: background-color 0.3s ease-in-out;
+
+        &:hover,
+        &:active {
+          background-color: #ade8f4;
+        }
+
+        td {
+          font-size: 1.1rem;
+          overflow: hidden;
+
+          p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 1.1rem;
+          }
+
+          .imageContainer {
+            max-width: 80px;
+            width: 50px;
+            height: 50px;
+            overflow: hidden;
+            border-radius: 6px;
+
+            display: flex;
+            align-items: center;
+
+            img {
+              width: 100%;
+              object-fit: cover;
+              object-position: top center;
+            }
+          }
+
+          .name,
+          .username {
+            max-width: 150px;
+          }
+
+          .email {
+            max-width: 250px;
+          }
+
+          .operation {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+
+            button {
+              border: none;
+              outline: none;
+              background-color: transparent;
+              cursor: pointer;
+
+              .icon {
+                font-size: 1.4rem;
+                transition: transform 0.3s ease-in-out;
+
+                &:hover,
+                &:active {
+                  transform: scale(1.2);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.darkMode {
+    @extend %share-custom-scrollbar-dark;
+
+    .table {
+      .thead {
+        th {
+          color: $color-dark-mode;
+        }
+      }
+
+      .tbody {
+        tr {
+          &:hover,
+          &:active {
+            background-color: $background-dark-mode-4;
+          }
+
+          td {
+            p {
+              color: $color-dark-mode;
+            }
+
+            .operation {
+              button {
+                color: $color-dark-mode;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
