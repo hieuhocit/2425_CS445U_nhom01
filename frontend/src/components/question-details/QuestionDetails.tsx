@@ -96,11 +96,14 @@ export default function QuestionDetails({
                   <input
                     type='radio'
                     name={question.id + ''}
-                    defaultValue={answer.id}
+                    defaultValue={answer.id as number}
                     checked={checked}
                     disabled={behavior.type === 'view'}
                     onChange={() =>
-                      handleSelectedAnswer(question.id, answer.id)
+                      handleSelectedAnswer(
+                        question.id as number,
+                        answer.id as number
+                      )
                     }
                   />
                   <span>{`${index + 1}. ${answer.text}`}</span>

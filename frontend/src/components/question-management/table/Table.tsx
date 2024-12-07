@@ -78,15 +78,15 @@ export default function Table({
 
                 <td>
                   <div className={styles.operation}>
-                    <button onClick={onOpenView.bind(null, q.id)}>
+                    <button onClick={onOpenView.bind(null, q.id as number)}>
                       <FaEye className={styles.icon} />
                     </button>
-                    <button onClick={onOpenUpdate.bind(null, q.id)}>
+                    <button onClick={onOpenUpdate.bind(null, q.id as number)}>
                       <FaEdit className={styles.icon} />
                     </button>
                     <button>
                       <FaTrash
-                        onClick={onDelete.bind(null, q.id)}
+                        onClick={onDelete.bind(null, q.id as number)}
                         className={styles.icon}
                       />
                     </button>
