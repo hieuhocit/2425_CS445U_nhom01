@@ -43,8 +43,8 @@ export default function Table({
           </tr>
         </thead>
         <tbody className={styles.tbody}>
-          {users.map((user, index) => (
-            <tr key={index}>
+          {users.map((user) => (
+            <tr key={user.id}>
               <td>
                 <div className={styles.imageContainer}>
                   <img
