@@ -60,7 +60,7 @@ export default function Form({
         />
       </div>
       <div className={styles.inputContainer}>
-        <label htmlFor=''>Chọn giấy phép</label>
+        <label htmlFor=''>Giấy phép</label>
         <div className={styles.checkboxes}>
           {licenses.map((lc) => (
             <div

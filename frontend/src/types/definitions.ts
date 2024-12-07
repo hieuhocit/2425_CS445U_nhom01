@@ -46,12 +46,12 @@ export interface ILicense {
 }
 
 export interface IQuestion {
-  id: number;
-  image: string;
+  id?: number;
+  image: string | File;
   text: string;
   tip: string;
   required: boolean;
-  topic_id: number;
+  topic_id: number | null;
   exam_ids: number[];
   license_ids: number[];
   answers?: IAnswer[];
@@ -59,10 +59,10 @@ export interface IQuestion {
 }
 
 export interface IAnswer {
-  id: number;
+  id: number | null;
   text: string;
   correct: boolean;
-  question_id: number;
+  question_id: number | null;
 }
 
 export interface ISign {

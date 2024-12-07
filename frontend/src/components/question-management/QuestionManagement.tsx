@@ -1,5 +1,5 @@
 /** styles */
-import styles from './ExamManagement.module.scss';
+import styles from './QuestionManagement.module.scss';
 
 /** react-redux */
 import { useSelector } from 'react-redux';
@@ -18,16 +18,17 @@ import Form from './form/Form';
 import { toast } from 'react-toastify';
 
 /** types */
-import { IExam } from '@/types/definitions';
+import { IQuestion } from '@/types/definitions';
 
 /** DUMMY DATA */
-import { exams } from '@/data/data';
+import { questions } from '@/data/data';
 
-export default function ExamManagement() {
+export default function QuestionManagement() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
-
-  const [selectedExam, setSelectedExam] = useState<IExam | null>(null);
+  const [selectedQuestion, setSelectedQuestion] = useState<IQuestion | null>(
+    null
+  );
   const [behavior, setBehavior] = useState<'view' | 'add' | 'update'>('view');
 
   const mode = useSelector(themeMode);
@@ -36,69 +37,44 @@ export default function ExamManagement() {
   // Gọi API paginate ở đây
   // Hiện tại đang giả sử đã có sẵn data
   const ROWS = 4;
-  const currentExams = exams.slice(
+  const currentQuestions = questions.slice(
     (currentPage - 1) * ROWS,
     (currentPage - 1) * ROWS + ROWS
   );
-  const totalPages = Math.ceil(exams.length / ROWS);
+  const totalPages = Math.ceil(questions.length / ROWS);
 
   // Operation
-  function handleDeleteExam(id: number) {
+  function handleDeleteQuestion(id: number) {
     // Call API
-    const deletedUser = exams.find((u) => u.id === id);
+    const deletedUser = questions.find((q) => q.id === id);
     if (!deletedUser) return;
 
     // Message
-    toast.success('Xoá đề thi thành công');
+    toast.success('Xoá câu hỏi thành công');
   }
 
-  function handleAddExam(formData: FormData) {
+  function handleAddQuestion(questionData: IQuestion) {
     // Validate data
-    const title = formData.get('title');
-    const licenses = formData.getAll('licenses');
+    console.log(questionData);
 
-    console.log(title, licenses);
-
-    if (title === '' || licenses.length === 0) {
-      toast.error('Vui lòng nhập đầy đủ thông tin!');
-      return null;
-    }
-
-    toast.success('Thêm đề thi thành công');
-    handleCloseModal();
+    toast.success('Thêm câu hỏi thành công');
+    // handleCloseModal();
     // Call API
   }
 
-  function handleUpdateExam(id: number, formData: FormData) {
+  function handleUpdateQuestion(id: number, questionData: IQuestion) {
     // Validate data
-    const firstName = formData.get('firstName');
-    const lastName = formData.get('lastName');
-    const username = formData.get('username');
-    const email = formData.get('email');
-    const password = formData.get('password');
-
-    console.log(id, Object.fromEntries(formData));
-
-    if (
-      firstName === '' ||
-      lastName === '' ||
-      username === '' ||
-      password === '' ||
-      email === ''
-    ) {
-      toast.error('Vui lòng nhập đầy đủ thông tin!');
-      return null;
-    }
+    console.log(id, questionData);
 
     // Call API;
-    toast.success('Cập nhật đề thi thành công');
-    handleCloseModal();
+    toast.success('Cập nhật câu hỏi thành công');
+    // handleCloseModal();
   }
 
   // Modal
   function handleCloseModal() {
     setShowModal(false);
-    setSelectedExam(null);
+    setSelectedQuestion(null);
   }
 
   function handleOpenModalAdd() {
@@ -107,19 +83,19 @@ export default function ExamManagement() {
   }
 
   function handleOpenModalView(id: number) {
-    const exam = exams.find((e) => e.id === id);
+    const question = questions.find((q) => q.id === id);
 
-    if (!exam) return;
-    setSelectedExam(exam);
+    if (!question) return;
+    setSelectedQuestion(question);
     setShowModal(true);
     setBehavior('view');
   }
 
   function handleOpenModalUpdate(id: number) {
-    const exam = exams.find((e) => e.id === id);
+    const question = questions.find((q) => q.id === id);
 
-    if (!exam) return;
-    setSelectedExam(exam);
+    if (!question) return;
+    setSelectedQuestion(question);
     setShowModal(true);
     setBehavior('update');
   }
@@ -148,18 +124,18 @@ export default function ExamManagement() {
         className={`${styles.management} ${isDarkMode ? styles.darkMode : ''}`}
       >
         <div className={styles.head}>
-          <h2>Đề thi</h2>
+          <h2>Câu hỏi</h2>
           <button onClick={handleOpenModalAdd}>Thêm mới</button>
         </div>
 
         <div className={styles.body}>
           <Table
             isDark={isDarkMode}
-            exams={currentExams}
+            questions={currentQuestions}
             rows={ROWS}
             onOpenView={handleOpenModalView}
             onOpenUpdate={handleOpenModalUpdate}
-            onDelete={handleDeleteExam}
+            onDelete={handleDeleteQuestion}
           />
           <Pagination
             isDark={isDarkMode}
@@ -177,13 +153,13 @@ export default function ExamManagement() {
             onCancel={handleCloseModal}
             isDark={isDarkMode}
             behavior={behavior}
-            exam={behavior === 'add' ? null : selectedExam}
+            question={behavior === 'add' ? null : selectedQuestion}
             onSubmit={
               behavior === 'view'
                 ? null
                 : behavior === 'add'
-                ? handleAddExam
-                : handleUpdateExam
+                ? handleAddQuestion
+                : handleUpdateQuestion
             }
           />
         )}

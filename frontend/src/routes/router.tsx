@@ -31,6 +31,7 @@ import AdminPage from '@/pages/admin/Admin';
 import Statistical from '@/components/statistical/Statistical';
 import UserManagement from '@/components/user-management/UserManagement';
 import ExamManagement from '@/components/exam-management/ExamManagement';
+import QuestionManagement from '@/components/question-management/QuestionManagement';
 
 const router = createBrowserRouter([
   {
@@ -136,7 +137,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'question-management',
-            element: <h1>Question management</h1>,
+            element: <QuestionManagement />,
           },
         ],
       },
