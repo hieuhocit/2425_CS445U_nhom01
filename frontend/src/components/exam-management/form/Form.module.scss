@@ -33,53 +33,45 @@
       }
     }
 
-    .inputImage {
-      display: none;
-    }
-
-    .pickImage {
+    .checkboxes {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 6px;
 
-      width: 100%;
-      min-height: 200px;
-      max-height: 500px;
-      margin-top: 8px;
-      cursor: pointer;
+      .checkbox {
+        display: flex;
+        align-items: center;
+        gap: 4px;
 
-      border: 1px dashed $background-light-mode-4;
-      border-radius: 6px;
-      overflow: hidden;
+        input {
+          width: 16px;
+          height: 16px;
+          margin: 0;
+          cursor: pointer;
 
-      &.view {
-        pointer-events: none;
-        cursor: default;
-      }
+          &:active,
+          &:focus {
+            box-shadow: none;
+          }
 
-      p {
-        font-weight: normal;
-        font-size: 1rem;
-        opacity: 0.68;
-      }
+          &:disabled {
+            cursor: default;
+          }
+        }
 
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-      }
-    }
+        label {
+          font-size: 1.1rem;
+          cursor: pointer;
+        }
 
-    div {
-      position: relative;
-      .icon {
-        position: absolute;
-        top: 50%;
-        right: 16px;
-        font-size: 1.3rem;
-        transform: translateY(-50%);
-        cursor: pointer;
+        &.disabled {
+          input,
+          label {
+            opacity: 0.7;
+            cursor: default;
+          }
+        }
       }
     }
   }
@@ -123,10 +115,10 @@
         &:focus {
           box-shadow: 0px 5px 10px 0px $background-light-mode-4;
         }
-      }
-      div {
-        .icon {
-          color: $color-dark-mode;
+
+        &:disabled {
+          color: hsl(0, 0%, 70%);
+          background-color: $background-dark-mode-3;
         }
       }
     }
