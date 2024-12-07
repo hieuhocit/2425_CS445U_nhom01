@@ -34,10 +34,11 @@
     }
 
     .checkboxes {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 16px;
       margin-top: 6px;
+      margin-left: 16px;
 
       .checkbox {
         display: flex;
@@ -62,6 +63,7 @@
 
         label {
           font-size: 1.1rem;
+          font-weight: normal;
           cursor: pointer;
         }
 
