@@ -34,6 +34,7 @@ import ExamManagement from '@/components/exam-management/ExamManagement';
 import QuestionManagement from '@/components/question-management/QuestionManagement';
 import PersonalInformation from '@/components/personal-information/PersonalInformation';
 import ChangePassword from '@/components/change-password/ChangePassword';
+import ForgotPasswordPage from '@/pages/forgot-password/ForgotPassword';
 
 const router = createBrowserRouter([
   {
@@ -152,6 +153,10 @@ const router = createBrowserRouter([
             element: <QuestionManagement />,
           },
         ],
+      },
+      {
+        path: '/forgot-password',
+        element: <ForgotPasswordPage />,
       },
     ],
   },
