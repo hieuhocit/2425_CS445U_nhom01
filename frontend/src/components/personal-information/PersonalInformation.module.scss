@@ -1,0 +1,15 @@
+.personalInformation {
+  margin-inline: auto;
+  transition: width 3s ease-in-out;
+
+  @media (min-width: 1280px) {
+    & {
+      width: 80%;
+    }
+  }
+  @media (min-width: 1536px) {
+    & {
+      width: 70%;
+    }
+  }
+}
