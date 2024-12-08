@@ -17,12 +17,14 @@ type onSubmit =
 
 export default function Form({
   isDark,
+  isNotInModal,
   user,
   behavior,
   onCancel,
   onSubmit,
 }: {
   isDark: boolean;
+  isNotInModal?: boolean;
   user?: User | null;
   behavior: 'view' | 'update' | 'add';
   onCancel: () => void;
@@ -162,9 +164,11 @@ export default function Form({
       </div>
 
       <div className={styles.actions}>
-        <button onClick={onCancel} type='button'>
-          Huỷ
-        </button>
+        {!isNotInModal && (
+          <button onClick={onCancel} type='button'>
+            Huỷ
+          </button>
+        )}
         {behavior !== 'view' && (
           <button type='submit'>
             {behavior === 'add' ? 'Thêm' : 'Cập nhật'}
