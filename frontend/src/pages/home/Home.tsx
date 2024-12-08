@@ -74,6 +74,8 @@ export default function HomePage() {
   }
 
   async function handleLogout() {
+    const ok = confirm('Bạn có chắc bạn muốn đăng xuất không?');
+    if (!ok) return;
     try {
       const res = await logout().unwrap();
       toast.success(res.message);
