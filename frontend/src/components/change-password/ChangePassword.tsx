@@ -135,7 +135,9 @@ export default function ChangePassword() {
           </div>
         </div>
         <div className={styles.forgotPassword}>
-          <Link to='/forgot-password'>Quên mật khẩu?</Link>
+          <Link to='/forgot-password' state={{ prevPath: '/profile/password' }}>
+            Quên mật khẩu?
+          </Link>
         </div>
         <div className={styles.actions}>
           <button type='submit'>Đổi mật khẩu</button>
