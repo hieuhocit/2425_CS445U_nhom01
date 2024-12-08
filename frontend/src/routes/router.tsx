@@ -35,6 +35,7 @@ import QuestionManagement from '@/components/question-management/QuestionManagem
 import PersonalInformation from '@/components/personal-information/PersonalInformation';
 import ChangePassword from '@/components/change-password/ChangePassword';
 import ForgotPasswordPage from '@/pages/forgot-password/ForgotPassword';
+import ProtectedRoute from '@/components/protected-route/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -71,7 +72,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/list-wrong',
-        element: <ListWrongPage />,
+        element: (
+          <ProtectedRoute>
+            <ListWrongPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/list-required',
@@ -112,7 +117,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/profile',
-        element: <ProfilePage />,
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
         children: [
           {
             index: true,
@@ -126,15 +135,27 @@ const router = createBrowserRouter([
       },
       {
         path: '/exam-history',
-        element: <ExamHistoryPage />,
+        element: (
+          <ProtectedRoute>
+            <ExamHistoryPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/exam-history/:examId',
-        element: <DetailsExamHistoryPage />,
+        element: (
+          <ProtectedRoute>
+            <DetailsExamHistoryPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/admin',
-        element: <AdminPage />,
+        element: (
+          <ProtectedRoute>
+            <AdminPage />
+          </ProtectedRoute>
+        ),
         children: [
           {
             index: true,
