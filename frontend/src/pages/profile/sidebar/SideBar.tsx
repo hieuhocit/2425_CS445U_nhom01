@@ -24,6 +24,9 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { userSelector } from '@/store/auth/authSelector';
 
+/** images */
+import profileImagePlaceholder from '@/assets/images/profile-image-placeholder.jpg';
+
 export default function SideBar({
   isDark,
   isCollapsed,
@@ -78,7 +81,7 @@ export default function SideBar({
         >
           <div className={styles.imageContainer}>
             <img
-              src={user?.avatar}
+              src={user?.avatar ? user?.avatar : profileImagePlaceholder}
               alt={`${user?.last_name} ${user?.first_name} avatar`}
             />
           </div>
