@@ -1,0 +1,279 @@
+@import "styles/colors";
+
+$active-color: #42a5f5;
+
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  background-color: $background-light-mode-2;
+  border-right: 1px solid #48cae4;
+
+  z-index: 999;
+
+  transform: translateX(0);
+  transition:
+    width 0.3s ease-in-out,
+    transform 0.3s ease-out;
+
+  .nav {
+    padding-inline: 12px;
+    margin-top: 12px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .avatar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+
+      &.collapsed {
+        // gap: 0;
+        margin-bottom: 8px;
+        .imageContainer {
+          width: 60px;
+          height: 60px;
+
+          border-radius: 50%;
+          overflow: hidden;
+        }
+        .name {
+          font-size: 1rem;
+          max-width: 70px;
+        }
+      }
+
+      .imageContainer {
+        width: 150px;
+        height: 150px;
+
+        border-radius: 50%;
+        overflow: hidden;
+
+        transition:
+          width 0.3s ease-in-out,
+          height 0.3s ease-in-out;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-position: top center;
+          object-fit: cover;
+        }
+      }
+      .name {
+        font-size: 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease-in-out;
+        white-space: nowrap;
+        max-width: 250px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .link {
+      %share-hover {
+        transition: background-color 0.25s ease-in-out;
+
+        &:hover {
+          background-color: $background-light-mode-3;
+        }
+      }
+      %share-active {
+        &.active {
+          pointer-events: none;
+          cursor: default;
+          background-color: $background-light-mode-3;
+
+          .icon {
+            color: $active-color;
+          }
+        }
+      }
+      %share-item {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        font-size: 1.1rem;
+        border-radius: 8px;
+        padding: 12px 14px;
+        transition: background-color 0.25s ease-in-out;
+
+        .icon {
+          flex-shrink: 0;
+          font-size: 1.65rem;
+        }
+
+        &:hover {
+          @extend %share-hover;
+        }
+
+        & > * {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          overflow: hidden;
+          white-space: nowrap;
+        }
+      }
+
+      .item {
+        a {
+          @extend %share-item;
+          @extend %share-active;
+
+          justify-content: flex-start;
+          gap: 8px;
+        }
+      }
+
+      .dropdown {
+        .head {
+          @extend %share-item;
+
+          & > div {
+            flex-shrink: 0;
+          }
+        }
+
+        .body {
+          max-height: 300px;
+          transform-origin: top center;
+          transform: scaleY(1);
+          transition: all 0.3s ease-out;
+
+          &.closed {
+            max-height: 0;
+            transform: scaleY(0);
+            overflow: hidden;
+          }
+
+          ul {
+            margin-top: 8px;
+            margin-left: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+
+            transition: margin-left 0.3s ease-in-out;
+
+            a,
+            div {
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              border-radius: 8px;
+              padding: 12px 14px;
+              font-size: 1.1rem;
+              cursor: pointer;
+
+              @extend %share-hover;
+              @extend %share-active;
+
+              span {
+                overflow: hidden;
+                white-space: nowrap;
+              }
+
+              .icon {
+                flex-shrink: 0;
+                font-size: 1.65rem;
+                transition: color 0.2s ease-in;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    a {
+      color: $color-light-mode;
+    }
+  }
+
+  @mixin share-collapsed($apply: true) {
+    @if $apply == true {
+      & {
+        width: 78.4px;
+        .nav {
+          .link {
+            %share-item {
+              & p {
+                display: none;
+              }
+            }
+
+            .dropdown {
+              .head {
+                .canHide {
+                  display: none;
+                }
+              }
+
+              .body {
+                ul {
+                  margin-left: 0;
+                  div,
+                  a {
+                    span {
+                      display: none;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.collapsed {
+    @include share-collapsed(true);
+  }
+
+  &.darkMode {
+    background-color: $background-dark-mode-2;
+    color: $color-dark-mode;
+
+    border-right: 1px solid #8d99ae;
+
+    .nav {
+      a {
+        color: $color-dark-mode;
+      }
+      .link {
+        %share-hover {
+          &:hover {
+            background-color: $background-dark-mode-4;
+          }
+        }
+        %share-active {
+          &.active {
+            background-color: $background-dark-mode-3;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    width: 100%;
+
+    &.collapsed {
+      transform: translateX(-100vw);
+    }
+  }
+}

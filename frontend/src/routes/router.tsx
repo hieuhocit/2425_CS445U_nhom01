@@ -32,6 +32,8 @@ import Statistical from '@/components/statistical/Statistical';
 import UserManagement from '@/components/user-management/UserManagement';
 import ExamManagement from '@/components/exam-management/ExamManagement';
 import QuestionManagement from '@/components/question-management/QuestionManagement';
+import PersonalInformation from '@/components/personal-information/PersonalInformation';
+import ChangePassword from '@/components/change-password/ChangePassword';
 
 const router = createBrowserRouter([
   {
@@ -110,6 +112,16 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <ProfilePage />,
+        children: [
+          {
+            index: true,
+            element: <PersonalInformation />,
+          },
+          {
+            path: 'password',
+            element: <ChangePassword />,
+          },
+        ],
       },
       {
         path: '/exam-history',
