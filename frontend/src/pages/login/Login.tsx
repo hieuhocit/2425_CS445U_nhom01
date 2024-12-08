@@ -89,7 +89,9 @@ export default function LoginPage() {
             </div>
           </div>
           <div className={styles.forgotPassword}>
-            <Link to='/forgot-password'>Quên mật khẩu?</Link>
+            <Link to='/forgot-password' state={{ prevPath: '/login' }}>
+              Quên mật khẩu?
+            </Link>
           </div>
           <div className={styles.actions}>
             <button type='submit'>Đăng nhập</button>
