@@ -12,7 +12,9 @@ import ListSignPage from '@/pages/list-sign/ListSign';
 import SignDetailsPage from '../pages/list-sign/sign-details/SignDetails';
 import ListLawPage from '@/pages/list-law/ListLaw';
 import ListViolationPage from '@/pages/list-violation/ListViolation';
-import ViolationDetailsPage from '@/pages/list-violation/violation-details/ViolationDetails';
+import ViolationDetailsPage, {
+  loader as violationDetailsLoader,
+} from '@/pages/list-violation/violation-details/ViolationDetails';
 import ListWrongPage from '@/pages/list-wrong/ListWrong';
 import ListRequiredPage from '@/pages/list-required/ListRequired';
 import ReviewPage from '@/pages/review/Review';
@@ -69,6 +71,7 @@ const router = createBrowserRouter([
       {
         path: '/list-law/:lawId/list-violation/:violationId',
         element: <ViolationDetailsPage />,
+        loader: violationDetailsLoader,
       },
       {
         path: '/list-wrong',

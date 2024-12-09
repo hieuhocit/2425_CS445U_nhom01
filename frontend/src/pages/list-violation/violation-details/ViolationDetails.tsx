@@ -9,24 +9,39 @@ import { themeMode } from '@/store/theme/themeSelector';
 import Header from '@/components/header/Header';
 
 /** react-router */
-import { Link, useParams } from 'react-router-dom';
+import { Link, LoaderFunctionArgs, useLoaderData } from 'react-router-dom';
 
-/** DUMMY DATA */
-import { lawTopics, violations } from '@/data/data';
+/** types */
+import { ILawTopic, IViolation } from '@/types/definitions';
+
+/** API */
+import { getLawTopic, getViolation } from '@/services/lawApi';
+
+interface ILoaderResponse {
+  topic: ILawTopic | null | undefined;
+  violation: IViolation | null | undefined;
+}
+
+export async function loader({ params }: LoaderFunctionArgs) {
+  const { lawId, violationId } = params;
+
+  const resTopic = await getLawTopic(lawId as string);
+  const resViolation = await getViolation(violationId as string);
+
+  return {
+    topic: resTopic.data,
+    violation: resViolation.data,
+  };
+}
 
 export default function ViolationDetailsPage() {
+  const { topic: lawTopic, violation }: ILoaderResponse =
+    useLoaderData() as ILoaderResponse;
+
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
-  const { lawId, violationId } = useParams();
-
-  const lawTopic = lawTopics.find((l) => l.id === Number(lawId));
-
-  const violation = violations.find((v) => v.id === Number(violationId));
-
-  const relations = violations.filter((v) =>
-    violation?.relations.includes(v.id)
-  );
+  const relations = violation?.relations;
 
   const bookmarks1 = violation?.bookmarks.filter((b) => b.bookmarkType === 1);
   const bookmarks2 = violation?.bookmarks.filter((b) => b.bookmarkType === 2);
@@ -98,11 +113,11 @@ export default function ViolationDetailsPage() {
           {relations && relations.length > 0 && (
             <section className={styles.section}>
               <h2>Hành vi liên quan</h2>
-              {relations.map((v) => (
+              {(relations as IViolation[]).map((v) => (
                 <div key={v.id}>
                   <h3>{v.violation}</h3>
                   <p className={styles.colorRed}>{v.fines}</p>
-                  <Link to={`/list-law/${lawId}/list-violation/${v.id}`}>
+                  <Link to={`/list-law/${lawTopic?.id}/list-violation/${v.id}`}>
                     Xem chi tiết
                   </Link>
                 </div>

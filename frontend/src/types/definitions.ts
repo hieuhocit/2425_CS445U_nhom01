@@ -98,7 +98,7 @@ export interface IViolation {
   otherPenalties: string;
   image: string;
   keyword: string;
-  relations: number[];
+  relations: IViolation[];
   bookmarks: IBookmark[];
   law_topic_id: number;
   violation_type: number;

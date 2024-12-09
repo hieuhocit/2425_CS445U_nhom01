@@ -52,3 +52,19 @@ export async function getViolations(
     console.error(error);
   }
 }
+
+export async function getViolation(violationId: number | string) {
+  try {
+    const res = await fetchApi(`law/violations/${violationId}`);
+
+    if (!res.ok) {
+      throw Error('Đã xảy ra lỗi');
+    }
+
+    const resData = await res.json();
+
+    return resData;
+  } catch (error) {
+    console.error(error);
+  }
+}
