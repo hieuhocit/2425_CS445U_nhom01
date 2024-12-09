@@ -3,7 +3,7 @@ export interface ITheme {
 }
 
 export interface ISetting {
-  currentLicense: ILicense;
+  currentLicense: ILicense | null;
   licenses: ILicense[];
   violationType: 1 | 2 | 3;
 }

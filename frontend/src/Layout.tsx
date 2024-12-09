@@ -9,11 +9,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
 import { themeMode } from './store/theme/themeSelector';
 import { useGetUserQuery } from './services/authApi';
+import { useGetLicensesQuery } from './services/licenseApi';
 
 export default function Layout() {
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
+  useGetLicensesQuery();
   const { isLoading } = useGetUserQuery();
 
   return (

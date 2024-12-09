@@ -27,8 +27,9 @@ export default function SettingPage() {
   const licenses = useSelector(licensesSelector);
   const currentLicense = useSelector(currentLicenseSelector);
 
-  const [selectedOption, setSelectedOption] =
-    useState<ILicense>(currentLicense);
+  const [selectedOption, setSelectedOption] = useState<ILicense | null>(
+    currentLicense
+  );
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ export default function SettingPage() {
     );
     dispatch(
       changeQuestions({
-        licenseId: selectedOption.id,
+        licenseId: selectedOption?.id,
       })
     );
     navigate('/');
@@ -70,7 +71,7 @@ export default function SettingPage() {
                   <label className={styles.item}>
                     <input
                       onChange={handleOnChange.bind(null, l)}
-                      checked={selectedOption.id === l.id}
+                      checked={selectedOption?.id === l.id}
                       type='radio'
                       name='level'
                       value={l.id}
