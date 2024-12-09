@@ -8,8 +8,12 @@ import Layout from '@/Layout';
 import ListExamPage from '@/pages/list-exam/ListExam';
 import HomePage from '@/pages/home/Home';
 import SettingPage from '@/pages/setting/Setting';
-import ListSignPage from '@/pages/list-sign/ListSign';
-import SignDetailsPage from '../pages/list-sign/sign-details/SignDetails';
+import ListSignPage, {
+  loader as listSignLoader,
+} from '@/pages/list-sign/ListSign';
+import SignDetailsPage, {
+  loader as signDetailsLoader,
+} from '../pages/list-sign/sign-details/SignDetails';
 import ListLawPage, { loader as listLawLoader } from '@/pages/list-law/ListLaw';
 import ListViolationPage, {
   loader as listViolationLoader,
@@ -55,12 +59,20 @@ const router = createBrowserRouter([
         element: <SettingPage />,
       },
       {
+        id: 'sign',
         path: '/list-sign',
-        element: <ListSignPage />,
-      },
-      {
-        path: '/list-sign/:signId',
-        element: <SignDetailsPage />,
+        loader: listSignLoader,
+        children: [
+          {
+            index: true,
+            element: <ListSignPage />,
+          },
+          {
+            path: '/list-sign/:signId',
+            element: <SignDetailsPage />,
+            loader: signDetailsLoader,
+          },
+        ],
       },
       {
         path: '/list-law',

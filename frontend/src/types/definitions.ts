@@ -80,6 +80,7 @@ export interface ISignTopic {
   signType: string;
   display: string;
   subTitle: string;
+  image: string;
 }
 
 export interface ITopic {
