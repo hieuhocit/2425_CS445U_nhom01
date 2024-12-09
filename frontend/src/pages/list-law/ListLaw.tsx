@@ -2,7 +2,7 @@
 import styles from './ListLaw.module.scss';
 
 /** react-router */
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
 /** react-redux */
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,14 +26,22 @@ import { PiBeerBottleFill } from 'react-icons/pi';
 import { ImProfile } from 'react-icons/im';
 import { GiWhiteBook } from 'react-icons/gi';
 
-/** react */
-import { useEffect, useState } from 'react';
-
 /** type */
 import { ILawTopic } from '@/types/definitions';
 
 /** API */
 import { getLawTopics } from '@/services/lawApi';
+
+interface ILoaderResponse {
+  topics: ILawTopic[] | null | undefined;
+}
+
+export async function loader() {
+  const resTopics = await getLawTopics();
+  return {
+    topics: resTopics.data,
+  };
+}
 
 const icons = [
   <GiTrafficCone className={styles.icon} />,
@@ -50,21 +58,14 @@ const icons = [
 ];
 
 export default function ListLawPage() {
-  const [lawTopics, setLawTopics] = useState<ILawTopic[]>([]);
+  const { topics: lawTopics }: ILoaderResponse =
+    useLoaderData() as ILoaderResponse;
 
   const violationType = useSelector(violationTypeSelector);
   const dispatch = useDispatch();
 
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
-
-  useEffect(() => {
-    async function getData() {
-      const res = await getLawTopics();
-      setLawTopics(res.data);
-    }
-    getData();
-  }, []);
 
   function handleChangeViolationType(e: React.ChangeEvent<HTMLInputElement>) {
     dispatch(
@@ -121,7 +122,7 @@ export default function ListLawPage() {
           </div>
         </div>
         <ul className={styles.list}>
-          {lawTopics.map((lt, index) => (
+          {lawTopics?.map((lt, index) => (
             <li key={lt.id}>
               <Link
                 to={`/list-law/${lt.id}/list-violation`}

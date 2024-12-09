@@ -10,8 +10,10 @@ import HomePage from '@/pages/home/Home';
 import SettingPage from '@/pages/setting/Setting';
 import ListSignPage from '@/pages/list-sign/ListSign';
 import SignDetailsPage from '../pages/list-sign/sign-details/SignDetails';
-import ListLawPage from '@/pages/list-law/ListLaw';
-import ListViolationPage from '@/pages/list-violation/ListViolation';
+import ListLawPage, { loader as listLawLoader } from '@/pages/list-law/ListLaw';
+import ListViolationPage, {
+  loader as listViolationLoader,
+} from '@/pages/list-violation/ListViolation';
 import ViolationDetailsPage, {
   loader as violationDetailsLoader,
 } from '@/pages/list-violation/violation-details/ViolationDetails';
@@ -63,10 +65,12 @@ const router = createBrowserRouter([
       {
         path: '/list-law',
         element: <ListLawPage />,
+        loader: listLawLoader,
       },
       {
         path: '/list-law/:lawId/list-violation',
         element: <ListViolationPage />,
+        loader: listViolationLoader,
       },
       {
         path: '/list-law/:lawId/list-violation/:violationId',
