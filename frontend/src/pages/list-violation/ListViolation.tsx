@@ -12,21 +12,41 @@ import { violationTypeSelector } from '@/store/setting/settingSelector';
 /** components */
 import Header from '@/components/header/Header';
 
-/** DUMMY DATA */
-import { lawTopics, violations } from '@/data/data';
+/** react */
+import { useEffect, useState } from 'react';
+
+/** types */
+import { ILawTopic, IViolation } from '@/types/definitions';
+
+/** API */
+import { getLawTopic, getViolations } from '@/services/lawApi';
 
 export default function ListViolationPage() {
+  const [lawTopic, setLawTopic] = useState<ILawTopic | null>(null);
+  const [violations, setViolations] = useState<IViolation[]>([]);
+
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
   const { lawId } = useParams();
   const violationType = useSelector(violationTypeSelector);
 
-  const lawTopic = lawTopics.find((l) => l.id === Number(lawId));
+  useEffect(() => {
+    if (!lawId) return;
 
-  const filteredViolations = violations.filter(
-    (v) => v.law_topic_id === lawTopic?.id && v.violation_type === violationType
-  );
+    async function getData(
+      topicId: string | number,
+      violationType: string | number
+    ) {
+      const resTopic = await getLawTopic(topicId);
+      const resViolation = await getViolations(topicId, violationType);
+
+      setLawTopic(resTopic.data);
+      setViolations(resViolation.data);
+    }
+
+    getData(lawId, violationType);
+  }, [lawId, violationType]);
 
   return (
     <div
@@ -42,7 +62,7 @@ export default function ListViolationPage() {
 
       <main className={styles.main}>
         <ul className={styles.list}>
-          {filteredViolations.map((v) => (
+          {violations.map((v) => (
             <li key={v.id}>
               <h2>{v.violation}</h2>
               <p>{v.fines}</p>
