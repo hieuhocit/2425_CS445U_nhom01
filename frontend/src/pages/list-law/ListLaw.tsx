@@ -26,8 +26,14 @@ import { PiBeerBottleFill } from 'react-icons/pi';
 import { ImProfile } from 'react-icons/im';
 import { GiWhiteBook } from 'react-icons/gi';
 
-/** DUMMY DATA */
-import { lawTopics } from '@/data/data';
+/** react */
+import { useEffect, useState } from 'react';
+
+/** type */
+import { ILawTopic } from '@/types/definitions';
+
+/** API */
+import { getLawTopics } from '@/services/lawApi';
 
 const icons = [
   <GiTrafficCone className={styles.icon} />,
@@ -44,11 +50,21 @@ const icons = [
 ];
 
 export default function ListLawPage() {
+  const [lawTopics, setLawTopics] = useState<ILawTopic[]>([]);
+
   const violationType = useSelector(violationTypeSelector);
   const dispatch = useDispatch();
 
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
+
+  useEffect(() => {
+    async function getData() {
+      const res = await getLawTopics();
+      setLawTopics(res.data);
+    }
+    getData();
+  }, []);
 
   function handleChangeViolationType(e: React.ChangeEvent<HTMLInputElement>) {
     dispatch(
