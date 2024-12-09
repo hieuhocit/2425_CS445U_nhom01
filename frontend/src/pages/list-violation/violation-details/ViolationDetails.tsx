@@ -22,20 +22,23 @@ interface ILoaderResponse {
   violation: IViolation | null | undefined;
 }
 
-export async function loader({ params }: LoaderFunctionArgs) {
-  const { lawId, violationId } = params;
+export async function loader({ request }: LoaderFunctionArgs) {
+  const searchParams = new URL(request.url).searchParams;
 
-  const resTopic = await getLawTopic(lawId as string);
-  const resViolation = await getViolation(violationId as string);
+  const violationTopic = searchParams.get('violationTopic');
+  const index = searchParams.get('index');
+
+  const topic = await getLawTopic(violationTopic as string);
+  const resViolation = await getViolation(index as string);
 
   return {
-    topic: resTopic.data,
+    topic: topic.data,
     violation: resViolation.data,
   };
 }
 
 export default function ViolationDetailsPage() {
-  const { topic: lawTopic, violation }: ILoaderResponse =
+  const { topic, violation }: ILoaderResponse =
     useLoaderData() as ILoaderResponse;
 
   const mode = useSelector(themeMode);
@@ -53,7 +56,11 @@ export default function ViolationDetailsPage() {
         isDarkMode ? styles.darkMode : undefined
       }`}
     >
-      <Header title={lawTopic?.display as string} isDark={isDarkMode} />
+      <Header
+        title={topic?.display as string}
+        isDark={isDarkMode}
+        path={`/list-violation?violationTopic=${topic?.id}&violationType=${violation?.violation_type}`}
+      />
 
       <main className={styles.main}>
         <div className={styles.sections}>
@@ -117,7 +124,9 @@ export default function ViolationDetailsPage() {
                 <div key={v.id}>
                   <h3>{v.violation}</h3>
                   <p className={styles.colorRed}>{v.fines}</p>
-                  <Link to={`/list-law/${lawTopic?.id}/list-violation/${v.id}`}>
+                  <Link
+                    to={`/violation?violationTopic=${v?.law_topic_id}&violationType=${v.violation_type}&index=${v.id}`}
+                  >
                     Xem chi tiết
                   </Link>
                 </div>

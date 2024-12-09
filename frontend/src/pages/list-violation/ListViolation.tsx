@@ -17,30 +17,31 @@ import { ILawTopic, IViolation } from '@/types/definitions';
 /** API */
 import { getLawTopic, getViolations } from '@/services/lawApi';
 
-/** redux store */
-import store from '@/store/store';
-
 interface ILoaderResponse {
   topic: ILawTopic | null | undefined;
   violations: IViolation[] | null | undefined;
 }
 
-export async function loader({ params }: LoaderFunctionArgs) {
-  const { lawId } = params;
+export async function loader({ request }: LoaderFunctionArgs) {
+  const searchParams = new URL(request.url).searchParams;
 
-  const violationType = store.getState().setting.violationType;
+  const violationTopic = searchParams.get('violationTopic');
+  const violationType = searchParams.get('violationType');
 
-  const resTopic = await getLawTopic(lawId as string);
-  const resViolation = await getViolations(lawId as string, violationType);
+  const topic = await getLawTopic(violationTopic as string);
+  const resViolations = await getViolations(
+    violationTopic as string,
+    violationType as string
+  );
 
   return {
-    topic: resTopic.data,
-    violations: resViolation.data,
+    topic: topic.data,
+    violations: resViolations.data,
   };
 }
 
 export default function ListViolationPage() {
-  const { topic: lawTopic, violations }: ILoaderResponse =
+  const { topic, violations }: ILoaderResponse =
     useLoaderData() as ILoaderResponse;
 
   const mode = useSelector(themeMode);
@@ -53,7 +54,7 @@ export default function ListViolationPage() {
       }`}
     >
       <Header
-        title={lawTopic?.display as string}
+        title={topic?.display as string}
         isDark={isDarkMode}
         path='/list-law'
       />
@@ -64,7 +65,11 @@ export default function ListViolationPage() {
             <li key={v.id}>
               <h2>{v.violation}</h2>
               <p>{v.fines}</p>
-              <Link to={`${v.id}`}>Xem chi tiết</Link>
+              <Link
+                to={`/violation?violationTopic=${topic?.id}&violationType=${v.violation_type}&index=${v.id}`}
+              >
+                Xem chi tiết
+              </Link>
             </li>
           ))}
         </ul>

@@ -81,7 +81,7 @@ export default function ListLawPage() {
         isDarkMode ? styles.darkMode : undefined
       }`}
     >
-      <Header title='Luật giao thông' isDark={isDarkMode} />
+      <Header title='Luật giao thông' isDark={isDarkMode} path={'/'} />
       <main className={styles.main}>
         <div className={styles.options}>
           <div className={styles.option}>
@@ -125,7 +125,7 @@ export default function ListLawPage() {
           {lawTopics?.map((lt, index) => (
             <li key={lt.id}>
               <Link
-                to={`/list-law/${lt.id}/list-violation`}
+                to={`/list-violation?violationTopic=${lt.id}&violationType=${violationType}`}
                 className={styles.item}
               >
                 {icons[index]}
