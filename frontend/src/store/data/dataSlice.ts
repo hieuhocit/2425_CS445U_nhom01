@@ -1,39 +1,26 @@
+import { IExam, IQuestion } from '@/types/definitions';
 import { createSlice } from '@reduxjs/toolkit';
 
-/** DUMMY DATA */
-import { answers, exams, questions } from '@/data/data';
+type State = {
+  exams: IExam[];
+  questions: IQuestion[];
+};
 
-const initialState = {
-  exams: exams.filter((e) => e.license_ids.includes(1)),
-  questions: questions
-    .filter((q) => q.license_ids.includes(1))
-    .map((q) => {
-      return {
-        ...q,
-        answers: answers.filter((a) => a.question_id === q.id),
-      };
-    }),
+const initialState: State = {
+  exams: [],
+  questions: [],
 };
 
 const questionsSlice = createSlice({
   name: 'setting',
   initialState: initialState,
   reducers: {
-    changeQuestions: (state, action) => {
-      state.exams = exams.filter((e) =>
-        e.license_ids.includes(action.payload.licenseId)
-      );
-      state.questions = questions
-        .filter((q) => q.license_ids.includes(action.payload.licenseId))
-        .map((q) => {
-          return {
-            ...q,
-            answers: answers.filter((a) => a.question_id === q.id),
-          };
-        });
+    changeQuestionsAndExams: (state, action) => {
+      state.exams = action.payload.exams;
+      state.questions = action.payload.questions;
     },
   },
 });
 
-export const { changeQuestions } = questionsSlice.actions;
+export const { changeQuestionsAndExams } = questionsSlice.actions;
 export default questionsSlice.reducer;

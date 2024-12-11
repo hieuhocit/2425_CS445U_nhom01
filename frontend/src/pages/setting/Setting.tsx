@@ -21,7 +21,6 @@ import { changeLicense } from '@/store/setting/settingSlice';
 /** components */
 import Header from '@/components/header/Header';
 import { ILicense } from '@/types/definitions';
-import { changeQuestions } from '@/store/data/dataSlice';
 
 export default function SettingPage() {
   const licenses = useSelector(licensesSelector);
@@ -45,11 +44,6 @@ export default function SettingPage() {
     dispatch(
       changeLicense({
         currentLicense: selectedOption,
-      })
-    );
-    dispatch(
-      changeQuestions({
-        licenseId: selectedOption?.id,
       })
     );
     navigate('/');
