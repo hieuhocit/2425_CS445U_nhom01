@@ -1,5 +1,9 @@
 // ** React router
-import { Outlet, useNavigate } from 'react-router-dom';
+import {
+  Outlet,
+  ShouldRevalidateFunctionArgs,
+  useNavigate,
+} from 'react-router-dom';
 
 /** toastify */
 import { Bounce, ToastContainer } from 'react-toastify';
@@ -35,6 +39,11 @@ export async function loader() {
     exams: resExams?.data,
     questions: resQuestions?.data?.questions,
   };
+}
+
+export function revalidate(args: ShouldRevalidateFunctionArgs) {
+  const currentPathname = args.currentUrl.pathname;
+  return args.defaultShouldRevalidate && currentPathname === '/';
 }
 
 export default function Layout() {

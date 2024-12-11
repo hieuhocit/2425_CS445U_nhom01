@@ -2,7 +2,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 /** Layout */
-import Layout, { loader as layoutLoader } from '@/Layout';
+import Layout, {
+  loader as layoutLoader,
+  revalidate as revalidateLayout,
+} from '@/Layout';
 
 /** Pages */
 import ListExamPage from '@/pages/list-exam/ListExam';
@@ -52,6 +55,7 @@ const router = createBrowserRouter([
     id: 'root',
     element: <Layout />,
     loader: layoutLoader,
+    shouldRevalidate: revalidateLayout,
     children: [
       {
         index: true,
