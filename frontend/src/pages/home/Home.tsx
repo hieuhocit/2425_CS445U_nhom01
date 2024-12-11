@@ -99,7 +99,7 @@ export default function HomePage() {
         <header className={styles.header}>
           <div className={styles.top}>
             <h1 className={styles.title}>
-              Ôn thi GPLX hạng {currentLicense.code}
+              Ôn thi GPLX hạng {currentLicense?.code}
             </h1>
             <Link to='/setting'>
               <IoMdSettings className={styles.icon} />
