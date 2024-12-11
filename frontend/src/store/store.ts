@@ -3,7 +3,6 @@ import { authApi } from '@/services/authApi';
 import authReducer from './auth/authSlice';
 import themeReducer from './theme/themeSlice';
 import settingReducer from './setting/settingSlice';
-import dataReducer from './data/dataSlice';
 import { licenseApi } from '@/services/licenseApi';
 
 const store = configureStore({
@@ -13,7 +12,6 @@ const store = configureStore({
     theme: themeReducer,
     setting: settingReducer,
     auth: authReducer,
-    data: dataReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
