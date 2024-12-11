@@ -3,7 +3,8 @@ export interface ITheme {
 }
 
 export interface ISetting {
-  currentLicense: ILicense | null;
+  currentLicenseId: string | null;
+  currentLicense: ILicense | null | undefined;
   licenses: ILicense[];
   violationType: 1 | 2 | 3;
 }
@@ -33,7 +34,6 @@ export type AuthState = {
 
 export interface IExam {
   id: number;
-  license_ids: number[];
   title: string;
 }
 
@@ -52,8 +52,6 @@ export interface IQuestion {
   tip: string;
   required: boolean;
   topic_id: number | null;
-  exam_ids: number[];
-  license_ids: number[];
   answers?: IAnswer[];
   idSelectedAnswer?: number;
 }
@@ -86,6 +84,7 @@ export interface ISignTopic {
 export interface ITopic {
   id: number;
   display: string;
+  totalQuestion: number | undefined;
 }
 
 export interface IViolation {
