@@ -1,0 +1,153 @@
+@import "styles/colors";
+
+.template {
+  background-color: $background-light-mode-1;
+  width: 100%;
+  min-height: 100vh;
+  padding-bottom: 120px;
+
+  .main {
+    .head {
+      width: 50%;
+      margin-inline: auto;
+      margin-top: 32px;
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+
+        .timer {
+          p {
+            font-weight: 600;
+            font-size: 1.25rem;
+          }
+        }
+
+        .actions {
+          button {
+            border: none;
+            outline: none;
+            font-size: 1.3rem;
+            font-weight: 600;
+            background-color: $background-light-mode-3;
+            padding: 10px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+
+            transition:
+              background-color 0.3s ease-in-out,
+              transform 0.3s ease-in-out;
+
+            &:active,
+            &:hover {
+              background-color: $background-light-mode-4;
+              transform: scale(1.025);
+            }
+          }
+        }
+      }
+      .bottom {
+        p {
+          text-align: center;
+          font-size: 1.25rem;
+        }
+      }
+      @media (max-width: 1536px) {
+        & {
+        }
+      }
+
+      @media (max-width: 1280px) {
+        & {
+          width: 60%;
+        }
+      }
+
+      @media (max-width: 1024px) {
+        & {
+          width: 65%;
+        }
+      }
+
+      @media (max-width: 768px) {
+        & {
+          width: 70%;
+        }
+      }
+
+      @media (max-width: 640px) {
+        & {
+          width: 75%;
+        }
+      }
+
+      @media (max-width: 550px) {
+        & {
+          width: 80%;
+        }
+      }
+
+      @media (max-width: 430px) {
+        & {
+          width: 90%;
+        }
+      }
+    }
+
+    .body {
+      .list {
+        margin-top: 18px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+
+      & > p {
+        margin-top: 48px;
+        margin-inline: 16px;
+        text-align: center;
+        font-size: 1.25rem;
+      }
+    }
+  }
+
+  &.darkMode {
+    background-color: $background-dark-mode-1;
+
+    .main {
+      .head {
+        .top {
+          .timer {
+            p {
+              color: $color-dark-mode;
+            }
+          }
+
+          .actions {
+            button {
+              color: $color-dark-mode;
+              background-color: $background-dark-mode-4;
+
+              &:active,
+              &:hover {
+                background-color: $background-dark-mode-3;
+              }
+            }
+          }
+        }
+        .bottom {
+          p {
+            color: $color-dark-mode;
+          }
+        }
+      }
+      .body {
+        & > p {
+          color: $color-dark-mode;
+        }
+      }
+    }
+  }
+}
