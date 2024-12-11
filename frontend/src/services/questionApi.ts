@@ -1,5 +1,5 @@
 import { getApi } from '@/config/fetchApi';
-import { IQuestion } from '@/types/definitions';
+import { IQuestion, ITopic } from '@/types/definitions';
 
 type IParameter = number | string | undefined;
 
@@ -7,7 +7,10 @@ type QuestionResponse =
   | {
       statusCode: string | number;
       message: string;
-      data: IQuestion[] | IQuestion | null;
+      data: {
+        topic?: ITopic | undefined;
+        questions: IQuestion[] | IQuestion;
+      } | null;
     }
   | undefined;
 
