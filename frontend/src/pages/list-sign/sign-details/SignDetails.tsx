@@ -49,7 +49,7 @@ export default function SignDetailsPage() {
       <main className={styles.main}>
         <ul className={styles.list}>
           {signs.map((s) => (
-            <li className={styles.item}>
+            <li key={s.id} className={styles.item}>
               <div className={styles.head}>
                 <h2>
                   {s.code}: {s.name}
