@@ -1,8 +1,8 @@
-import { fetchApi } from '@/config/fetchApi';
+import { getApi } from '@/config/fetchApi';
 
 export async function getLawTopics() {
   try {
-    const res = await fetchApi('law/topics');
+    const res = await getApi('law/topics');
 
     if (!res.ok) {
       throw Error('Đã xảy ra lỗi');
@@ -18,7 +18,7 @@ export async function getLawTopics() {
 
 export async function getLawTopic(topicId: number | string) {
   try {
-    const res = await fetchApi(`law/topics/${topicId}`);
+    const res = await getApi(`law/topics/${topicId}`);
 
     if (!res.ok) {
       throw Error('Đã xảy ra lỗi');
@@ -37,7 +37,7 @@ export async function getViolations(
   violationType: number | string
 ) {
   try {
-    const res = await fetchApi(
+    const res = await getApi(
       `law/violations?topicId=${topicId}&violationType=${violationType}`
     );
 
@@ -55,7 +55,7 @@ export async function getViolations(
 
 export async function getViolation(violationId: number | string) {
   try {
-    const res = await fetchApi(`law/violations/${violationId}`);
+    const res = await getApi(`law/violations/${violationId}`);
 
     if (!res.ok) {
       throw Error('Đã xảy ra lỗi');

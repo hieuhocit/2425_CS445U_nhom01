@@ -1,8 +1,8 @@
-import { fetchApi } from '@/config/fetchApi';
+import { getApi } from '@/config/fetchApi';
 
 export async function getSignTopics() {
   try {
-    const res = await fetchApi('sign/topics');
+    const res = await getApi('sign/topics');
 
     if (!res.ok) {
       throw Error('Đã xảy ra lỗi');
@@ -18,7 +18,7 @@ export async function getSignTopics() {
 
 export async function getSigns(topicId?: number | string) {
   try {
-    const res = await fetchApi(`sign/signs?topicId=${topicId}`);
+    const res = await getApi(`sign/signs?topicId=${topicId}`);
 
     if (!res.ok) {
       throw Error('Đã xảy ra lỗi');
