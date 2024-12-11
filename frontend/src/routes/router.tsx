@@ -2,7 +2,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 /** Layout */
-import Layout from '@/Layout';
+import Layout, { loader as layoutLoader } from '@/Layout';
 
 /** Pages */
 import ListExamPage from '@/pages/list-exam/ListExam';
@@ -26,7 +26,7 @@ import ListRequiredPage from '@/pages/list-required/ListRequired';
 import ReviewPage from '@/pages/review/Review';
 import ListTopicPage from '@/pages/list-topic/ListTopic';
 import TopicDetailsPage from '@/pages/list-topic/topic-details/TopicDetails';
-import ExamPage from '@/pages/exam/Exam';
+import ExamPage, { loader as examLoader } from '@/pages/exam/Exam';
 import ExamResultPage from '@/pages/exam-result/ExamResult';
 import LoginPage from '@/pages/login/Login';
 import RegisterPage, {
@@ -44,11 +44,14 @@ import PersonalInformation from '@/components/personal-information/PersonalInfor
 import ChangePassword from '@/components/change-password/ChangePassword';
 import ForgotPasswordPage from '@/pages/forgot-password/ForgotPassword';
 import ProtectedRoute from '@/components/protected-route/ProtectedRoute';
+import ReviewDetailsPage from '@/pages/review/ReviewDetails';
 
 const router = createBrowserRouter([
   {
     path: '/',
+    id: 'root',
     element: <Layout />,
+    loader: layoutLoader,
     children: [
       {
         index: true,
@@ -106,6 +109,10 @@ const router = createBrowserRouter([
         element: <ReviewPage />,
       },
       {
+        path: '/review/questions',
+        element: <ReviewDetailsPage />,
+      },
+      {
         path: '/list-topic',
         element: <ListTopicPage />,
       },
@@ -120,6 +127,7 @@ const router = createBrowserRouter([
       {
         path: 'list-exam/:examId',
         element: <ExamPage />,
+        loader: examLoader,
       },
       {
         path: 'list-exam/:examId/result',
