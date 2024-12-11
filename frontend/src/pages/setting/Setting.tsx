@@ -20,15 +20,18 @@ import { changeLicense } from '@/store/setting/settingSlice';
 
 /** components */
 import Header from '@/components/header/Header';
+
+/** types */
 import { ILicense } from '@/types/definitions';
 
 export default function SettingPage() {
   const licenses = useSelector(licensesSelector);
   const currentLicense = useSelector(currentLicenseSelector);
 
-  const [selectedOption, setSelectedOption] = useState<ILicense | null>(
-    currentLicense
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    ILicense | null | undefined
+  >(currentLicense);
+
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
