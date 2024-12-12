@@ -2,15 +2,30 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { User } from '@/types/definitions';
 import { RootState } from '@/store/store';
 
-export interface UserResponse {
+type ErrorResponse = {
+  field: string;
+  message: string;
+};
+
+export interface LoginResponse {
   statusCode: number;
   message: string;
-  user: User | null;
+  errors?: ErrorResponse[];
+  data?: User;
 }
 
 export interface LoginRequest {
-  username: string;
+  account: string;
   password: string;
+}
+
+export interface LoginError {
+  status: number;
+  data: {
+    statusCode: number;
+    message: string;
+    errors?: ErrorResponse[];
+  };
 }
 
 export const authApi = createApi({
@@ -18,34 +33,38 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_URL,
     prepareHeaders: (headers, { getState }) => {
-      const token =
+      const access_token =
         (getState() as RootState).auth.access_token ||
         localStorage.getItem('access_token');
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`);
-      }
+      const refresh_token =
+        (getState() as RootState).auth.refresh_token ||
+        localStorage.getItem('refresh_token');
+
+      if (access_token) headers.set('authorization', `Bearer ${access_token}`);
+      if (refresh_token) headers.set('x-refresh-token', refresh_token);
+
       return headers;
     },
   }),
 
   endpoints: (builder) => ({
-    login: builder.mutation<UserResponse, LoginRequest>({
+    login: builder.mutation<LoginResponse, LoginRequest>({
       query: (credentials) => ({
-        url: 'auth/login',
+        url: 'login',
         method: 'POST',
         body: credentials,
       }),
     }),
 
-    logout: builder.mutation<UserResponse, void>({
+    logout: builder.mutation<void, void>({
       query: () => ({
-        url: 'auth/logout',
+        url: 'logout',
         method: 'POST',
       }),
     }),
 
-    getUser: builder.query<UserResponse, void>({
-      query: () => 'auth/me',
+    getUser: builder.query<LoginResponse, void>({
+      query: () => 'me',
     }),
   }),
 });

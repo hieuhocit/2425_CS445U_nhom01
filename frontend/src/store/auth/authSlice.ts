@@ -14,7 +14,7 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(authApi.endpoints.login.matchFulfilled, (state, action) => {
-        const user = action.payload.user as User;
+        const user = action.payload.data as User;
         state.user = user;
 
         state.access_token = user.access_token;
@@ -35,7 +35,7 @@ const authSlice = createSlice({
         localStorage.removeItem('refresh_token');
       })
       .addMatcher(authApi.endpoints.getUser.matchFulfilled, (state, action) => {
-        const user = action.payload.user as User;
+        const user = action.payload.data as User;
         state.user = user;
 
         state.access_token = user.access_token;
