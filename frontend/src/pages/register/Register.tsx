@@ -85,10 +85,8 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const resData = (await res.json()) as RegisterResponse;
 
-    console.log(resData);
-
-    if (resData.statusCode === 500) {
-      toast(resData.message);
+    if (resData.statusCode === 500 || resData.statusCode === 409) {
+      toast.error(resData.message);
       return null;
     }
 
