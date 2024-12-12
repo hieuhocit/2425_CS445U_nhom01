@@ -20,35 +20,85 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 /** toastify */
 import { toast } from 'react-toastify';
 
+/** Validate */
+import { validateUser } from '@/utils/validateUser';
+
+/** API */
+import { postApi } from '@/config/fetchApi';
+
+type ErrorResponse = {
+  field: string;
+  message: string;
+};
+
+type RegisterResponse = {
+  statusCode: number;
+  message: string;
+  errors?: ErrorResponse[];
+  data?: {
+    username: string;
+    permission: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+  };
+};
+
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
 
-  const firstName = formData.get('firstName');
-  const lastName = formData.get('lastName');
-  const username = formData.get('username');
-  const email = formData.get('email');
-  const password = formData.get('password');
-  const confirmPassword = formData.get('confirmPassword');
+  const first_name = formData.get('firstName') as string | null;
+  const last_name = formData.get('lastName') as string | null;
+  const email = formData.get('email') as string | null;
+  const username = formData.get('username') as string | null;
+  const password = formData.get('password') as string | null;
+  const confirm_password = formData.get('confirmPassword') as string | null;
+  const permission = 'MEMBER';
 
-  // Validate
-  if (
-    firstName === '' ||
-    lastName === '' ||
-    username === '' ||
-    password === '' ||
-    confirmPassword === '' ||
-    email === ''
-  ) {
-    toast.error('Vui lòng nhập đầy đủ thông tin!');
-    return null;
-  } else if (username === 'admin') {
-    toast.error('Tài khoản đã tồn tại!');
-    return null;
-  } else if (password !== confirmPassword) {
-    toast.error('Mật khẩu không trùng khớp, vui lòng nhập lại!');
+  const errors = validateUser({
+    first_name,
+    last_name,
+    email,
+    username,
+    password,
+    confirm_password,
+  });
+
+  toast.dismiss();
+
+  if (errors) {
+    errors.forEach((err) => {
+      toast.error(err.message, { autoClose: 5000 });
+    });
+    return errors;
+  }
+
+  const res = await postApi('register', {
+    first_name,
+    last_name,
+    email,
+    username,
+    password,
+    permission,
+  });
+
+  const resData = (await res.json()) as RegisterResponse;
+
+  console.log(resData);
+
+  if (resData.statusCode === 500) {
+    toast(resData.message);
     return null;
   }
-  toast.success('Đăng ký tài khoản thành công!');
+
+  if (resData.statusCode === 422 && resData.errors) {
+    resData.errors.forEach((err) => {
+      toast.error(err.message, { autoClose: 5000 });
+    });
+    return null;
+  }
+
+  toast.success(resData.message);
   return redirect('/login');
 }
 
