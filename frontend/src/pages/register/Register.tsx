@@ -73,33 +73,39 @@ export async function action({ request }: ActionFunctionArgs) {
     return errors;
   }
 
-  const res = await postApi('register', {
-    first_name,
-    last_name,
-    email,
-    username,
-    password,
-    permission,
-  });
-
-  const resData = (await res.json()) as RegisterResponse;
-
-  console.log(resData);
-
-  if (resData.statusCode === 500) {
-    toast(resData.message);
-    return null;
-  }
-
-  if (resData.statusCode === 422 && resData.errors) {
-    resData.errors.forEach((err) => {
-      toast.error(err.message, { autoClose: 5000 });
+  try {
+    const res = await postApi('register', {
+      first_name,
+      last_name,
+      email,
+      username,
+      password,
+      permission,
     });
-    return null;
-  }
 
-  toast.success(resData.message);
-  return redirect('/login');
+    const resData = (await res.json()) as RegisterResponse;
+
+    console.log(resData);
+
+    if (resData.statusCode === 500) {
+      toast(resData.message);
+      return null;
+    }
+
+    if (resData.statusCode === 422 && resData.errors) {
+      resData.errors.forEach((err) => {
+        toast.error(err.message, { autoClose: 5000 });
+      });
+      return null;
+    }
+
+    toast.success(resData.message);
+    return redirect('/login');
+  } catch (error) {
+    console.error(error);
+    toast.error('Đã xảy ra lỗi, vui lòng thử lại');
+  }
+  return null;
 }
 
 export default function RegisterPage() {
