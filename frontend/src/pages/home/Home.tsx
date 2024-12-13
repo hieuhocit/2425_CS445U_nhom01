@@ -85,7 +85,7 @@ export default function HomePage() {
       toast.success(res.message);
     } catch (error) {
       console.error(error);
-      toast.error('Đã có lỗi xảy ra');
+      toast.error('Đã có lỗi xảy ra vui lòng thử tải lại trang');
     }
   }
 
