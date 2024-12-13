@@ -74,7 +74,7 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   try {
-    const res = await postApi('register', {
+    const res = await postApi('user/register', {
       first_name,
       last_name,
       email,
@@ -101,7 +101,7 @@ export async function action({ request }: ActionFunctionArgs) {
     return redirect('/login');
   } catch (error) {
     console.error(error);
-    toast.error('Đã xảy ra lỗi, vui lòng thử lại');
+    toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
   }
   return null;
 }
