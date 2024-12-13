@@ -171,7 +171,12 @@ export default function ExamManagement() {
           />
         </div>
       </div>
-      <Modal onClose={handleCloseModal} isOpen={showModal} isDark={isDarkMode}>
+      <Modal
+        css={{ minHeight: 'auto', height: '400px' }}
+        onClose={handleCloseModal}
+        isOpen={showModal}
+        isDark={isDarkMode}
+      >
         {showModal && (
           <Form
             onCancel={handleCloseModal}
