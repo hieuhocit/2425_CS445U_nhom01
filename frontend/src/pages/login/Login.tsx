@@ -68,13 +68,14 @@ export default function LoginPage() {
         (error as LoginError).data.errors?.forEach((err) => {
           toast.error(err.message, { autoClose: 5000 });
         });
-      }
-      if (
+      } else if (
         (error as LoginError).status === 500 ||
         (error as LoginError).status === 401 ||
         (error as LoginError).status === 404
       ) {
         toast.error((error as LoginError).data.message, { autoClose: 5000 });
+      } else {
+        toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
       }
     }
   }
