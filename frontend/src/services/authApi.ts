@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { User } from '@/types/definitions';
-import { RootState } from '@/store/store';
 
 type ErrorResponse = {
   field: string;
@@ -28,43 +27,37 @@ export interface LoginError {
   };
 }
 
+export interface LogoutResponse {
+  statusCode: number;
+  message: string;
+  data: null;
+}
+
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_URL,
-    prepareHeaders: (headers, { getState }) => {
-      const access_token =
-        (getState() as RootState).auth.access_token ||
-        localStorage.getItem('access_token');
-      const refresh_token =
-        (getState() as RootState).auth.refresh_token ||
-        localStorage.getItem('refresh_token');
-
-      if (access_token) headers.set('authorization', `Bearer ${access_token}`);
-      if (refresh_token) headers.set('x-refresh-token', refresh_token);
-
-      return headers;
-    },
+    credentials: 'include',
   }),
 
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (credentials) => ({
-        url: 'login',
+        url: 'user/login',
         method: 'POST',
         body: credentials,
       }),
     }),
 
-    logout: builder.mutation<void, void>({
+    logout: builder.mutation<LogoutResponse, void>({
       query: () => ({
-        url: 'logout',
+        url: 'user/logout',
         method: 'POST',
       }),
     }),
 
     getUser: builder.query<LoginResponse, void>({
-      query: () => 'me',
+      query: () => 'user/me',
     }),
   }),
 });
