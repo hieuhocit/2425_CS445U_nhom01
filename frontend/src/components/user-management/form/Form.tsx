@@ -157,7 +157,12 @@ export default function Form({
           <ImageCustom
             behavior={behavior}
             imageUrl={
-              selectedImage ? URL.createObjectURL(selectedImage) : user?.avatar
+              selectedImage
+                ? URL.createObjectURL(selectedImage)
+                : user?.avatar &&
+                  `${import.meta.env.VITE_API_ORIGIN_URL}/images/users/${
+                    user?.avatar
+                  }`
             }
           />
         </label>
