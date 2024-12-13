@@ -28,8 +28,6 @@ export type User = {
 export type AuthState = {
   user: User | null;
   isLoggedIn: boolean;
-  access_token: string | null;
-  refresh_token: string | null;
 };
 
 export interface IExam {
