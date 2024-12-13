@@ -6,6 +6,8 @@ import Header from '@/components/header/Header';
 import GridQuestions from '@/components/grid-questions/GridQuestions';
 import ExamAction from '@/components/exam-actions/ExamActions';
 import QuestionDetails from '@/components/question-details/QuestionDetails';
+import Modal from '@/components/modal/Modal';
+import ConfirmMessage from '@/components/custom-confirm-message/ConfirmMessage';
 
 /** types */
 import { IQuestion } from '@/types/definitions';
@@ -41,6 +43,8 @@ export default function TemplateTestPage({
   const [questions, setQuestions] = useState<IQuestion[] | null | undefined>(
     questionsData
   );
+
+  const [showModal, setShowModal] = useState(false);
 
   const [currentIndex, setCurrentIndex] = useState<number>(index ? index : 0);
   const [showGridQuestions, setShowGridQuestions] = useState(false);
@@ -118,86 +122,111 @@ export default function TemplateTestPage({
     // Get response from server and handle error
     // Navigate to result page
 
+    setShowModal(false);
     navigate(`result`, { state: { questions } });
+  }
+  // Modal
+  function handleCloseModal() {
+    setShowModal(false);
+  }
+
+  function handleOpenModal() {
+    setShowModal(true);
   }
 
   return (
-    <div className={`${styles.template} ${isDark ? styles.darkMode : ''}`}>
-      <Header title={title} isDark={isDark} path={path} />
+    <>
+      <div className={`${styles.template} ${isDark ? styles.darkMode : ''}`}>
+        <Header title={title} isDark={isDark} path={path} />
 
-      <main className={styles.main}>
-        {behavior === 'exam' && (
-          <div className={styles.head}>
-            <div className={styles.top}>
-              <div className={styles.timer}>
-                <p>
-                  Thời gian: <span>{convertMsToHHMMSS(ms)}</span>
-                </p>
+        <main className={styles.main}>
+          {behavior === 'exam' && (
+            <div className={styles.head}>
+              <div className={styles.top}>
+                <div className={styles.timer}>
+                  <p>
+                    Thời gian: <span>{convertMsToHHMMSS(ms)}</span>
+                  </p>
+                </div>
+                <div className={styles.actions}>
+                  <button onClick={handleOpenModal} type='button'>
+                    Nộp bài
+                  </button>
+                </div>
               </div>
-              <div className={styles.actions}>
-                <button
-                  onClick={() => {
-                    const ok = confirm('Bạn có chắc bạn muốn nộp bài không?');
-                    if (ok) handleSubmitExam();
-                  }}
-                  type='button'
-                >
-                  Nộp bài
-                </button>
+              <div className={styles.bottom}>
+                <p>{`${currentIndex + 1}/${questions?.length}`}</p>
               </div>
             </div>
-            <div className={styles.bottom}>
-              <p>{`${currentIndex + 1}/${questions?.length}`}</p>
-            </div>
+          )}
+
+          <div className={styles.body}>
+            {!currentQuestion && (
+              <p>
+                Hiện tại chưa có câu hỏi, vui lòng quay lại sau hoặc liên hệ với
+                quản trị viên
+              </p>
+            )}
+
+            {currentQuestion && (
+              <div className={styles.list}>
+                <QuestionDetails
+                  key={(questions as IQuestion[])[currentIndex as number].id}
+                  isDarkMode={isDark}
+                  behavior={{ type: behavior }}
+                  question={(questions as IQuestion[])[currentIndex as number]}
+                  onChange={handleSelectAnswer}
+                />
+              </div>
+            )}
           </div>
+        </main>
+
+        {currentQuestion && (
+          <ExamAction
+            isDark={isDark}
+            min={0}
+            max={(questions as IQuestion[]).length - 1}
+            currentIndex={currentIndex as number}
+            onNext={handleNextQuestion}
+            onPrev={handlePrevQuestion}
+            onShow={() => setShowGridQuestions(true)}
+          />
         )}
-
-        <div className={styles.body}>
-          {!currentQuestion && (
-            <p>
-              Hiện tại chưa có câu hỏi, vui lòng quay lại sau hoặc liên hệ với
-              quản trị viên
-            </p>
-          )}
-
-          {currentQuestion && (
-            <div className={styles.list}>
-              <QuestionDetails
-                key={(questions as IQuestion[])[currentIndex as number].id}
-                isDarkMode={isDark}
-                behavior={{ type: behavior }}
-                question={(questions as IQuestion[])[currentIndex as number]}
-                onChange={handleSelectAnswer}
-              />
-            </div>
-          )}
-        </div>
-      </main>
-
-      {currentQuestion && (
-        <ExamAction
-          isDark={isDark}
-          min={0}
-          max={(questions as IQuestion[]).length - 1}
-          currentIndex={currentIndex as number}
-          onNext={handleNextQuestion}
-          onPrev={handlePrevQuestion}
-          onShow={() => setShowGridQuestions(true)}
-        />
-      )}
-      {currentQuestion && showGridQuestions && (
-        <GridQuestions
-          show={showGridQuestions}
-          onClose={() => setShowGridQuestions(false)}
-          isDark={isDark}
-          questions={questions}
-          behavior={{ type: behavior }}
-          onGoTo={handleGoToQuestion}
-          close={true}
-          animation={true}
-          currentIndex={currentIndex}
-        />
-      )}
-    </div>
+        {currentQuestion && showGridQuestions && (
+          <GridQuestions
+            show={showGridQuestions}
+            onClose={() => setShowGridQuestions(false)}
+            isDark={isDark}
+            questions={questions}
+            behavior={{ type: behavior }}
+            onGoTo={handleGoToQuestion}
+            close={true}
+            animation={true}
+            currentIndex={currentIndex}
+          />
+        )}
+      </div>
+      <Modal
+        css={{
+          top: '10vh',
+          minHeight: 'auto',
+          maxHeight: '300px',
+          maxWidth: '500px',
+        }}
+        onClose={handleCloseModal}
+        isOpen={showModal}
+        isDark={isDark}
+      >
+        {showModal && (
+          <ConfirmMessage
+            title='Bạn có chắc bạn muốn nộp bài không?'
+            isDark={isDark}
+            onConfirm={handleSubmitExam}
+            onCancel={handleCloseModal}
+          />
+        )}
+      </Modal>
+    </>
   );
 }

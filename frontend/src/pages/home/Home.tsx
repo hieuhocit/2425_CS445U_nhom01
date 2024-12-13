@@ -54,12 +54,21 @@ import { getRandomExamId } from '@/utils/randomExam';
 /** types */
 import { IExam, IQuestion } from '@/types/definitions';
 
+/** react */
+import { useState } from 'react';
+
+/** Components */
+import Modal from '@/components/modal/Modal';
+import ConfirmMessage from '@/components/custom-confirm-message/ConfirmMessage';
+
 export default function HomePage() {
   const mode = useSelector(themeMode);
   const currentLicense = useSelector(currentLicenseSelector);
   const dispatch = useDispatch();
   const [logout] = useLogoutMutation();
   const navigate = useNavigate();
+
+  const [showModal, setShowModal] = useState(false);
 
   const { questions, exams } = useRouteLoaderData('root') as {
     questions: IQuestion[] | undefined;
@@ -77,9 +86,16 @@ export default function HomePage() {
     dispatch(toggleMode());
   }
 
+  // Modal
+  function handleCloseModal() {
+    setShowModal(false);
+  }
+
+  function handleOpenModal() {
+    setShowModal(true);
+  }
+
   async function handleLogout() {
-    const ok = confirm('Bạn có chắc bạn muốn đăng xuất không?');
-    if (!ok) return;
     try {
       const res = await logout().unwrap();
       toast.success(res.message);
@@ -87,6 +103,7 @@ export default function HomePage() {
       console.error(error);
       toast.error('Đã có lỗi xảy ra vui lòng thử tải lại trang');
     }
+    setShowModal(false);
   }
 
   function handleNavigateToRandomExam() {
@@ -189,7 +206,7 @@ export default function HomePage() {
                   <p>Xem lịch sử thi</p>
                 </Link>
                 <div
-                  onClick={handleLogout}
+                  onClick={handleOpenModal}
                   className={`${styles.item} ${styles.login}`}
                 >
                   <IoIosLogOut className={styles.icon} />
@@ -248,6 +265,26 @@ export default function HomePage() {
           )}
         </main>
       </div>
+      <Modal
+        css={{
+          top: '10vh',
+          minHeight: 'auto',
+          maxHeight: '300px',
+          maxWidth: '500px',
+        }}
+        onClose={handleCloseModal}
+        isOpen={showModal}
+        isDark={isDarkMode}
+      >
+        {showModal && (
+          <ConfirmMessage
+            title='Bạn có chắc bạn muốn đăng xuất không?'
+            isDark={isDarkMode}
+            onConfirm={handleLogout}
+            onCancel={handleCloseModal}
+          />
+        )}
+      </Modal>
     </>
   );
 }
