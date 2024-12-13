@@ -81,7 +81,13 @@ export default function SideBar({
         >
           <div className={styles.imageContainer}>
             <img
-              src={user?.avatar ? user?.avatar : profileImagePlaceholder}
+              src={
+                user?.avatar
+                  ? `${import.meta.env.VITE_API_ORIGIN_URL}/images/users/${
+                      user?.avatar
+                    }`
+                  : profileImagePlaceholder
+              }
               alt={`${user?.last_name} ${user?.first_name} avatar`}
             />
           </div>
