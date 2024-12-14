@@ -13,3 +13,11 @@ export async function postApi(pathname: string, data: object) {
     body: JSON.stringify(data),
   });
 }
+
+export async function putApiWithAuth(pathname: string, formData: FormData) {
+  return fetch(`${apiUrl}/${pathname}`, {
+    method: 'PUT',
+    credentials: 'include',
+    body: formData,
+  });
+}
