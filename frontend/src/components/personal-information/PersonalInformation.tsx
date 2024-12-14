@@ -27,7 +27,7 @@ type ErrorResponse = {
   message: string;
 };
 
-type RegisterResponse = {
+type UpdateProfileResponse = {
   statusCode: number;
   message: string;
   errors?: ErrorResponse[];
@@ -62,7 +62,7 @@ export default function PersonalInformation() {
     try {
       data.set('id', id + '');
       const res = await putApiWithAuth('user/profile', data);
-      const resData = (await res.json()) as RegisterResponse;
+      const resData = (await res.json()) as UpdateProfileResponse;
 
       if (resData.statusCode === 500 || resData.statusCode === 409) {
         toast.error(resData.message);
