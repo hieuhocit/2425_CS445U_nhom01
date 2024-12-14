@@ -12,15 +12,76 @@ import Form from '../user-management/form/Form';
 /** tostify */
 import { toast } from 'react-toastify';
 
+/** API */
+import { putApiWithAuth } from '@/config/fetchApi';
+import { useGetUserQuery } from '@/services/authApi';
+
+/** validate */
+import { validateUpdateProfile } from '@/utils/validateUser';
+
+/** types */
+import { User } from '@/types/definitions';
+
+type ErrorResponse = {
+  field: string;
+  message: string;
+};
+
+type RegisterResponse = {
+  statusCode: number;
+  message: string;
+  errors?: ErrorResponse[];
+  data?: User;
+};
+
 export default function PersonalInformation() {
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
   const user = useSelector(userSelector);
 
-  function handleUpdateUser(id: number, data: FormData) {
-    console.log(id, Object.fromEntries(data));
-    toast.success('Cập nhật thông tin thành công');
+  const { refetch } = useGetUserQuery();
+
+  async function handleUpdateUser(id: number, data: FormData) {
+    const errors = validateUpdateProfile({
+      email: data.get('email') as string | null,
+      firstName: data.get('firstName') as string | null,
+      lastName: data.get('lastName') as string | null,
+      image: data.get('image') as File | null,
+    });
+
+    toast.dismiss();
+
+    if (errors) {
+      errors.forEach((err) => {
+        toast.error(err.message, { autoClose: 5000 });
+      });
+      return errors;
+    }
+
+    try {
+      data.set('id', id + '');
+      const res = await putApiWithAuth('user/profile', data);
+      const resData = (await res.json()) as RegisterResponse;
+
+      if (resData.statusCode === 500 || resData.statusCode === 409) {
+        toast.error(resData.message);
+        return null;
+      }
+
+      if (resData.statusCode === 422 && resData.errors) {
+        resData.errors.forEach((err) => {
+          toast.error(err.message, { autoClose: 5000 });
+        });
+        return null;
+      }
+
+      toast.success(resData.message);
+      refetch();
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
+    }
   }
 
   return (
