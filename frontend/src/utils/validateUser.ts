@@ -7,6 +7,13 @@ type Parameter = {
   confirm_password: string | null;
 };
 
+type ParameterUpdateProfile = {
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  image: File | null;
+};
+
 type Error = {
   field: string;
   message: string;
@@ -88,6 +95,51 @@ export function validateUser({
     return reduceErrors(errors);
   }
 
+  return null;
+}
+
+export function validateUpdateProfile({
+  firstName,
+  lastName,
+  email,
+  image,
+}: ParameterUpdateProfile): Error[] | null {
+  const errors: Error[] = [];
+
+  if (!firstName || firstName.trim() === '') {
+    errors.push({ field: 'firstName', message: 'Vui lòng điền tên' });
+  }
+  if (!lastName || lastName.trim() === '') {
+    errors.push({ field: 'last_name', message: 'Vui lòng điền họ' });
+  }
+  if (!email || email.trim() === '') {
+    errors.push({ field: 'email', message: 'Vui lòng điền email' });
+  }
+  if (!isEmail(email)) {
+    errors.push({
+      field: 'email',
+      message: 'Vui lòng điền đúng định dạng email',
+    });
+  }
+
+  if (image && image.size > 0) {
+    if (
+      image.type === 'image/jpeg' ||
+      image.type === 'image/png' ||
+      image.type === 'image/gif'
+    ) {
+      console.log('');
+    } else {
+      errors.push({
+        field: 'image',
+        message: 'Vui lòng chọn các định dạng ảnh như jpeg, png, gif',
+      });
+    }
+  }
+
+  if (errors.length > 0) {
+    return reduceErrors(errors);
+  }
   return null;
 }
 
