@@ -28,7 +28,10 @@ import { useEffect, useState } from 'react';
 import store from './store/store';
 
 export async function loader() {
-  const licenseId = store.getState().setting.currentLicenseId || 1;
+  const licenseId =
+    store.getState().setting.currentLicenseId ||
+    localStorage.getItem('licenseId') ||
+    1;
 
   const resQuestions = await getQuestions(licenseId);
   const resExams = await getExams(licenseId);
