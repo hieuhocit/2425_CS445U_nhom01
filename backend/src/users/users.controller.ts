@@ -12,7 +12,7 @@ import { UsersService } from './users.service';
 import { UserGlobal } from 'src/global/users.global';
 import { UserDto } from './dto/user.dto';
 
-@Controller('user')
+@Controller('/api/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -44,10 +44,5 @@ export class UsersController {
     return (await this.usersService.deleteUsers(id))
       ? `Deleted user with id = ${id} successfully`
       : `Delete User is not available`;
-  }
-
-  @Get('/findUsersByExam/:examId')
-  async findUsersByExan(@Param('examId', ParseIntPipe) examId: number) {
-    return await this.usersService.findUsersByExan(examId);
   }
 }

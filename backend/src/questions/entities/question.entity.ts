@@ -1,14 +1,12 @@
-import { ExamEntity } from 'src/exams/entities/exam.entity';
+import { LicenseEntity } from 'src/licenses/entities/license.entity';
 import { TopicEntity } from 'src/topics/entities/topic.entity';
 import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  Column,
+  ManyToOne,
+  BaseEntity,
+  ManyToMany,
 } from 'typeorm';
 
 @Entity('questions')
@@ -19,38 +17,18 @@ export class QuestionEntity extends BaseEntity {
   @Column({ nullable: true })
   image: string;
 
-  @Column({ type: 'text' })
-  content: string;
+  @Column({ length: 500 })
+  text: string;
 
-  @Column({ nullable: true })
-  answer_a: string;
-
-  @Column({ nullable: true })
-  answer_b: string;
-
-  @Column({ nullable: true })
-  answer_c: string;
-
-  @Column({ nullable: true })
-  answer_d: string;
-
-  @Column({ nullable: true, type: 'char', length: 1 })
-  correct_answer: string;
-
-  @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updated_at: Date;
+  @Column({ length: 500 })
+  tip: string;
 
   @Column()
-  exam_id: number;
+  required: boolean;
 
-  @ManyToOne(() => ExamEntity, (exam) => exam.questions, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'exam_id' })
-  exam: ExamEntity;
+  @Column()
+  topic_id: number;
 
-
-  @ManyToOne(() => TopicEntity, (topic) => topic.question)
-  topic: TopicEntity;
+  @ManyToMany(() => LicenseEntity, (license) => license.questions) 
+  licenses: LicenseEntity[];
 }

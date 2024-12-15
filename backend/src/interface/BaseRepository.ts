@@ -14,7 +14,7 @@ export abstract class BaseRepository<
 > {
   constructor(
     @InjectRepository(Repository<T>)
-    private readonly repository: R,
+    protected readonly repository: R,
   ) {}
 
   // Get List

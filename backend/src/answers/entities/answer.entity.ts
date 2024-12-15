@@ -1,25 +1,21 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+} from 'typeorm';
 
-@Entity('answer')
+@Entity('answers')
 export class AnswerEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  content: string;
+  @Column({ length: 500 })
+  text: string;
 
   @Column()
-  question_id: string;
+  correct: boolean;
 
   @Column()
-  is_correct: boolean;
-
-  @Column()
-  option: string;
-
-  @Column()
-  created_at: Date;
-
-  @Column()
-  completed_at: Date;
+  question_id: number;
 }

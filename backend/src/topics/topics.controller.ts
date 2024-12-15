@@ -1,48 +1,23 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Delete,
-  ParseIntPipe,
-  Put,
-} from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { TopicsService } from './topics.service';
 import { TopicGlobal } from 'src/global/topic.global';
-import { TopicDto } from './dto/topic.dto';
 
-@Controller('topic')
+@Controller('/api/')
 export class TopicsController {
   constructor(private readonly topicsService: TopicsService) {}
 
-  @Get()
-  async getAllTopic(): Promise<TopicGlobal[]> {
-    return await this.topicsService.getAllTopic();
+  // @Get('/topics')
+  // async getAllTopic(): Promise<TopicGlobal[]> {
+  //   return await this.topicsService.getAllTopic();
+  // }
+  @Get('/topics') 
+  async getTopics() {
+    return this.topicsService.getAllTopic();
   }
 
-  @Get('/:id')
-  async getTopicById(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<TopicGlobal> {
+  @Get('/topics/:id')
+  async getTopicById(@Param('id', ParseIntPipe) id: number) {
     return await this.topicsService.getTopicById(id);
   }
 
-  @Post('/add')
-  async createTopic(@Body() topicDto: TopicDto): Promise<TopicGlobal> {
-    return await this.topicsService.createTopic(topicDto);
-  }
-
-  @Put('/update/:id')
-  async updateTopic(
-    @Body() topicDto: TopicDto,
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<TopicGlobal> {
-    return await this.topicsService.updateTopic(id, topicDto);
-  }
-
-  @Delete('/delete/:id')
-  async deleteTopic(@Body() id: number): Promise<boolean> {
-    return await this.topicsService.deleteTopic(id);
-  }
 }

@@ -7,50 +7,66 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ExamsService } from './exams.service';
-import { ExamGlobal } from 'src/global/exam.global';
 import { CreateExamDto } from './dto/create-exam.dto';
-import { QuestionGlobal } from 'src/global/question.global';
 
-@Controller('/api/exams')
+@Controller('/api')
 export class ExamsController {
   constructor(private readonly examsService: ExamsService) {}
 
-  @Get('/')
-  async getExams(): Promise<ExamGlobal[]> {
-    return await this.examsService.findAll();
+  // @Get('/exams')
+  // async getExams(
+  //   @Query('licenseId') licenseId: number
+  // ) {
+  //   return await this.examsService.findAll();
+  // }
+
+  @Get('/exams')
+  async getExamWithLicenseId(
+    @Query('licenseId') licenseId: number,
+  ) {
+    return await this.examsService.getExamWithLicenseId(licenseId);
   }
 
-  @Get('/:examId/questions')
-  async getExamQuestion(
-    @Param('id', ParseIntPipe) examId: number,
-  ): Promise<QuestionGlobal> {
-    return await this.examsService.findQuestionByExamId(examId);
-  }
-
-  @Get('/:id')
+  @Get('/exams/:id')
   async getExamById(
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<ExamGlobal> {
+  ) {
     return await this.examsService.findById(id);
   }
 
-  @Post('/add')
-  async addExam(@Body() examDto: CreateExamDto): Promise<ExamGlobal> {
+  @Post('/exams/add')
+  async addExam(@Body() examDto: CreateExamDto) {
     return await this.examsService.create(examDto);
   }
 
-  @Put('/update/:id')
+  @Put('/exams/update/:id')
   async updateExam(
     @Param('id', ParseIntPipe) id: number,
     @Body() examDto: CreateExamDto,
-  ): Promise<ExamGlobal> {
+  ) {
     return await this.examsService.update(id, examDto);
   }
 
-  @Delete('/delete/:id')
-  async delete(@Param('id', ParseIntPipe) id: number): Promise<boolean> {
+  @Delete('/exams/delete/:id')
+  async delete(@Param('id', ParseIntPipe) id: number) {
     return await this.examsService.delete(id);
   }
+
+  @Post('/exams/insert')
+  async insert() {
+    await this.examsService.insert();
+    return 'successfully inserted'
+  }
+
+
+  @Post('/exams/seed')
+  async addLicenseToExam() {
+    await this.examsService.addLicenseToExam();
+    return { message: 'Insert successfully' };
+  }
+
+ 
 }

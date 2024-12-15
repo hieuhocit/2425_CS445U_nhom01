@@ -1,6 +1,4 @@
 import { UserGlobal } from 'src/global/users.global';
-import { APIRepository } from './APIRepository';
+import { APIRepository } from './RootRepository';
 
-export interface IUserRepository extends APIRepository<UserGlobal> {
-  findUserByExam(examId: number): Promise<UserGlobal>;
-}
+export interface IUserRepository extends APIRepository<UserGlobal> {}

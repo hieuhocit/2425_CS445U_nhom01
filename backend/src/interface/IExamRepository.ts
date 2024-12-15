@@ -1,6 +1,8 @@
-import { APIRepository } from './APIRepository';
+import { APIRepository } from './RootRepository';
 import { ExamGlobal } from 'src/global/exam.global';
 
 export interface IExamRepository extends APIRepository<ExamGlobal> {
-  findQuestionByExamId(examId: number);
+  insertData();
+  addLicenseToExam();
+  getExamWithLicenseId(licenseId);
 }

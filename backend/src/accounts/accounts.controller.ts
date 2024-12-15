@@ -12,14 +12,9 @@ import { AccountsService } from './accounts.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 
-@Controller('account')
+@Controller('/api/accounts')
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
-
-  @Post('/add')
-  create(@Body() createAccountDto: CreateAccountDto) {
-    return this.accountsService.create(createAccountDto);
-  }
 
   @Get()
   findAll() {
@@ -29,6 +24,11 @@ export class AccountsController {
   @Get('/:id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.accountsService.findOne(+id);
+  }
+
+  @Post('/add')
+  create(@Body() createAccountDto: CreateAccountDto) {
+    return this.accountsService.create(createAccountDto);
   }
 
   @Put('/update/:id')

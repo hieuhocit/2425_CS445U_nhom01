@@ -1,27 +1,18 @@
 export class AnswerGlobal {
+  correct?: boolean;
+  question_id?: number;
   id?: number;
-  question_id?: string;
-  content?: string;
-  isCorrect?: boolean;
-  option?: string;
-  created_at?: Date;
-  updated_at?: Date;
-
+  text?: string;
+  
   constructor(
-    id?: number,
-    question_id?: string,
-    content?: string,
-    isCorrect?: boolean,
-    option?: string,
-    created_at?: Date,
-    updated_at?: Date,
+    correct: boolean,
+    question_id: number,
+    id: number,
+    text: string,
   ) {
+    this.correct = correct;
     this.id = id;
     this.question_id = question_id;
-    this.content = content;
-    this.isCorrect = isCorrect;
-    this.option = option;
-    this.created_at = created_at;
-    this.updated_at = updated_at;
+    this.text = text;
   }
 }

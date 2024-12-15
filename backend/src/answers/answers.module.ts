@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AnswersService } from './answers.service';
 import { AnswersController } from './answers.controller';
-import { AnswerEntity } from './entities/answer.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AnswersRepository } from './answer.repository';
+import { AnswerEntity } from './entities/answer.entity';
+import { AnswerReposiotry } from './answers.reposiory';
 
 @Module({
   imports: [TypeOrmModule.forFeature([AnswerEntity])],
@@ -11,8 +11,8 @@ import { AnswersRepository } from './answer.repository';
   providers: [
     AnswersService,
     {
-      useClass: AnswersRepository,
-      provide: 'IAnswersRepository',
+      useClass: AnswerReposiotry,
+      provide: 'IAnswerRepository',
     },
   ],
 })

@@ -1,17 +1,31 @@
-import { QuestionEntity } from 'src/questions/entities/question.entity';
-import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ExamsLicenseEntity } from 'src/exams_licenses/entities/exams_license.entity';
+import { LicenseEntity } from 'src/licenses/entities/license.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  BaseEntity,
+  OneToMany,
+  JoinTable,
+} from 'typeorm';
 
 @Entity('exams')
 export class ExamEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
+  @Column({ length: 255 })
+  title: string;
 
-  @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
+  @OneToMany(() => ExamsLicenseEntity, (examsLicenses) => examsLicenses.exam)
+  exams_licenses: ExamsLicenseEntity[];
 
-  @OneToMany(() => QuestionEntity, question => question.exam)
-  questions: QuestionEntity[];
+  @ManyToMany(() => LicenseEntity, (licenses) => licenses.exams)
+  @JoinTable({
+    name: 'exams_licenses',
+    joinColumns: [{ name: 'exam_id', referencedColumnName: 'id'}],
+    inverseJoinColumns: [{ name: 'license_id', referencedColumnName: 'id'}],
+  })
+  licenses: LicenseEntity[];
 }
