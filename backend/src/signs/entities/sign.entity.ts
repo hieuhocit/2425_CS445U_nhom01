@@ -30,6 +30,6 @@ export class SignEntity extends BaseEntity {
   @ManyToOne(() => SignTopicEntity, (signTopic) => signTopic.signs)
   signTopic: SignTopicEntity;
 
-  @Column() 
+  @Column()
   sign_topic_id: number;
 }

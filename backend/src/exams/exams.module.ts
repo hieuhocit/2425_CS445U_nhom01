@@ -8,7 +8,9 @@ import { LicenseEntity } from 'src/licenses/entities/license.entity';
 import { ExamsLicenseEntity } from 'src/exams_licenses/entities/exams_license.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ExamEntity, LicenseEntity, ExamsLicenseEntity])],
+  imports: [
+    TypeOrmModule.forFeature([ExamEntity, LicenseEntity, ExamsLicenseEntity]),
+  ],
   controllers: [ExamsController],
   providers: [
     ExamsService,
@@ -19,4 +21,3 @@ import { ExamsLicenseEntity } from 'src/exams_licenses/entities/exams_license.en
   ],
 })
 export class ExamsModule {}
-

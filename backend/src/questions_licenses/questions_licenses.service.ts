@@ -1,18 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QuestionsLicenseEntity } from './entities/questions_license.entity';
 import { Repository } from 'typeorm';
-import { ILicense, IQuestion } from 'src/data/type';
 import { licenses, questions } from 'src/data/data';
 import { QuestionEntity } from 'src/questions/entities/question.entity';
 import { LicenseEntity } from 'src/licenses/entities/license.entity';
-
-const questionData: IQuestion[] = questions;
-const licenseData: ILicense[] = licenses;
+import { QuestionsLicenseEntity } from './entities/questions_license.entity';
 
 @Injectable()
 export class QuestionsLicensesService {
-
   constructor(
     @InjectRepository(QuestionsLicenseEntity)
     private questionsLicenseRepository: Repository<QuestionsLicenseEntity>,
@@ -34,7 +29,9 @@ export class QuestionsLicensesService {
       });
 
       for (const licenseId of question.license_ids) {
-        const license = await this.licensesRepository.findOne({ where: { id: licenseId } });
+        const license = await this.licensesRepository.findOne({
+          where: { id: licenseId },
+        });
         if (license) {
           await this.questionsRepository
             .createQueryBuilder()
@@ -49,5 +46,4 @@ export class QuestionsLicensesService {
       await this.licensesRepository.save(license);
     }
   }
-
 }

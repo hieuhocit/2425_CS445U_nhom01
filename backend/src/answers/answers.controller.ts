@@ -45,6 +45,6 @@ export class AnswersController {
   @Post('/answers/insert')
   async insert() {
     await this.answersService.insert();
-    return { message: 'Data inserted successfully'}
+    return { message: 'Data inserted successfully' };
   }
 }

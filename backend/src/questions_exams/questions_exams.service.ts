@@ -14,13 +14,12 @@ export class QuestionsExamsService {
 
   async insertQE() {
     const qeData: IQuestion[] = questions;
-    for (const data in qeData) {
-      await this.questionsExamRepository.save(qeData.map(data => ({
+    await this.questionsExamRepository.save(
+      qeData.map((data) => ({
         question_id: data.id,
-        exam_id: data.exam_ids[0], // Assuming exam_ids is an array of numbers
-      })));
-    }  
-    return { message: 'Data seeded successfully' };   
+        exam_id: data.exam_ids[0],
+      })),
+    );
+    return { message: 'Data seeded successfully' };
   }
-
 }

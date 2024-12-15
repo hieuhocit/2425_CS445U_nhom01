@@ -38,6 +38,4 @@ export class QuestionsService {
   async insertData() {
     return await this.questionsRepository.insertData();
   }
-
-
 }

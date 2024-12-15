@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { BaseRepository } from 'src/interface/BaseRepository';
 import { TopicEntity } from './entities/topic.entity';
 import { ITopicRepository } from 'src/interface/ITopicRepository';
-import { QuestionEntity } from 'src/questions/entities/question.entity';
 
 @Injectable()
 export class TopicRepository
@@ -13,7 +12,7 @@ export class TopicRepository
 {
   constructor(
     @InjectRepository(TopicEntity)
-    private topicRepository: Repository<TopicEntity>
+    private topicRepository: Repository<TopicEntity>,
   ) {
     super(topicRepository);
   }

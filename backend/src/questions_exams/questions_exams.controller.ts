@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import { QuestionsExamsService } from './questions_exams.service';
 
 @Controller('/api/questions-exams')
@@ -9,5 +9,4 @@ export class QuestionsExamsController {
   async insert() {
     return await this.questionsExamsService.insertQE();
   }
-
 }

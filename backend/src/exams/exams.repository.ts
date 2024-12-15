@@ -63,6 +63,4 @@ export class ExamsReposiotry
       await this.examsRepository.save(exam);
     }
   }
-
-  
 }

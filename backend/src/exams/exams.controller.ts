@@ -24,16 +24,12 @@ export class ExamsController {
   // }
 
   @Get('/exams')
-  async getExamWithLicenseId(
-    @Query('licenseId') licenseId: number,
-  ) {
+  async getExamWithLicenseId(@Query('licenseId') licenseId: number) {
     return await this.examsService.getExamWithLicenseId(licenseId);
   }
 
   @Get('/exams/:id')
-  async getExamById(
-    @Param('id', ParseIntPipe) id: number,
-  ) {
+  async getExamById(@Param('id', ParseIntPipe) id: number) {
     return await this.examsService.findById(id);
   }
 
@@ -58,15 +54,12 @@ export class ExamsController {
   @Post('/exams/insert')
   async insert() {
     await this.examsService.insert();
-    return 'successfully inserted'
+    return 'successfully inserted';
   }
-
 
   @Post('/exams/seed')
   async addLicenseToExam() {
     await this.examsService.addLicenseToExam();
     return { message: 'Insert successfully' };
   }
-
- 
 }

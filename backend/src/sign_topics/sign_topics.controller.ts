@@ -18,6 +18,6 @@ export class SignTopicsController {
   @Post('/insert')
   async insert() {
     this.signTopicsService.insert();
-    return { message: 'Inserted successfully' }
+    return { message: 'Inserted successfully' };
   }
 }

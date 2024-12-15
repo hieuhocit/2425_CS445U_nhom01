@@ -1,12 +1,4 @@
-// import { QuestionEntity } from 'src/questions/entities/question.entity';
-import { QuestionEntity } from 'src/questions/entities/question.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  BaseEntity,
-  OneToMany,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
 
 @Entity('topics')
 export class TopicEntity extends BaseEntity {

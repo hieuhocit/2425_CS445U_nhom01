@@ -1,10 +1,8 @@
 import { LicenseEntity } from 'src/licenses/entities/license.entity';
-import { TopicEntity } from 'src/topics/entities/topic.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
   BaseEntity,
   ManyToMany,
 } from 'typeorm';
@@ -29,6 +27,6 @@ export class QuestionEntity extends BaseEntity {
   @Column()
   topic_id: number;
 
-  @ManyToMany(() => LicenseEntity, (license) => license.questions) 
+  @ManyToMany(() => LicenseEntity, (license) => license.questions)
   licenses: LicenseEntity[];
 }

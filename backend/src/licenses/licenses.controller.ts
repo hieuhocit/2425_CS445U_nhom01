@@ -19,5 +19,4 @@ export class LicensesController {
   async createLicense() {
     return await this.licensesService.insert();
   }
-
 }

@@ -56,7 +56,7 @@ import { QuestionsExamsModule } from './questions_exams/questions_exams.module';
     LawTopicsModule,
     ExamsLicensesModule,
     QuestionsLicensesModule,
-    QuestionsExamsModule
+    QuestionsExamsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { ViolationsService } from './violations.service';
 
 @Controller('/api/law/violations')
@@ -11,9 +11,7 @@ export class ViolationsController {
   }
 
   @Get(':id')
-  async getViolationById(
-    @Param('id', ParseIntPipe) id: number,
-  ) {
+  async getViolationById(@Param('id', ParseIntPipe) id: number) {
     return this.violationsService.getViolationById(id);
   }
 

@@ -17,11 +17,13 @@ export class ViolationsService {
   }
 
   async getViolationById(id: number) {
-    const violation = await this.violationRepository.findOne({where: { id }});
+    const violation = await this.violationRepository.findOne({ where: { id } });
 
     if (violation && violation.relations.length > 0) {
-      const relations = await this.violationRepository.findByIds(violation.relations);
-      violation.relations = relations
+      const relations = await this.violationRepository.findByIds(
+        violation.relations,
+      );
+      violation.relations = relations;
     }
     return violation;
   }
@@ -33,5 +35,6 @@ export class ViolationsService {
       bookmarks: violation.bookmarks,
     }));
     // await this.violationRepository.save(violationData);
+    return violationData;
   }
 }

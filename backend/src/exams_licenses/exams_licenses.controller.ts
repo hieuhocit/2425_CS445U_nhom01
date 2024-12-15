@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { ExamsLicensesService } from './exams_licenses.service';
 
 @Controller('/api/exams-licenses')

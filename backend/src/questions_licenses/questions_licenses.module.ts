@@ -7,7 +7,13 @@ import { QuestionEntity } from 'src/questions/entities/question.entity';
 import { LicenseEntity } from 'src/licenses/entities/license.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([QuestionsLicenseEntity, QuestionEntity, LicenseEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      QuestionsLicenseEntity,
+      QuestionEntity,
+      LicenseEntity,
+    ]),
+  ],
   controllers: [QuestionsLicensesController],
   providers: [QuestionsLicensesService],
 })

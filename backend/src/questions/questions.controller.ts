@@ -17,11 +17,11 @@ import { CreateQuestionDto } from './dto/create-question.dto';
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
-  @Get('/') 
+  @Get('/')
   async getQuestions(
     @Query('licenseId', ParseIntPipe)
     licenseId?: number,
-    @Query('topicId', ParseIntPipe) 
+    @Query('topicId', ParseIntPipe)
     topicId?: number,
   ) {
     return this.questionsService.getQuestions(topicId, licenseId);

@@ -9,8 +9,8 @@ export class LawTopicsService {
   constructor(
     @InjectRepository(LawTopicEntity)
     private readonly lawTopicRepository: Repository<LawTopicEntity>,
-    @InjectRepository(ViolationEntity) 
-    private violationsRepository: Repository<ViolationEntity>
+    @InjectRepository(ViolationEntity)
+    private violationsRepository: Repository<ViolationEntity>,
   ) {}
 
   async findAll() {
@@ -23,12 +23,11 @@ export class LawTopicsService {
 
   async findViolations(topicId: number, violationType: number) {
     return this.violationsRepository.find({
-      where: { 
-        lawTopic: { id: topicId }, 
-        violation_type: violationType 
+      where: {
+        lawTopic: { id: topicId },
+        violation_type: violationType,
       },
       relations: ['lawTopic'],
     });
   }
 }
-

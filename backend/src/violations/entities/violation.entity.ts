@@ -41,7 +41,7 @@ export class ViolationEntity extends BaseEntity {
   keyword: string;
 
   @Column({ type: 'simple-array' })
-  relations: ViolationEntity[];;
+  relations: ViolationEntity[];
 
   @Column({ type: 'json', nullable: true })
   bookmarks: IBookmark[];

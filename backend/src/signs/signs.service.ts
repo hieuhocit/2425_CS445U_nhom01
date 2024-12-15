@@ -13,14 +13,13 @@ export class SignsService {
     private signRepository: Repository<SignEntity>,
     @InjectRepository(SignTopicEntity)
     private signTopicRepository: Repository<SignTopicEntity>,
-    
   ) {}
 
   async getSignByTopcId(topicId: number) {
     return await this.signRepository.find({
-      where: { 
-        signTopic: { id: topicId }
-      }
+      where: {
+        signTopic: { id: topicId },
+      },
     });
   }
 
@@ -29,10 +28,9 @@ export class SignsService {
       where: { id },
       relations: ['signTopic'],
     });
-    delete sign.sign_topic_id
-    return sign
+    delete sign.sign_topic_id;
+    return sign;
   }
-
 
   async insertSign() {
     const signsData: ISign[] = signs.map((sign) => ({

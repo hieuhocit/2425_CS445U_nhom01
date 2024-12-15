@@ -32,7 +32,7 @@ export class ExamsService {
   }
 
   async getExamWithLicenseId(licenseId: number) {
-    return await this.examRepository.getExamWithLicenseId(licenseId)
+    return await this.examRepository.getExamWithLicenseId(licenseId);
   }
 
   async insert() {
@@ -40,8 +40,6 @@ export class ExamsService {
   }
 
   async addLicenseToExam() {
-    return await this.examRepository.addLicenseToExam()
+    return await this.examRepository.addLicenseToExam();
   }
-
-
 }

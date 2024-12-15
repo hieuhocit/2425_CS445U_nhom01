@@ -19,5 +19,4 @@ export class LicensesService {
   async insert() {
     return await this.licenseRepository.insertData();
   }
-  
 }

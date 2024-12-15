@@ -24,8 +24,8 @@ export class ExamEntity extends BaseEntity {
   @ManyToMany(() => LicenseEntity, (licenses) => licenses.exams)
   @JoinTable({
     name: 'exams_licenses',
-    joinColumns: [{ name: 'exam_id', referencedColumnName: 'id'}],
-    inverseJoinColumns: [{ name: 'license_id', referencedColumnName: 'id'}],
+    joinColumns: [{ name: 'exam_id', referencedColumnName: 'id' }],
+    inverseJoinColumns: [{ name: 'license_id', referencedColumnName: 'id' }],
   })
   licenses: LicenseEntity[];
 }

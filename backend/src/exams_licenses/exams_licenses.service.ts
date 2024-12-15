@@ -12,7 +12,7 @@ export class ExamsLicensesService {
     @InjectRepository(ExamsLicenseEntity)
     private readonly examLicenseRepository: Repository<ExamsLicenseEntity>,
     @InjectRepository(ExamEntity)
-    private examsRepository: Repository<ExamEntity>
+    private examsRepository: Repository<ExamEntity>,
   ) {}
 
   async getAllExamsLicenses() {
@@ -20,17 +20,20 @@ export class ExamsLicensesService {
   }
 
   async seedExamLicenses() {
-    const examLicenses: IExam[] = exams
-    for (const data of examLicenses) { 
-      const exam = await this.examsRepository.save({ id: data.id, title: data.title, }); 
-      for (const licenseId of data.license_ids) { 
-        await this.examsRepository 
-        .createQueryBuilder() 
-        .relation(ExamEntity, 'licenses') 
-        .of(exam) 
-        .add(licenseId); 
-    } }
+    const examLicenses: IExam[] = exams;
+    for (const data of examLicenses) {
+      const exam = await this.examsRepository.save({
+        id: data.id,
+        title: data.title,
+      });
+      for (const licenseId of data.license_ids) {
+        await this.examsRepository
+          .createQueryBuilder()
+          .relation(ExamEntity, 'licenses')
+          .of(exam)
+          .add(licenseId);
+      }
+    }
     return { message: 'Data seeded successfully' };
   }
 }
-

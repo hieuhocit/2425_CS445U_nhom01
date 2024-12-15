@@ -36,4 +36,3 @@ export class AnswersService {
     await this.answerRepository.insertData();
   }
 }
-
