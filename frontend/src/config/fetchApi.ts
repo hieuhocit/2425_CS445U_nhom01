@@ -32,3 +32,10 @@ export async function postApiWithAuth(pathname: string, data: object) {
     body: JSON.stringify(data),
   });
 }
+
+export async function getApiWithAuth(pathname: string) {
+  return fetch(`${apiUrl}/${pathname}`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+}
