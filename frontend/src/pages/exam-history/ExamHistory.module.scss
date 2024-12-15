@@ -18,7 +18,8 @@
       margin-top: 48px;
 
       .item {
-        a {
+        a,
+        div {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -29,6 +30,8 @@
           border-radius: 16px;
           padding: 24px 32px;
           height: 110px;
+
+          cursor: pointer;
 
           transition: transform 0.25s ease-in-out;
 
@@ -48,6 +51,12 @@
       }
     }
 
+    .message {
+      text-align: center;
+      margin-top: 48px;
+      font-size: 1.5rem;
+    }
+
     @media (max-width: 460px) {
       & {
         &.main {
@@ -59,7 +68,8 @@
             margin-inline: 24px;
             grid-template-columns: repeat(2, minmax(120px, 1fr));
             .item {
-              a {
+              a,
+              div {
                 font-size: 1.2rem;
               }
             }
@@ -86,8 +96,13 @@
         color: $color-dark-mode;
       }
 
+      .message {
+        color: $color-dark-mode;
+      }
+
       .list {
         .item {
+          div,
           a {
             color: $color-dark-mode;
             background-color: $background-dark-mode-2;
