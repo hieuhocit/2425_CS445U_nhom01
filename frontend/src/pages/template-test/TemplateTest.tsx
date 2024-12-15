@@ -19,7 +19,15 @@ import { useEffect, useRef, useState } from 'react';
 import { convertMsToHHMMSS } from '@/utils/time';
 
 /** react-router */
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
+/** API */
+import { postApiWithAuth } from '@/config/fetchApi';
+
+/** react-redux */
+import { useSelector } from 'react-redux';
+import { currentLicenseIdSelector } from '@/store/setting/settingSelector';
+import { loginSelector } from '@/store/auth/authSelector';
 
 export default function TemplateTestPage({
   path,
@@ -53,6 +61,9 @@ export default function TemplateTestPage({
   const intervalIdRef = useRef<number | undefined>(undefined);
 
   const navigate = useNavigate();
+  const { examId } = useParams();
+  const currentLicenseId = useSelector(currentLicenseIdSelector);
+  const isLoggedIn = useSelector(loginSelector);
 
   const currentQuestion: IQuestion | undefined = questions?.[currentIndex];
 
@@ -113,17 +124,26 @@ export default function TemplateTestPage({
     setQuestions(cloneQuestions);
   }
 
-  function handleSubmitExam() {
+  async function handleSubmitExam() {
     if (behavior === 'view') return;
-
-    // Handle data before send to server
     if (!questions) return;
-    // Send result to server
-    // Get response from server and handle error
-    // Navigate to result page
+
+    if (isLoggedIn) {
+      const res = await postApiWithAuth('user/exam', {
+        questions,
+        exam_id: examId,
+        license_id: currentLicenseId,
+      });
+
+      const resData = await res.json();
+
+      console.log(resData);
+    }
 
     setShowModal(false);
-    navigate(`result`, { state: { questions } });
+    navigate(`result`, {
+      state: { prevPath: '/list-exam', title: 'Kết quả bài thi', questions },
+    });
   }
   // Modal
   function handleCloseModal() {
