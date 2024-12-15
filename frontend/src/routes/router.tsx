@@ -24,19 +24,24 @@ import ListViolationPage, {
 import ViolationDetailsPage, {
   loader as violationDetailsLoader,
 } from '@/pages/list-violation/violation-details/ViolationDetails';
-import ListWrongPage from '@/pages/list-wrong/ListWrong';
+import ListWrongPage, {
+  loader as listWrongLoader,
+} from '@/pages/list-wrong/ListWrong';
 import ListRequiredPage from '@/pages/list-required/ListRequired';
 import ReviewPage from '@/pages/review/Review';
 import ListTopicPage from '@/pages/list-topic/ListTopic';
 import TopicDetailsPage from '@/pages/list-topic/topic-details/TopicDetails';
 import ExamPage, { loader as examLoader } from '@/pages/exam/Exam';
-import ExamResultPage from '@/pages/exam-result/ExamResult';
+import ExamResultPage, {
+  loader as examResultLoader,
+} from '@/pages/exam-result/ExamResult';
 import LoginPage from '@/pages/login/Login';
 import RegisterPage, {
   action as registerAction,
 } from '@/pages/register/Register';
-import ExamHistoryPage from '@/pages/exam-history/ExamHistory';
-import DetailsExamHistoryPage from '@/pages/exam-history/details-exam-history/DetailsExamHistory';
+import ExamHistoryPage, {
+  loader as examHistoryLoader,
+} from '@/pages/exam-history/ExamHistory';
 import ProfilePage from '@/pages/profile/Profile';
 import AdminPage from '@/pages/admin/Admin';
 import Statistical from '@/components/statistical/Statistical';
@@ -103,6 +108,7 @@ const router = createBrowserRouter([
             <ListWrongPage />
           </ProtectedRoute>
         ),
+        loader: listWrongLoader,
       },
       {
         path: '/list-required',
@@ -171,14 +177,16 @@ const router = createBrowserRouter([
             <ExamHistoryPage />
           </ProtectedRoute>
         ),
+        loader: examHistoryLoader,
       },
       {
-        path: '/exam-history/:examId',
+        path: '/exam-history/:examHistoryId',
         element: (
           <ProtectedRoute>
-            <DetailsExamHistoryPage />
+            <ExamResultPage />
           </ProtectedRoute>
         ),
+        loader: examResultLoader,
       },
       {
         path: '/admin',
