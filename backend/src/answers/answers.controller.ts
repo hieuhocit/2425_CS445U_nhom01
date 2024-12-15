@@ -1,48 +1,50 @@
 import {
-  Body,
   Controller,
-  Delete,
   Get,
-  Param,
-  ParseIntPipe,
   Post,
-  Put,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { AnswersService } from './answers.service';
-import { AnswerGlobal } from 'src/global/answer.global';
-import { AnswerDto } from './dto/answer.dto';
+import { CreateAnswerDto } from './dto/create-answer.dto';
+import { UpdateAnswerDto } from './dto/update-answer.dto';
 
-@Controller('answers')
+@Controller('/api')
 export class AnswersController {
   constructor(private readonly answersService: AnswersService) {}
 
-  @Get('/')
-  async getAnswers(): Promise<AnswerGlobal[]> {
-    return await this.answersService.findAnswerAll();
+  @Get('/answers')
+  findAll() {
+    console.log('Fetching answers');
+    return this.answersService.findAll();
   }
 
-  @Get('/:id')
-  async getAnswerById(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<AnswerGlobal> {
-    return await this.answersService.findAnswerById(id);
+  @Get('/answers/:id')
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.answersService.findById(id);
   }
 
-  @Post('/add')
-  async add(@Body() answersDto: AnswerDto): Promise<AnswerGlobal> {
-    return await this.answersService.createAnswer(answersDto);
+  @Post()
+  create(@Body() createAnswerDto: CreateAnswerDto) {
+    return this.answersService.create(createAnswerDto);
   }
 
-  @Put('/update/:id')
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() answersDto: AnswerDto,
-  ): Promise<AnswerGlobal> {
-    return await this.answersService.updateAnswer(id, answersDto);
+  @Patch('/answers/:id')
+  update(@Param('id') id: string, @Body() updateAnswerDto: UpdateAnswerDto) {
+    return this.answersService.update(+id, updateAnswerDto);
   }
 
-  @Delete('/delete/:id')
-  async delete(@Param('id', ParseIntPipe) id: number): Promise<boolean> {
-    return await this.answersService.deleteAnswer(id);
+  @Delete('/answers/:id')
+  remove(@Param('id') id: string) {
+    return this.answersService.delete(+id);
+  }
+
+  @Post('/answers/insert')
+  async insert() {
+    await this.answersService.insert();
+    return { message: 'Data inserted successfully' };
   }
 }

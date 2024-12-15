@@ -4,9 +4,9 @@ import { QuestionEntity } from './entities/question.entity';
 import { Repository } from 'typeorm';
 import { BaseRepository } from 'src/interface/BaseRepository';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QuestionGlobal } from 'src/global/question.global';
-import { TopicEntity } from 'src/topics/entities/topic.entity';
-import { CreateQuestionDto } from './dto/create-question.dto';
+import { IQuestion } from 'src/data/type';
+import { questions } from 'src/data/data';
+import { LicenseEntity } from 'src/licenses/entities/license.entity';
 
 @Injectable()
 export class QuestionsReposiotry
@@ -15,32 +15,33 @@ export class QuestionsReposiotry
 {
   constructor(
     @InjectRepository(QuestionEntity)
-    private questionRepository: Repository<QuestionEntity>,
-    @InjectRepository(TopicEntity)
-    private topicRepository: Repository<TopicEntity>,
+    private questionsRepository: Repository<QuestionEntity>,
+    @InjectRepository(LicenseEntity)
+    private licensesRepository: Repository<LicenseEntity>,
   ) {
-    super(questionRepository);
+    super(questionsRepository);
   }
-  async getAllQuestions(): Promise<QuestionGlobal[]> {
-    return await this.questionRepository.find({ relations: ['topic'] });
-  }
-
-  getQuestionByQuestionId(questionId: number): Promise<QuestionGlobal> {
-    return this.questionRepository.findOneBy({ id: questionId });
-  }
-
-  async createQuestion(
-    questionDto: CreateQuestionDto,
-  ): Promise<QuestionGlobal> {
-    const topic = await this.topicRepository.findOne({
-      where: { id: questionDto.topic_id },
-    });
-    console.log(111, topic);
-    if (!topic) {
-      throw new Error('Topic not found');
+  async getQuestions(topicId?: number, licenseId?: number): Promise<any[]> {
+    const query = this.questionsRepository
+      .createQueryBuilder('q')
+      .leftJoinAndSelect('q.licenses', 'l');
+    if (licenseId) {
+      query.andWhere('l.id = :licenseId', { licenseId });
     }
-    const question = this.questionRepository.create({ ...questionDto, topic });
-    console.log(222, question);
-    return await this.questionRepository.save(question);
+    if (topicId !== undefined && topicId !== 1) {
+      query.andWhere('q.topic_id = :topicId', { topicId });
+    }
+    if (topicId === 9) {
+      query.andWhere('q.required = true');
+    }
+    const questions = await query.getMany();
+    return questions;
+  }
+
+  async insertData() {
+    const questionData: IQuestion[] = questions.map((ques) => ({
+      ...ques,
+    }));
+    await this.questionsRepository.save(questionData);
   }
 }

@@ -1,31 +1,37 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  JoinColumn,
+  BaseEntity,
+} from 'typeorm';
+import { AccountEntity } from 'src/accounts/entities/account.entity';
 
 @Entity('users')
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ length: 30 })
+  firstName: string;
+
+  @Column({ length: 30 })
+  lastName: string;
+
+  @Column({ length: 255, nullable: true })
   avatar: string;
 
-  @Column()
-  fullName: string;
-
-  @Column()
+  @Column({ length: 255 })
   email: string;
 
-  @Column()
-  phone_number: string;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 
-  @Column()
-  gender: boolean;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
 
-  @Column()
-  birthday: string;
-
-  @Column()
-  created_at: Date;
-
-  @Column()
-  updated_at: Date;
+  @OneToOne(() => AccountEntity, { cascade: true })
+  @JoinColumn()
+  account: AccountEntity;
 }

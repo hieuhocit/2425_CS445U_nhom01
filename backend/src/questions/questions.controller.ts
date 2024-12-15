@@ -7,19 +7,24 @@ import {
   Put,
   ParseIntPipe,
   Body,
+  Query,
 } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { CreateQuestionDto } from './dto/create-question.dto';
-import { QuestionGlobal } from 'src/global/question.global';
 
-@Controller('question')
+@Controller('/api/questions')
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
   @Get('/')
-  async getQuestions() {
-    return await this.questionsService.findAll();
+  async getQuestions(
+    @Query('licenseId', ParseIntPipe)
+    licenseId?: number,
+    @Query('topicId', ParseIntPipe)
+    topicId?: number,
+  ) {
+    return this.questionsService.getQuestions(topicId, licenseId);
   }
 
   @Get('/:id')
@@ -46,13 +51,9 @@ export class QuestionsController {
     return await this.questionsService.delete(id);
   }
 
-  @Get('/all')
-  async getAllQuestions(): Promise<QuestionGlobal[]> {
-    return await this.questionsService.getAllQuestions();
-  }
-
-  @Post('/create/by-topic')
-  async create(@Body() createQuestionDto: any): Promise<QuestionGlobal> {
-    return this.questionsService.createQuestion(createQuestionDto);
+  @Post('/insert')
+  async addData() {
+    await this.questionsService.insertData();
+    return { message: 'Question inserted successfully' };
   }
 }

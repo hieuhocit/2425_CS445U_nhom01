@@ -5,9 +5,12 @@ import { QuestionEntity } from './entities/question.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { QuestionsReposiotry } from './questions.repository';
 import { TopicEntity } from 'src/topics/entities/topic.entity';
+import { LicenseEntity } from 'src/licenses/entities/license.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([QuestionEntity, TopicEntity])],
+  imports: [
+    TypeOrmModule.forFeature([QuestionEntity, TopicEntity, LicenseEntity]),
+  ],
   controllers: [QuestionsController],
   providers: [
     QuestionsService,

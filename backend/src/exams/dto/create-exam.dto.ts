@@ -1,5 +1,4 @@
-import { Type } from 'class-transformer';
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsNumber, IsString } from 'class-validator';
 
 export class CreateExamDto {
   @IsNumber()
@@ -8,22 +7,8 @@ export class CreateExamDto {
   @IsString()
   title: string;
 
-  @IsNumber()
-  user_id: number;
-
-  @IsDate()
-  @Type(() => Date)
-  start_time: Date;
-
-  @IsDate()
-  @Type(() => Date)
-  end_time: Date;
-
-  @IsDate()
-  @Type(() => Date)
-  created_at: Date;
-
-  @IsDate()
-  @Type(() => Date)
-  updated_at: Date;
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsNumber({}, { each: true })
+  license_ids: number[];
 }

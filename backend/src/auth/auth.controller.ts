@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { Public } from 'src/decorators/decorator';
 import { AuthPayloadDto, AuthPermission } from './dto/auth.dto';
 
-@Controller('auth')
+@Controller('/api/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -22,7 +22,6 @@ export class AuthController {
     @Body() authPayload: AuthPayloadDto,
   ): Promise<AuthPermission | boolean> {
     const result = await this.authService.signUp(authPayload);
-    // console.log(111, result);
     if (!result) {
       throw new BadRequestException('Invalid username or password');
     }

@@ -2,21 +2,26 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import { UserResultsModule } from './user_results/user_results.module';
 import { QuestionsModule } from './questions/questions.module';
-import { HistoryModule } from './history/history.module';
 import { ExamsModule } from './exams/exams.module';
-import { ExamsQuestionsModule } from './exams_questions/exams_questions.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { ExamsResultModule } from './exams_result/exams_result.module';
 import { TopicsModule } from './topics/topics.module';
-import { MistakeQuestionsModule } from './mistake_questions/mistake_questions.module';
-import { QuestionTopicsModule } from './question_topics/question_topics.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants/constant';
 import { AccountsModule } from './accounts/accounts.module';
+import { SignTopicsModule } from './sign_topics/sign_topics.module';
+import { AnswerHistoriesModule } from './answer_histories/answer_histories.module';
+import { ExamHistoriesModule } from './exam_histories/exam_histories.module';
+import { SignsModule } from './signs/signs.module';
+import { LicensesModule } from './licenses/licenses.module';
+import { AnswersModule } from './answers/answers.module';
+import { ViolationsModule } from './violations/violations.module';
+import { LawTopicsModule } from './law_topics/law_topics.module';
+import { ExamsLicensesModule } from './exams_licenses/exams_licenses.module';
+import { QuestionsLicensesModule } from './questions_licenses/questions_licenses.module';
+import { QuestionsExamsModule } from './questions_exams/questions_exams.module';
 
 @Module({
   imports: [
@@ -36,17 +41,22 @@ import { AccountsModule } from './accounts/accounts.module';
       signOptions: { expiresIn: 90000 },
     }),
     UsersModule,
-    UserResultsModule,
-    QuestionsModule,
-    HistoryModule,
-    ExamsModule,
-    ExamsQuestionsModule,
-    ExamsResultModule,
-    TopicsModule,
-    MistakeQuestionsModule,
-    QuestionTopicsModule,
-    AuthModule,
     AccountsModule,
+    QuestionsModule,
+    ExamsModule,
+    TopicsModule,
+    AuthModule,
+    SignTopicsModule,
+    AnswerHistoriesModule,
+    ExamHistoriesModule,
+    SignsModule,
+    LicensesModule,
+    AnswersModule,
+    ViolationsModule,
+    LawTopicsModule,
+    ExamsLicensesModule,
+    QuestionsLicensesModule,
+    QuestionsExamsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

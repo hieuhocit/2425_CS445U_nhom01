@@ -16,12 +16,4 @@ export class UsersRepository
   ) {
     super(usersRepository);
   }
-  async findUserByExam(id: number) {
-    const userByExam = await this.usersRepository.findOne({
-      where: { id },
-      relations: ['exam'],
-    });
-    console.log(111, userByExam);
-    return userByExam;
-  }
 }

@@ -19,11 +19,7 @@ export class AuthRepository implements IAuthRepository {
     const userAuth = await this.repository.findOne({ where: { username } });
     if (!userAuth) return false;
     const isMatch = await bcrypt.compare(password, userAuth.password);
-    // console.log(111, username, password);
-    // console.log(222, userAuth);
-    // console.log(333, isMatch);
     const payload = { ...new AuthReponseDto(userAuth) };
-    // console.log(444, payload);
     return isMatch
       ? new AuthPermission({
           id: userAuth.id,
@@ -43,7 +39,6 @@ export class AuthRepository implements IAuthRepository {
       password: hash,
       permission: Role.USER,
     });
-    // console.log('Saved User:', savedUser);
     return savedUser;
   }
 }

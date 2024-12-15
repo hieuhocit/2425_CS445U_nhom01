@@ -1,33 +1,38 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AnswerDto } from './dto/answer.dto';
+import { CreateAnswerDto } from './dto/create-answer.dto';
 import { UpdateAnswerDto } from './dto/update-answer.dto';
 import { IAnswerRepository } from 'src/interface/IAnswerRepository';
 
 @Injectable()
 export class AnswersService {
   constructor(
-    @Inject('IAnswersRepository')
-    private answersRepository: IAnswerRepository,
+    @Inject('IAnswerRepository')
+    private readonly answerRepository: IAnswerRepository,
   ) {}
 
-  async findAnswerAll() {
-    return await this.answersRepository.findAll();
+  async findAll() {
+    return await this.answerRepository.findAll();
   }
 
-  async findAnswerById(id: number) {
-    return await this.answersRepository.findById(id);
+  async findById(id: number) {
+    return await this.answerRepository.findById(id);
   }
 
-  async createAnswer(answerDto: AnswerDto) {
-    return await this.answersRepository.create(answerDto);
+  async create(createAnswerDto: CreateAnswerDto) {
+    return await this.answerRepository.create(createAnswerDto);
   }
 
-  async updateAnswer(id: number, updateAnswerDto: UpdateAnswerDto) {
-    await this.answersRepository.update(id, updateAnswerDto);
-    return this.findAnswerById(id);
+  async update(id: number, updateAnswerDto: UpdateAnswerDto) {
+    await this.answerRepository.update(id, updateAnswerDto);
+    return this.findById(id);
   }
 
-  async deleteAnswer(id: number) {
-    return await this.answersRepository.delete(id);
+  async delete(id: number) {
+    await this.answerRepository.delete(id);
+    return { message: 'Answer deleted successfully.' };
+  }
+
+  async insert() {
+    await this.answerRepository.insertData();
   }
 }
