@@ -1,7 +1,10 @@
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export async function getApi(pathname: string) {
-  return fetch(`${apiUrl}/${pathname}`);
+  return fetch(`${apiUrl}/${pathname}`, {
+    method: 'GET',
+    credentials: 'include',
+  });
 }
 
 export async function postApi(pathname: string, data: object) {
@@ -10,6 +13,7 @@ export async function postApi(pathname: string, data: object) {
     headers: {
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
     body: JSON.stringify(data),
   });
 }
