@@ -20,6 +20,7 @@ import { getExams } from './services/examApi';
 import { getQuestions } from './services/questionApi';
 import { useGetLicensesQuery } from './services/licenseApi';
 import { getTopics } from './services/topicApi';
+import { postApi } from './config/fetchApi';
 
 /** react */
 import { useEffect, useState } from 'react';
@@ -32,6 +33,11 @@ export async function loader() {
     store.getState().setting.currentLicenseId ||
     localStorage.getItem('licenseId') ||
     1;
+
+  if (!sessionStorage.getItem('visited')) {
+    postApi('track-visit', {});
+    sessionStorage.setItem('visited', 'true');
+  }
 
   const resQuestions = await getQuestions(licenseId);
   const resExams = await getExams(licenseId);
@@ -64,6 +70,9 @@ export default function Layout() {
   const licenseId = useSelector(currentLicenseIdSelector);
 
   useEffect(() => {
+    window.addEventListener('beforeunload', () =>
+      sessionStorage.removeItem('visited')
+    );
     if (!licenseId || firstRun) {
       setFirstRun(false);
       return;
