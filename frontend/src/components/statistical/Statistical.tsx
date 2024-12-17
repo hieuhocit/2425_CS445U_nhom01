@@ -22,60 +22,45 @@ import { PiExamFill } from 'react-icons/pi';
 import { BsFillQuestionCircleFill } from 'react-icons/bs';
 import { FaMapLocationDot } from 'react-icons/fa6';
 
+/** API */
+import { getApiWithAuth } from '@/config/fetchApi';
+import { useLoaderData } from 'react-router-dom';
+import { formatNumber } from '@/utils/formatNumber';
+
+type LoaderResponse = {
+  statusCode: number;
+  message: string;
+  data: {
+    user: {
+      total: number;
+      percent: number;
+    };
+    exam: {
+      total: number;
+      percent: number;
+    };
+    question: {
+      total: number;
+      percent: number;
+    };
+    visitor: {
+      total: number;
+      percent: number;
+    };
+    userRegisters: { month: string; users: number }[];
+  };
+};
+
+export async function loader() {
+  return getApiWithAuth('admin/statistics');
+}
+
 export default function Statistical() {
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
-  const users = [
-    {
-      month: 'Jan',
-      users: 2,
-    },
-    {
-      month: 'Feb',
-      users: 3,
-    },
-    {
-      month: 'Mar',
-      users: 2,
-    },
-    {
-      month: 'Apr',
-      users: 5,
-    },
-    {
-      month: 'May',
-      users: 1,
-    },
-    {
-      month: 'Jun',
-      users: 8,
-    },
-    {
-      month: 'Jul',
-      users: 4,
-    },
-    {
-      month: 'Aug',
-      users: 6,
-    },
-    {
-      month: 'Sep',
-      users: 7,
-    },
-    {
-      month: 'Oct',
-      users: 3,
-    },
-    {
-      month: 'Nov',
-      users: 6,
-    },
-    {
-      month: 'Dec',
-      users: 4,
-    },
-  ];
+  const { data } = useLoaderData() as LoaderResponse;
+
   return (
     <>
       <div
@@ -86,7 +71,7 @@ export default function Statistical() {
             <div className={styles.top}>
               <div className={styles.info}>
                 <h2>Người dùng</h2>
-                <p>1.234</p>
+                <p>{formatNumber(data.user.total)}</p>
                 <div
                   className={`${styles.bar} ${styles.backgroundBlue1}`}
                 ></div>
@@ -98,10 +83,23 @@ export default function Statistical() {
               </div>
             </div>
             <div className={styles.bottom}>
-              <FaArrowUp className={`${styles.icon} ${styles.colorGreen}`} />
+              {data.user.percent >= 0 ? (
+                <FaArrowUp className={`${styles.icon} ${styles.colorGreen}`} />
+              ) : (
+                <FaArrowDown className={`${styles.icon} ${styles.colorRed}`} />
+              )}
               <p className={styles.description}>
-                <span className={styles.colorGreen}>+6,5%</span> Kể từ tuần
-                trước
+                <span
+                  className={
+                    data.user.percent >= 0 ? styles.colorGreen : styles.colorRed
+                  }
+                >
+                  {data.question.percent < 0
+                    ? data.question.percent
+                    : `+${data.question.percent}`}
+                  %
+                </span>{' '}
+                Kể từ tuần trước
               </p>
             </div>
           </div>
@@ -109,7 +107,7 @@ export default function Statistical() {
             <div className={styles.top}>
               <div className={styles.info}>
                 <h2>Đề thi</h2>
-                <p>4.567</p>
+                <p>{formatNumber(data.exam.total)}</p>
                 <div
                   className={`${styles.bar} ${styles.backgroundTurquoise1}`}
                 ></div>
@@ -123,9 +121,23 @@ export default function Statistical() {
               </div>
             </div>
             <div className={styles.bottom}>
-              <FaArrowDown className={`${styles.icon} ${styles.colorRed}`} />
+              {data.exam.percent >= 0 ? (
+                <FaArrowUp className={`${styles.icon} ${styles.colorGreen}`} />
+              ) : (
+                <FaArrowDown className={`${styles.icon} ${styles.colorRed}`} />
+              )}
               <p className={styles.description}>
-                <span className={styles.colorRed}>-0,10%</span> Kể từ tuần trước
+                <span
+                  className={
+                    data.exam.percent >= 0 ? styles.colorGreen : styles.colorRed
+                  }
+                >
+                  {data.exam.percent < 0
+                    ? data.exam.percent
+                    : `+${data.exam.percent}`}
+                  %
+                </span>{' '}
+                Kể từ tuần trước
               </p>
             </div>
           </div>
@@ -133,7 +145,7 @@ export default function Statistical() {
             <div className={styles.top}>
               <div className={styles.info}>
                 <h2>Câu hỏi</h2>
-                <p>6.789</p>
+                <p>{formatNumber(data.question.total)}</p>
                 <div
                   className={`${styles.bar} ${styles.backgroundPurple1}`}
                 ></div>
@@ -147,9 +159,25 @@ export default function Statistical() {
               </div>
             </div>
             <div className={styles.bottom}>
-              <FaArrowDown className={`${styles.icon} ${styles.colorRed}`} />
+              {data.question.percent >= 0 ? (
+                <FaArrowUp className={`${styles.icon} ${styles.colorGreen}`} />
+              ) : (
+                <FaArrowDown className={`${styles.icon} ${styles.colorRed}`} />
+              )}
               <p className={styles.description}>
-                <span className={styles.colorRed}>-0,02%</span> Kể từ tuần trước
+                <span
+                  className={
+                    data.question.percent >= 0
+                      ? styles.colorGreen
+                      : styles.colorRed
+                  }
+                >
+                  {data.question.percent < 0
+                    ? data.question.percent
+                    : `+${data.question.percent}`}
+                  %
+                </span>{' '}
+                Kể từ tuần trước
               </p>
             </div>
           </div>
@@ -157,7 +185,7 @@ export default function Statistical() {
             <div className={styles.top}>
               <div className={styles.info}>
                 <h2>Lượt truy cập</h2>
-                <p>1.456</p>
+                <p>{formatNumber(data.visitor.total)}</p>
                 <div
                   className={`${styles.bar} ${styles.backgroundBrown1}`}
                 ></div>
@@ -171,10 +199,25 @@ export default function Statistical() {
               </div>
             </div>
             <div className={styles.bottom}>
-              <FaArrowUp className={`${styles.icon} ${styles.colorGreen}`} />
+              {data.visitor.percent >= 0 ? (
+                <FaArrowUp className={`${styles.icon} ${styles.colorGreen}`} />
+              ) : (
+                <FaArrowDown className={`${styles.icon} ${styles.colorRed}`} />
+              )}
               <p className={styles.description}>
-                <span className={styles.colorGreen}>+0,5%</span> Kể từ tuần
-                trước
+                <span
+                  className={
+                    data.visitor.percent >= 0
+                      ? styles.colorGreen
+                      : styles.colorRed
+                  }
+                >
+                  {data.visitor.percent < 0
+                    ? data.visitor.percent
+                    : `+${data.visitor.percent}`}
+                  %
+                </span>{' '}
+                Kể từ tuần trước
               </p>
             </div>
           </div>
@@ -185,7 +228,7 @@ export default function Statistical() {
             <AreaChart
               width={320}
               height={300}
-              data={users}
+              data={data.userRegisters}
               margin={{
                 top: 10,
                 right: 0,
