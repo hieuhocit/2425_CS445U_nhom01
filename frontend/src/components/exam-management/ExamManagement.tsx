@@ -20,11 +20,59 @@ import { toast } from 'react-toastify';
 /** types */
 import { IExam } from '@/types/definitions';
 
-/** DUMMY DATA */
-import { exams } from '@/data/data';
+/** react-router*/
+import {
+  LoaderFunctionArgs,
+  useLoaderData,
+  useRevalidator,
+  useSearchParams,
+} from 'react-router-dom';
+
+/** API */
+import {
+  deleteApiWithAuth,
+  getApiWithAuth,
+  postApiWithAuth,
+  putApiWithAuth,
+} from '@/config/fetchApi';
+
+type LoaderResponse = {
+  statusCode: number;
+  message: string;
+  data: {
+    exams: IExam[];
+    totalPages: number;
+    totalExams: number;
+  };
+};
+
+type ExamResponse = {
+  statusCode: number;
+  message: string;
+  data?: IExam;
+  errors?: {
+    field: string;
+    message: string;
+  }[];
+};
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const searchParams = new URL(request.url).searchParams;
+  const page = searchParams.get('page');
+  const limit = searchParams.get('limit');
+
+  const res = await getApiWithAuth(
+    `admin/exams?${page ? `page=${page}&` : ''}${limit ? `limit=${limit}` : ''}`
+  );
+
+  const resData = await res.json();
+
+  return resData;
+}
 
 export default function ExamManagement() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [showModal, setShowModal] = useState(false);
 
   const [selectedExam, setSelectedExam] = useState<IExam | null>(null);
@@ -33,66 +81,132 @@ export default function ExamManagement() {
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
-  // Gọi API paginate ở đây
-  // Hiện tại đang giả sử đã có sẵn data
-  const ROWS = 4;
-  const currentExams = exams.slice(
-    (currentPage - 1) * ROWS,
-    (currentPage - 1) * ROWS + ROWS
-  );
-  const totalPages = Math.ceil(exams.length / ROWS);
+  const { data } = useLoaderData() as LoaderResponse;
+
+  const revalidator = useRevalidator();
+
+  const currentPage = Number(searchParams.get('page')) || 1;
+  const limit = Number(searchParams.get('limit')) || 4;
 
   // Operation
-  function handleDeleteExam(id: number) {
-    // Call API
-    const deletedUser = exams.find((u) => u.id === id);
-    if (!deletedUser) return;
+  async function handleDeleteExam(id: number) {
+    if (!Number(id)) return;
+    toast.dismiss();
+    try {
+      const res = await deleteApiWithAuth(`admin/exams/${id}`);
 
-    // Message
-    toast.success('Xoá đề thi thành công');
+      const resData = (await res.json()) as ExamResponse;
+
+      if (
+        resData.statusCode === 500 ||
+        resData.statusCode === 409 ||
+        resData.statusCode === 400 ||
+        resData.statusCode === 401
+      ) {
+        toast.error(resData.message);
+        return null;
+      }
+
+      toast.success(resData.message);
+      revalidator.revalidate();
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
+    }
   }
 
-  function handleAddExam(formData: FormData) {
+  async function handleAddExam(formData: FormData) {
     // Validate data
-    const title = formData.get('title');
-    const licenses = formData.getAll('licenses');
+    const title = formData.get('title') as string | null;
+    const licenses = formData.getAll('licenses') as string[];
 
-    console.log(title, licenses);
+    toast.dismiss();
 
-    if (title === '' || licenses.length === 0) {
-      toast.error('Vui lòng nhập đầy đủ thông tin!');
+    if (title?.trim() === '') {
+      toast.error('Vui lòng điền tiêu đề');
       return null;
     }
 
-    toast.success('Thêm đề thi thành công');
-    handleCloseModal();
-    // Call API
-  }
-
-  function handleUpdateExam(id: number, formData: FormData) {
-    // Validate data
-    const firstName = formData.get('firstName');
-    const lastName = formData.get('lastName');
-    const username = formData.get('username');
-    const email = formData.get('email');
-    const password = formData.get('password');
-
-    console.log(id, Object.fromEntries(formData));
-
-    if (
-      firstName === '' ||
-      lastName === '' ||
-      username === '' ||
-      password === '' ||
-      email === ''
-    ) {
-      toast.error('Vui lòng nhập đầy đủ thông tin!');
+    if (licenses.length === 0) {
+      toast.error('Vui lòng chọn ít nhất một giấy phép');
       return null;
     }
 
-    // Call API;
-    toast.success('Cập nhật đề thi thành công');
-    handleCloseModal();
+    try {
+      const res = await postApiWithAuth('admin/exams', {
+        title: title?.trim(),
+        licenses: licenses.map((l) => Number(l)),
+      });
+      const resData = (await res.json()) as ExamResponse;
+      console.log(resData);
+      if (
+        resData.statusCode === 500 ||
+        resData.statusCode === 409 ||
+        resData.statusCode === 401
+      ) {
+        toast.error(resData.message);
+        return null;
+      }
+
+      if (resData.statusCode === 422 && resData.errors) {
+        resData.errors.forEach((err) => {
+          toast.error(err.message, { autoClose: 5000 });
+        });
+        return null;
+      }
+
+      toast.success(resData.message);
+      revalidator.revalidate();
+      handleCloseModal();
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
+    }
+  }
+
+  async function handleUpdateExam(id: number, formData: FormData) {
+    if (!Number(id)) return;
+    // Validate data
+    const title = formData.get('title') as string | null;
+    const licenses = formData.getAll('licenses') as string[];
+
+    toast.dismiss();
+
+    if (title?.trim() === '') {
+      toast.error('Vui lòng điền tiêu đề');
+      return null;
+    }
+
+    if (licenses.length === 0) {
+      toast.error('Vui lòng chọn ít nhất một giấy phép');
+      return null;
+    }
+
+    try {
+      const res = await putApiWithAuth(`admin/exams/${id}`, {
+        title,
+        licenses: licenses.map((l) => Number(l)),
+      });
+
+      const resData = (await res.json()) as ExamResponse;
+
+      if (
+        resData.statusCode === 500 ||
+        resData.statusCode === 409 ||
+        resData.statusCode === 400 ||
+        resData.statusCode === 401
+      ) {
+        toast.error(resData.message);
+        return null;
+      }
+
+      toast.success(resData.message);
+      revalidator.revalidate();
+      handleCloseModal();
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
+    }
   }
 
   // Modal
@@ -107,7 +221,7 @@ export default function ExamManagement() {
   }
 
   function handleOpenModalView(id: number) {
-    const exam = exams.find((e) => e.id === id);
+    const exam = data.exams.find((e) => e.id === id);
 
     if (!exam) return;
     setSelectedExam(exam);
@@ -116,7 +230,7 @@ export default function ExamManagement() {
   }
 
   function handleOpenModalUpdate(id: number) {
-    const exam = exams.find((e) => e.id === id);
+    const exam = data.exams.find((e) => e.id === id);
 
     if (!exam) return;
     setSelectedExam(exam);
@@ -125,21 +239,26 @@ export default function ExamManagement() {
   }
 
   // Pagination
+  // Pagination
   function handleOnClickPrev() {
-    setCurrentPage((prevValue) =>
-      prevValue === 1 ? prevValue : prevValue - 1
-    );
+    if (+currentPage === 1) return;
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('page', currentPage - 1 + '');
+    setSearchParams(newParams);
   }
 
   function handleOnClickNext() {
-    setCurrentPage((prevValue) =>
-      prevValue === totalPages ? prevValue : prevValue + 1
-    );
+    if (+currentPage === data.totalPages) return;
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('page', currentPage + 1 + '');
+    setSearchParams(newParams);
   }
 
   function handleOnClickGoTo(page: number) {
-    if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
+    if (+currentPage < 1 || +currentPage > data.totalPages) return;
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('page', page + '');
+    setSearchParams(newParams);
   }
 
   return (
@@ -155,8 +274,8 @@ export default function ExamManagement() {
         <div className={styles.body}>
           <Table
             isDark={isDarkMode}
-            exams={currentExams}
-            rows={ROWS}
+            exams={data.exams}
+            rows={limit}
             onOpenView={handleOpenModalView}
             onOpenUpdate={handleOpenModalUpdate}
             onDelete={handleDeleteExam}
@@ -164,7 +283,7 @@ export default function ExamManagement() {
           <Pagination
             isDark={isDarkMode}
             currentPage={currentPage}
-            totalPages={totalPages}
+            totalPages={data.totalPages}
             onNext={handleOnClickNext}
             onPrev={handleOnClickPrev}
             onGoTo={handleOnClickGoTo}
