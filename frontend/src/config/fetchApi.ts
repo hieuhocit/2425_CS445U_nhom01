@@ -18,11 +18,25 @@ export async function postApi(pathname: string, data: object) {
   });
 }
 
-export async function putApiWithAuth(pathname: string, formData: FormData) {
+export async function putApiFormDataWithAuth(
+  pathname: string,
+  formData: FormData
+) {
   return fetch(`${apiUrl}/${pathname}`, {
     method: 'PUT',
     credentials: 'include',
     body: formData,
+  });
+}
+
+export async function putApiWithAuth(pathname: string, data: object) {
+  return fetch(`${apiUrl}/${pathname}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(data),
   });
 }
 
