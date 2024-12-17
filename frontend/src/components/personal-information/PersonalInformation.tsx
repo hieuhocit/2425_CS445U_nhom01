@@ -13,7 +13,7 @@ import Form from '../user-management/form/Form';
 import { toast } from 'react-toastify';
 
 /** API */
-import { putApiWithAuth } from '@/config/fetchApi';
+import { putApiFormDataWithAuth } from '@/config/fetchApi';
 import { useGetUserQuery } from '@/services/authApi';
 
 /** validate */
@@ -61,7 +61,7 @@ export default function PersonalInformation() {
 
     try {
       data.set('id', id + '');
-      const res = await putApiWithAuth('user/profile', data);
+      const res = await putApiFormDataWithAuth('user/profile', data);
       const resData = (await res.json()) as UpdateProfileResponse;
 
       if (resData.statusCode === 500 || resData.statusCode === 409) {
