@@ -67,10 +67,10 @@ export default function Form({
       className={`${styles.form} ${isDark ? styles.darkMode : ''}`}
     >
       <div className={styles.inputContainer}>
-        <label htmlFor='lastName'>Họ</label>
+        <label htmlFor='last_name'>Họ</label>
         <input
-          id='lastName'
-          name='lastName'
+          id='last_name'
+          name='last_name'
           type='text'
           placeholder='Nhập họ'
           autoComplete='off'
@@ -79,10 +79,10 @@ export default function Form({
         />
       </div>
       <div className={styles.inputContainer}>
-        <label htmlFor='firstName'>Tên</label>
+        <label htmlFor='first_name'>Tên</label>
         <input
-          id='firstName'
-          name='firstName'
+          id='first_name'
+          name='first_name'
           type='text'
           placeholder='Nhập tên'
           autoComplete='off'
@@ -138,7 +138,18 @@ export default function Form({
           </div>
         </div>
       )}
-
+      <div className={styles.inputContainer}>
+        <label htmlFor='permission'>Vai trò</label>
+        <select
+          id='permission'
+          name='permission'
+          disabled={behavior === 'view'}
+          defaultValue={user?.permission || ''}
+        >
+          <option value='MEMBER'>MEMBER</option>
+          <option value='ADMIN'>ADMIN</option>
+        </select>
+      </div>
       <div className={styles.inputContainer}>
         <label>Hình ảnh</label>
         <input
