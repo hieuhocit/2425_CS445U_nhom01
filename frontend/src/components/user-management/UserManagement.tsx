@@ -25,7 +25,7 @@ import {
   deleteApiWithAuth,
   getApiWithAuth,
   postApiFormDataWithAuth,
-  putApiWithAuth,
+  putApiFormDataWithAuth,
 } from '@/config/fetchApi';
 
 /** react-router */
@@ -92,6 +92,7 @@ export default function UserManagement() {
   // Operation
   async function handleDeleteUser(id: number) {
     if (!Number(id)) return;
+    toast.dismiss();
     try {
       const res = await deleteApiWithAuth(`admin/users/${id}`);
 
@@ -200,7 +201,7 @@ export default function UserManagement() {
     }
 
     try {
-      const res = await putApiWithAuth(`admin/users/${id}`, formData);
+      const res = await putApiFormDataWithAuth(`admin/users/${id}`, formData);
       const resData = (await res.json()) as UserResponse;
       console.log(resData);
       if (
