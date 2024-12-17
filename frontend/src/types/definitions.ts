@@ -33,6 +33,7 @@ export type AuthState = {
 export interface IExam {
   id: number;
   title: string;
+  license_ids: number[];
 }
 
 export interface ILicense {
