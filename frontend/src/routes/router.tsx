@@ -50,7 +50,9 @@ import Statistical, {
 import UserManagement, {
   loader as userManagementLoader,
 } from '@/components/user-management/UserManagement';
-import ExamManagement from '@/components/exam-management/ExamManagement';
+import ExamManagement, {
+  loader as examManagementLoader,
+} from '@/components/exam-management/ExamManagement';
 import QuestionManagement from '@/components/question-management/QuestionManagement';
 import PersonalInformation from '@/components/personal-information/PersonalInformation';
 import ChangePassword from '@/components/change-password/ChangePassword';
@@ -213,6 +215,7 @@ const router = createBrowserRouter([
           {
             path: 'exam-management',
             element: <ExamManagement />,
+            loader: examManagementLoader,
           },
           {
             path: 'question-management',
