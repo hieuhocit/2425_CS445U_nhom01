@@ -87,7 +87,7 @@ export default function SideBar({
                     className={({ isActive }) =>
                       isActive ? styles.active : ''
                     }
-                    to='user-management'
+                    to='user-management?page=1&limit=4'
                     replace
                   >
                     <FaUserCog className={styles.icon} />
