@@ -14,6 +14,24 @@ type ParameterUpdateProfile = {
   image: File | null;
 };
 
+type ParameterAddNewUser = {
+  first_name: string | null;
+  last_name: string | null;
+  email: string | null;
+  username: string | null;
+  password: string | null;
+  permission: string | null;
+  image: File | null;
+};
+
+type ParameterUpdateUser = {
+  first_name: string | null;
+  last_name: string | null;
+  email: string | null;
+  permission: string | null;
+  image: File | null;
+};
+
 type Error = {
   field: string;
   message: string;
@@ -140,6 +158,154 @@ export function validateUpdateProfile({
   if (errors.length > 0) {
     return reduceErrors(errors);
   }
+  return null;
+}
+
+export function validateAddNewUser({
+  first_name,
+  last_name,
+  email,
+  username,
+  password,
+  permission,
+  image,
+}: ParameterAddNewUser): Error[] | null {
+  const errors: Error[] = [];
+
+  if (!first_name || first_name.trim() === '') {
+    errors.push({ field: 'first_name', message: 'Vui lòng điền tên' });
+  }
+  if (!last_name || last_name.trim() === '') {
+    errors.push({ field: 'last_name', message: 'Vui lòng điền họ' });
+  }
+  if (!email || email.trim() === '') {
+    errors.push({ field: 'email', message: 'Vui lòng điền email' });
+  }
+  if (!isEmail(email)) {
+    errors.push({
+      field: 'email',
+      message: 'Vui lòng điền đúng định dạng email',
+    });
+  }
+  if (!username || username.trim() === '') {
+    errors.push({ field: 'username', message: 'Vui lòng điền tên đăng nhập' });
+  }
+
+  if (!password || password.trim() === '') {
+    errors.push({ field: 'password', message: 'Vui lòng điền mật khẩu' });
+  }
+
+  if (
+    password &&
+    !(password.trim().length >= 6 && password.trim()?.length <= 24)
+  ) {
+    errors.push({
+      field: 'password',
+      message: 'Mật khẩu phải có từ 6 đến 24 kí tự',
+    });
+  }
+
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/;
+
+  if (password && !passwordRegex.test(password)) {
+    errors.push({
+      field: 'password',
+      message:
+        'Mật khẩu phải bao gồm ít nhất 1 kí tự thường, 1 kí tự hoa, 1 chữ số và 1 kí tự đặc biệt',
+    });
+  }
+
+  if (!permission || permission.trim() === '') {
+    errors.push({ field: 'permission', message: 'Vui lòng chọn vai trò' });
+  }
+
+  if (
+    permission &&
+    permission.trim() !== 'ADMIN' &&
+    permission.trim() !== 'MEMBER'
+  ) {
+    errors.push({ field: 'permission', message: 'Vui lòng chọn đúng vai trò' });
+  }
+
+  if (image && image.size > 0) {
+    if (
+      image.type === 'image/jpeg' ||
+      image.type === 'image/png' ||
+      image.type === 'image/gif'
+    ) {
+      console.log('');
+    } else {
+      errors.push({
+        field: 'image',
+        message: 'Vui lòng chọn các định dạng ảnh như jpeg, png, gif',
+      });
+    }
+  }
+
+  if (errors.length > 0) {
+    return reduceErrors(errors);
+  }
+
+  return null;
+}
+
+export function validateUpdateUser({
+  first_name,
+  last_name,
+  email,
+  permission,
+  image,
+}: ParameterUpdateUser): Error[] | null {
+  const errors: Error[] = [];
+
+  if (!first_name || first_name.trim() === '') {
+    errors.push({ field: 'first_name', message: 'Vui lòng điền tên' });
+  }
+  if (!last_name || last_name.trim() === '') {
+    errors.push({ field: 'last_name', message: 'Vui lòng điền họ' });
+  }
+  if (!email || email.trim() === '') {
+    errors.push({ field: 'email', message: 'Vui lòng điền email' });
+  }
+  if (!isEmail(email)) {
+    errors.push({
+      field: 'email',
+      message: 'Vui lòng điền đúng định dạng email',
+    });
+  }
+
+  if (!permission || permission.trim() === '') {
+    errors.push({ field: 'permission', message: 'Vui lòng chọn vai trò' });
+  }
+
+  if (
+    permission &&
+    permission.trim() !== 'ADMIN' &&
+    permission.trim() !== 'MEMBER'
+  ) {
+    errors.push({ field: 'permission', message: 'Vui lòng chọn đúng vai trò' });
+  }
+
+  if (image && image.size > 0) {
+    if (
+      image.type === 'image/jpeg' ||
+      image.type === 'image/png' ||
+      image.type === 'image/gif'
+    ) {
+      console.log('');
+    } else {
+      errors.push({
+        field: 'image',
+        message: 'Vui lòng chọn các định dạng ảnh như jpeg, png, gif',
+      });
+    }
+  }
+
+  if (errors.length > 0) {
+    return reduceErrors(errors);
+  }
+
   return null;
 }
 
