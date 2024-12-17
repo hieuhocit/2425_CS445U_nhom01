@@ -20,8 +20,61 @@ import { toast } from 'react-toastify';
 /** types */
 import { User } from '@/types/definitions';
 
+/** API */
+import {
+  deleteApiWithAuth,
+  getApiWithAuth,
+  postApiFormDataWithAuth,
+  putApiWithAuth,
+} from '@/config/fetchApi';
+
+/** react-router */
+import {
+  LoaderFunctionArgs,
+  useLoaderData,
+  useRevalidator,
+  useSearchParams,
+} from 'react-router-dom';
+
+/** Validate */
+import { validateAddNewUser, validateUpdateUser } from '@/utils/validateUser';
+
+type LoaderResponse = {
+  statusCode: number;
+  message: string;
+  data: {
+    users: User[];
+    totalPages: number;
+    totalUsers: number;
+  };
+};
+
+type UserResponse = {
+  statusCode: number;
+  message: string;
+  data?: User;
+  errors?: {
+    field: string;
+    message: string;
+  }[];
+};
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const searchParams = new URL(request.url).searchParams;
+  const page = searchParams.get('page');
+  const limit = searchParams.get('limit');
+
+  const res = await getApiWithAuth(
+    `admin/users?${page ? `page=${page}&` : ''}${limit ? `limit=${limit}` : ''}`
+  );
+
+  const resData = await res.json();
+
+  return resData;
+}
+
 export default function UserManagement() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [behavior, setBehavior] = useState<'view' | 'add' | 'update'>('view');
@@ -29,83 +82,150 @@ export default function UserManagement() {
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
-  // Gọi API paginate ở đây
-  // Hiện tại đang giả sử đã có sẵn data
-  const ROWS = 4;
-  const currentUsers = users.slice(
-    (currentPage - 1) * ROWS,
-    (currentPage - 1) * ROWS + ROWS
-  );
-  const totalPages = Math.ceil(users.length / ROWS);
+  const { data } = useLoaderData() as LoaderResponse;
+
+  const revalidator = useRevalidator();
+
+  const currentPage = Number(searchParams.get('page')) || 1;
+  const limit = Number(searchParams.get('limit')) || 4;
 
   // Operation
-  function handleDeleteUser(id: number) {
-    // Call API
-    const deletedUser = users.find((u) => u.id === id);
-    if (!deletedUser) return;
+  async function handleDeleteUser(id: number) {
+    if (!Number(id)) return;
+    try {
+      const res = await deleteApiWithAuth(`admin/users/${id}`);
 
-    // Message
-    toast.success('Xoá người dùng thành công');
+      const resData = (await res.json()) as UserResponse;
+
+      if (
+        resData.statusCode === 500 ||
+        resData.statusCode === 409 ||
+        resData.statusCode === 400 ||
+        resData.statusCode === 401
+      ) {
+        toast.error(resData.message);
+        return null;
+      }
+
+      toast.success(resData.message);
+      revalidator.revalidate();
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
+    }
   }
 
-  function handleAddUser(formData: FormData) {
+  async function handleAddUser(formData: FormData) {
     // Validate data
-    const firstName = formData.get('firstName');
-    const lastName = formData.get('lastName');
-    const username = formData.get('username');
-    const email = formData.get('email');
-    const image = formData.get('image');
-    const password = formData.get('password');
+    const first_name = formData.get('first_name') as string | null;
+    const last_name = formData.get('last_name') as string | null;
+    const username = formData.get('username') as string | null;
+    const email = formData.get('email') as string | null;
+    const image = formData.get('image') as File | null;
+    const password = formData.get('password') as string | null;
+    const permission = formData.get('permission') as string | null;
 
-    console.log(image);
+    const errors = validateAddNewUser({
+      first_name,
+      last_name,
+      email,
+      username,
+      password,
+      image,
+      permission,
+    });
 
-    if (
-      firstName === '' ||
-      lastName === '' ||
-      username === '' ||
-      password === '' ||
-      email === ''
-    ) {
-      toast.error('Vui lòng nhập đầy đủ thông tin!');
-      return null;
-    } else if (email === 'hieuhocit2309@gmail.com') {
-      toast.error('Email đã tồn tại!');
-      return null;
-    } else if (username === 'admin') {
-      toast.error('Tên đăng nhập đã tồn tại!');
-      return null;
+    toast.dismiss();
+
+    if (errors) {
+      errors.forEach((err) => {
+        toast.error(err.message, { autoClose: 5000 });
+      });
+      return errors;
     }
 
-    toast.success('Thêm người dùng thành công');
-    handleCloseModal();
-    // Call API
+    try {
+      const res = await postApiFormDataWithAuth('admin/users', formData);
+      const resData = (await res.json()) as UserResponse;
+      console.log(resData);
+      if (
+        resData.statusCode === 500 ||
+        resData.statusCode === 409 ||
+        resData.statusCode === 401
+      ) {
+        toast.error(resData.message);
+        return null;
+      }
+
+      if (resData.statusCode === 422 && resData.errors) {
+        resData.errors.forEach((err) => {
+          toast.error(err.message, { autoClose: 5000 });
+        });
+        return null;
+      }
+
+      toast.success(resData.message);
+      revalidator.revalidate();
+      handleCloseModal();
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
+    }
   }
 
-  function handleUpdateUser(id: number, formData: FormData) {
+  async function handleUpdateUser(id: number, formData: FormData) {
+    if (!id) return;
     // Validate data
-    const firstName = formData.get('firstName');
-    const lastName = formData.get('lastName');
-    const username = formData.get('username');
-    const email = formData.get('email');
-    const image = formData.get('image');
-    const password = formData.get('password');
+    const first_name = formData.get('first_name') as string | null;
+    const last_name = formData.get('last_name') as string | null;
+    const email = formData.get('email') as string | null;
+    const image = formData.get('image') as File | null;
+    const permission = formData.get('permission') as string | null;
 
-    console.log(id, image);
+    const errors = validateUpdateUser({
+      first_name,
+      last_name,
+      email,
+      image,
+      permission,
+    });
 
-    if (
-      firstName === '' ||
-      lastName === '' ||
-      username === '' ||
-      password === '' ||
-      email === ''
-    ) {
-      toast.error('Vui lòng nhập đầy đủ thông tin!');
-      return null;
+    toast.dismiss();
+
+    if (errors) {
+      errors.forEach((err) => {
+        toast.error(err.message, { autoClose: 5000 });
+      });
+      return errors;
     }
 
-    // Call API;
-    toast.success('Cập nhật người dùng thành công');
-    handleCloseModal();
+    try {
+      const res = await putApiWithAuth(`admin/users/${id}`, formData);
+      const resData = (await res.json()) as UserResponse;
+      console.log(resData);
+      if (
+        resData.statusCode === 500 ||
+        resData.statusCode === 409 ||
+        resData.statusCode === 401
+      ) {
+        toast.error(resData.message);
+        return null;
+      }
+
+      if (resData.statusCode === 422 && resData.errors) {
+        resData.errors.forEach((err) => {
+          toast.error(err.message, { autoClose: 5000 });
+        });
+        return null;
+      }
+
+      toast.success(resData.message);
+      revalidator.revalidate();
+      handleCloseModal();
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
+    }
   }
 
   // Modal
@@ -120,39 +240,43 @@ export default function UserManagement() {
   }
 
   function handleOpenModalView(id: number) {
-    const viewedUser = users.find((u) => u.id === id);
+    const user = data.users.find((u) => u.id === id);
 
-    if (!viewedUser) return;
-    setSelectedUser(viewedUser);
+    if (!user) return;
+    setSelectedUser(user);
     setShowModal(true);
     setBehavior('view');
   }
 
   function handleOpenModalUpdate(id: number) {
-    const updatedUser = users.find((u) => u.id === id);
+    const user = data.users.find((u) => u.id === id);
 
-    if (!updatedUser) return;
-    setSelectedUser(updatedUser);
+    if (!user) return;
+    setSelectedUser(user);
     setShowModal(true);
     setBehavior('update');
   }
 
   // Pagination
   function handleOnClickPrev() {
-    setCurrentPage((prevValue) =>
-      prevValue === 1 ? prevValue : prevValue - 1
-    );
+    if (+currentPage === 1) return;
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('page', currentPage - 1 + '');
+    setSearchParams(newParams);
   }
 
   function handleOnClickNext() {
-    setCurrentPage((prevValue) =>
-      prevValue === totalPages ? prevValue : prevValue + 1
-    );
+    if (+currentPage === data.totalPages) return;
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('page', currentPage + 1 + '');
+    setSearchParams(newParams);
   }
 
   function handleOnClickGoTo(page: number) {
-    if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
+    if (+currentPage < 1 || +currentPage > data.totalPages) return;
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('page', page + '');
+    setSearchParams(newParams);
   }
 
   return (
@@ -168,8 +292,8 @@ export default function UserManagement() {
         <div className={styles.body}>
           <Table
             isDark={isDarkMode}
-            users={currentUsers}
-            rows={ROWS}
+            users={data.users}
+            rows={limit}
             onOpenView={handleOpenModalView}
             onOpenUpdate={handleOpenModalUpdate}
             onDelete={handleDeleteUser}
@@ -177,7 +301,7 @@ export default function UserManagement() {
           <Pagination
             isDark={isDarkMode}
             currentPage={currentPage}
-            totalPages={totalPages}
+            totalPages={data.totalPages}
             onNext={handleOnClickNext}
             onPrev={handleOnClickPrev}
             onGoTo={handleOnClickGoTo}
@@ -204,293 +328,3 @@ export default function UserManagement() {
     </>
   );
 }
-
-const users: User[] = [
-  {
-    username: 'hieuhocit0',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar: '',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'ADMIN',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 1,
-  },
-  {
-    username: 'hieuhocit1',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'MEMBER',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 2,
-  },
-  {
-    username: 'hieuhocit2',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar:
-      'https://i.pinimg.com/736x/71/70/bf/7170bf6475b589f09e2757d1fbdef232.jpg',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'ADMIN',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 3,
-  },
-  {
-    username: 'hieuhocit3',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar: '',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'ADMIN',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 4,
-  },
-  {
-    username: 'hieuhocit4',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'MEMBER',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 5,
-  },
-  {
-    username: 'hieuhocit5',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar:
-      'https://i.pinimg.com/736x/71/70/bf/7170bf6475b589f09e2757d1fbdef232.jpg',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'ADMIN',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 6,
-  },
-  {
-    username: 'hieuhocit6',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar: '',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'ADMIN',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 7,
-  },
-  {
-    username: 'hieuhocit7',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'MEMBER',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 8,
-  },
-  {
-    username: 'hieuhocit8',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar:
-      'https://i.pinimg.com/736x/71/70/bf/7170bf6475b589f09e2757d1fbdef232.jpg',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'ADMIN',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 9,
-  },
-  {
-    username: 'hieuhocit9',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar: '',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'ADMIN',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 10,
-  },
-  {
-    username: 'hieuhocit10',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'MEMBER',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 11,
-  },
-  {
-    username: 'hieuhocit11',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar:
-      'https://i.pinimg.com/736x/71/70/bf/7170bf6475b589f09e2757d1fbdef232.jpg',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'ADMIN',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 12,
-  },
-  {
-    username: 'hieuhocit12',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar: '',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'ADMIN',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 13,
-  },
-  {
-    username: 'hieuhocit13',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'MEMBER',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 14,
-  },
-  {
-    username: 'hieuhocit14',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar:
-      'https://i.pinimg.com/736x/71/70/bf/7170bf6475b589f09e2757d1fbdef232.jpg',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'ADMIN',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 15,
-  },
-  {
-    username: 'hieuhocit15',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar: '',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'ADMIN',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 16,
-  },
-  {
-    username: 'hieuhocit16',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'MEMBER',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 17,
-  },
-  {
-    username: 'hieuhocit17',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar:
-      'https://i.pinimg.com/736x/71/70/bf/7170bf6475b589f09e2757d1fbdef232.jpg',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'ADMIN',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 18,
-  },
-  {
-    username: 'hieuhocit18',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar: '',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'ADMIN',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 19,
-  },
-  {
-    username: 'hieuhocit19',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar:
-      'https://i.pinimg.com/736x/19/ec/38/19ec3897543e0a7e6678d3597d590370.jpg',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'MEMBER',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 20,
-  },
-  {
-    username: 'hieuhocit20',
-    first_name: 'Hiếu',
-    last_name: 'Trần',
-    avatar:
-      'https://i.pinimg.com/736x/71/70/bf/7170bf6475b589f09e2757d1fbdef232.jpg',
-    email: 'hieuhocit2309@gmail.com',
-    created_at: '2024-11-08 19:00:26.146',
-    updated_at: '2024-11-08 19:00:26.146',
-    permission: 'ADMIN',
-    access_token: 'hieuhocit',
-    refresh_token: 'refresh_token',
-    id: 21,
-  },
-];
