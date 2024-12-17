@@ -44,8 +44,12 @@ import ExamHistoryPage, {
 } from '@/pages/exam-history/ExamHistory';
 import ProfilePage from '@/pages/profile/Profile';
 import AdminPage from '@/pages/admin/Admin';
-import Statistical from '@/components/statistical/Statistical';
-import UserManagement from '@/components/user-management/UserManagement';
+import Statistical, {
+  loader as statisticalLoader,
+} from '@/components/statistical/Statistical';
+import UserManagement, {
+  loader as userManagementLoader,
+} from '@/components/user-management/UserManagement';
 import ExamManagement from '@/components/exam-management/ExamManagement';
 import QuestionManagement from '@/components/question-management/QuestionManagement';
 import PersonalInformation from '@/components/personal-information/PersonalInformation';
@@ -199,10 +203,12 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Statistical />,
+            loader: statisticalLoader,
           },
           {
             path: 'user-management',
             element: <UserManagement />,
+            loader: userManagementLoader,
           },
           {
             path: 'exam-management',
