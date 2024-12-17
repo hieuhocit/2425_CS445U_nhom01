@@ -37,9 +37,27 @@ export async function postApiWithAuth(pathname: string, data: object) {
   });
 }
 
+export async function postApiFormDataWithAuth(
+  pathname: string,
+  formData: FormData
+) {
+  return fetch(`${apiUrl}/${pathname}`, {
+    method: 'POST',
+    credentials: 'include',
+    body: formData,
+  });
+}
+
 export async function getApiWithAuth(pathname: string) {
   return fetch(`${apiUrl}/${pathname}`, {
     method: 'GET',
+    credentials: 'include',
+  });
+}
+
+export async function deleteApiWithAuth(pathname: string) {
+  return fetch(`${apiUrl}/${pathname}`, {
+    method: 'DELETE',
     credentials: 'include',
   });
 }
