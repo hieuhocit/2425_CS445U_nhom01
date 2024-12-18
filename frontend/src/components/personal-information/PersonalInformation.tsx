@@ -45,8 +45,8 @@ export default function PersonalInformation() {
   async function handleUpdateUser(id: number, data: FormData) {
     const errors = validateUpdateProfile({
       email: data.get('email') as string | null,
-      firstName: data.get('firstName') as string | null,
-      lastName: data.get('lastName') as string | null,
+      firstName: data.get('first_name') as string | null,
+      lastName: data.get('last_name') as string | null,
       image: data.get('image') as File | null,
     });
 
@@ -88,7 +88,7 @@ export default function PersonalInformation() {
     <div className={styles.personalInformation}>
       <Form
         user={user}
-        behavior='update'
+        behavior='profile'
         isNotInModal={true}
         isDark={isDarkMode}
         onCancel={() => {}}

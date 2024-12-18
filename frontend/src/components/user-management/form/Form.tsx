@@ -26,7 +26,7 @@ export default function Form({
   isDark: boolean;
   isNotInModal?: boolean;
   user?: User | null;
-  behavior: 'view' | 'update' | 'add';
+  behavior: 'view' | 'update' | 'add' | 'profile';
   onCancel: () => void;
   onSubmit: onSubmit;
 }) {
@@ -48,7 +48,7 @@ export default function Form({
 
     const formData = new FormData(e.target as HTMLFormElement);
 
-    if (behavior === 'update') {
+    if (behavior === 'update' || behavior === 'profile') {
       if (selectedImage) formData.set('image', selectedImage);
 
       (onSubmit as (id: number, data: FormData) => void)(
@@ -111,7 +111,11 @@ export default function Form({
           placeholder='Nhập tên đăng nhập'
           autoComplete='off'
           defaultValue={user?.username || ''}
-          disabled={behavior === 'view' || behavior === 'update'}
+          disabled={
+            behavior === 'view' ||
+            behavior === 'update' ||
+            behavior === 'profile'
+          }
         />
       </div>
       {behavior === 'add' && (
@@ -138,18 +142,20 @@ export default function Form({
           </div>
         </div>
       )}
-      <div className={styles.inputContainer}>
-        <label htmlFor='permission'>Vai trò</label>
-        <select
-          id='permission'
-          name='permission'
-          disabled={behavior === 'view'}
-          defaultValue={user?.permission || ''}
-        >
-          <option value='MEMBER'>MEMBER</option>
-          <option value='ADMIN'>ADMIN</option>
-        </select>
-      </div>
+      {behavior !== 'profile' && (
+        <div className={styles.inputContainer}>
+          <label htmlFor='permission'>Vai trò</label>
+          <select
+            id='permission'
+            name='permission'
+            disabled={behavior === 'view'}
+            defaultValue={user?.permission || ''}
+          >
+            <option value='MEMBER'>MEMBER</option>
+            <option value='ADMIN'>ADMIN</option>
+          </select>
+        </div>
+      )}
       <div className={styles.inputContainer}>
         <label>Hình ảnh</label>
         <input
@@ -199,7 +205,7 @@ function ImageCustom({
   behavior,
   imageUrl,
 }: {
-  behavior: 'view' | 'update' | 'add';
+  behavior: 'view' | 'update' | 'add' | 'profile';
   imageUrl: string | undefined | null;
 }) {
   if (behavior === 'view') {
