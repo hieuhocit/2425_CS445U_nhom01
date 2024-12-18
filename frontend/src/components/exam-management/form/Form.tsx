@@ -4,8 +4,9 @@ import styles from './Form.module.scss';
 /** types */
 import { IExam } from '@/types/definitions';
 
-/** DUMMY DATA */
-import { licenses } from '@/data/data';
+/** react-redux */
+import { useSelector } from 'react-redux';
+import { licensesSelector } from '@/store/setting/settingSelector';
 
 type onSubmit =
   | null
@@ -25,6 +26,8 @@ export default function Form({
   onCancel: () => void;
   onSubmit: onSubmit;
 }) {
+  const licenses = useSelector(licensesSelector);
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!onSubmit || behavior === 'view') return;
