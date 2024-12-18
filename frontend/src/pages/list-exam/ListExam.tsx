@@ -44,7 +44,7 @@ export default function ListExamPage() {
               exams.map((e) => (
                 <li key={e.id} className={styles.item}>
                   <Link to={`/list-exam/${e.id}`}>
-                    <h2>Đề số {e.title}</h2>
+                    <h2>{Number(e.title) ? `Đề số ${e.title}` : e.title}</h2>
                   </Link>
                 </li>
               ))}
