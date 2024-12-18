@@ -53,7 +53,9 @@ import UserManagement, {
 import ExamManagement, {
   loader as examManagementLoader,
 } from '@/components/exam-management/ExamManagement';
-import QuestionManagement from '@/components/question-management/QuestionManagement';
+import QuestionManagement, {
+  loader as questionsManagementLoader,
+} from '@/components/question-management/QuestionManagement';
 import PersonalInformation from '@/components/personal-information/PersonalInformation';
 import ChangePassword from '@/components/change-password/ChangePassword';
 import ForgotPasswordPage from '@/pages/forgot-password/ForgotPassword';
@@ -220,6 +222,7 @@ const router = createBrowserRouter([
           {
             path: 'question-management',
             element: <QuestionManagement />,
+            loader: questionsManagementLoader,
           },
         ],
       },
