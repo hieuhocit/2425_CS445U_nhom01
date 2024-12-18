@@ -7,8 +7,9 @@ import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 /** types */
 import { IExam } from '@/types/definitions';
 
-/** DUMMY DATA */
-import { licenses } from '@/data/data';
+/** react-redux */
+import { useSelector } from 'react-redux';
+import { licensesSelector } from '@/store/setting/settingSelector';
 
 export default function Table({
   isDark,
@@ -26,6 +27,8 @@ export default function Table({
   onDelete: (id: number) => void;
 }) {
   const minHeight = (rows + 1) * 65 + (rows + 2) * 16 + 16 + 'px';
+
+  const licenses = useSelector(licensesSelector);
 
   return (
     <div

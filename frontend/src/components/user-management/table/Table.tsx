@@ -48,7 +48,13 @@ export default function Table({
               <td>
                 <div className={styles.imageContainer}>
                   <img
-                    src={user.avatar ? user.avatar : imagePlaceholder}
+                    src={
+                      user.avatar
+                        ? `${
+                            import.meta.env.VITE_API_ORIGIN_URL
+                          }/images/users/${user.avatar}`
+                        : imagePlaceholder
+                    }
                     alt={user.first_name + ' ' + user.last_name}
                   />
                 </div>

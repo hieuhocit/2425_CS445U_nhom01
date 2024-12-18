@@ -2,31 +2,50 @@
 import styles from './ListViolation.module.scss';
 
 /** react-router */
-import { Link, useParams } from 'react-router-dom';
+import { Link, LoaderFunctionArgs, useLoaderData } from 'react-router-dom';
 
 /** react-redux */
 import { useSelector } from 'react-redux';
 import { themeMode } from '@/store/theme/themeSelector';
-import { violationTypeSelector } from '@/store/setting/settingSelector';
 
 /** components */
 import Header from '@/components/header/Header';
 
-/** DUMMY DATA */
-import { lawTopics, violations } from '@/data/data';
+/** types */
+import { ILawTopic, IViolation } from '@/types/definitions';
+
+/** API */
+import { getLawTopic, getViolations } from '@/services/lawApi';
+
+interface ILoaderResponse {
+  topic: ILawTopic | null | undefined;
+  violations: IViolation[] | null | undefined;
+}
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const searchParams = new URL(request.url).searchParams;
+
+  const violationTopic = searchParams.get('violationTopic');
+  const violationType = searchParams.get('violationType');
+
+  const topic = await getLawTopic(violationTopic as string);
+  const resViolations = await getViolations(
+    violationTopic as string,
+    violationType as string
+  );
+
+  return {
+    topic: topic.data,
+    violations: resViolations.data,
+  };
+}
 
 export default function ListViolationPage() {
+  const { topic, violations }: ILoaderResponse =
+    useLoaderData() as ILoaderResponse;
+
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
-
-  const { lawId } = useParams();
-  const violationType = useSelector(violationTypeSelector);
-
-  const lawTopic = lawTopics.find((l) => l.id === Number(lawId));
-
-  const filteredViolations = violations.filter(
-    (v) => v.law_topic_id === lawTopic?.id && v.violation_type === violationType
-  );
 
   return (
     <div
@@ -35,18 +54,22 @@ export default function ListViolationPage() {
       }`}
     >
       <Header
-        title={lawTopic?.display as string}
+        title={topic?.display as string}
         isDark={isDarkMode}
         path='/list-law'
       />
 
       <main className={styles.main}>
         <ul className={styles.list}>
-          {filteredViolations.map((v) => (
+          {violations?.map((v) => (
             <li key={v.id}>
               <h2>{v.violation}</h2>
               <p>{v.fines}</p>
-              <Link to={`${v.id}`}>Xem chi tiết</Link>
+              <Link
+                to={`/violation?violationTopic=${topic?.id}&violationType=${v.violation_type}&index=${v.id}`}
+              >
+                Xem chi tiết
+              </Link>
             </li>
           ))}
         </ul>

@@ -1,12 +1,11 @@
-import { ISetting } from '@/types/definitions';
+import { licenseApi } from '@/services/licenseApi';
+import { ILicense, ISetting } from '@/types/definitions';
 import { createSlice } from '@reduxjs/toolkit';
 
-/** DUMMY DATA */
-import { licenses } from '@/data/data';
-
 const initialState: ISetting = {
-  currentLicense: licenses[0],
-  licenses: licenses,
+  currentLicenseId: localStorage.getItem('licenseId'),
+  currentLicense: null,
+  licenses: [],
   violationType: 1,
 };
 
@@ -16,10 +15,24 @@ const settingSlice = createSlice({
   reducers: {
     changeLicense: (state, action) => {
       state.currentLicense = action.payload.currentLicense;
+      state.currentLicenseId = action.payload.currentLicense.id;
+      localStorage.setItem('licenseId', action.payload.currentLicense.id);
     },
     changeViolationType: (state, action) => {
       state.violationType = action.payload.violationType;
     },
+  },
+  extraReducers(builder) {
+    builder.addMatcher(
+      licenseApi.endpoints.getLicenses.matchFulfilled,
+      (state, action) => {
+        const licenses = action.payload.data as ILicense[];
+        state.licenses = licenses;
+        state.currentLicense = !state.currentLicenseId
+          ? licenses[0]
+          : licenses.find((l) => l.id === Number(state.currentLicenseId));
+      }
+    );
   },
 });
 

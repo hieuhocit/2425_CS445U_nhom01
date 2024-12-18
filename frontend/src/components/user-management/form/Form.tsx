@@ -26,7 +26,7 @@ export default function Form({
   isDark: boolean;
   isNotInModal?: boolean;
   user?: User | null;
-  behavior: 'view' | 'update' | 'add';
+  behavior: 'view' | 'update' | 'add' | 'profile';
   onCancel: () => void;
   onSubmit: onSubmit;
 }) {
@@ -48,7 +48,7 @@ export default function Form({
 
     const formData = new FormData(e.target as HTMLFormElement);
 
-    if (behavior === 'update') {
+    if (behavior === 'update' || behavior === 'profile') {
       if (selectedImage) formData.set('image', selectedImage);
 
       (onSubmit as (id: number, data: FormData) => void)(
@@ -67,10 +67,10 @@ export default function Form({
       className={`${styles.form} ${isDark ? styles.darkMode : ''}`}
     >
       <div className={styles.inputContainer}>
-        <label htmlFor='lastName'>Họ</label>
+        <label htmlFor='last_name'>Họ</label>
         <input
-          id='lastName'
-          name='lastName'
+          id='last_name'
+          name='last_name'
           type='text'
           placeholder='Nhập họ'
           autoComplete='off'
@@ -79,10 +79,10 @@ export default function Form({
         />
       </div>
       <div className={styles.inputContainer}>
-        <label htmlFor='firstName'>Tên</label>
+        <label htmlFor='first_name'>Tên</label>
         <input
-          id='firstName'
-          name='firstName'
+          id='first_name'
+          name='first_name'
           type='text'
           placeholder='Nhập tên'
           autoComplete='off'
@@ -111,7 +111,11 @@ export default function Form({
           placeholder='Nhập tên đăng nhập'
           autoComplete='off'
           defaultValue={user?.username || ''}
-          disabled={behavior === 'view' || behavior === 'update'}
+          disabled={
+            behavior === 'view' ||
+            behavior === 'update' ||
+            behavior === 'profile'
+          }
         />
       </div>
       {behavior === 'add' && (
@@ -138,7 +142,20 @@ export default function Form({
           </div>
         </div>
       )}
-
+      {behavior !== 'profile' && (
+        <div className={styles.inputContainer}>
+          <label htmlFor='permission'>Vai trò</label>
+          <select
+            id='permission'
+            name='permission'
+            disabled={behavior === 'view'}
+            defaultValue={user?.permission || ''}
+          >
+            <option value='MEMBER'>MEMBER</option>
+            <option value='ADMIN'>ADMIN</option>
+          </select>
+        </div>
+      )}
       <div className={styles.inputContainer}>
         <label>Hình ảnh</label>
         <input
@@ -157,7 +174,12 @@ export default function Form({
           <ImageCustom
             behavior={behavior}
             imageUrl={
-              selectedImage ? URL.createObjectURL(selectedImage) : user?.avatar
+              selectedImage
+                ? URL.createObjectURL(selectedImage)
+                : user?.avatar &&
+                  `${import.meta.env.VITE_API_ORIGIN_URL}/images/users/${
+                    user?.avatar
+                  }`
             }
           />
         </label>
@@ -183,7 +205,7 @@ function ImageCustom({
   behavior,
   imageUrl,
 }: {
-  behavior: 'view' | 'update' | 'add';
+  behavior: 'view' | 'update' | 'add' | 'profile';
   imageUrl: string | undefined | null;
 }) {
   if (behavior === 'view') {

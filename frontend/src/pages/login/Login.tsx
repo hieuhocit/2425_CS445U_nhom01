@@ -19,7 +19,12 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 
 /** toastify */
 import { toast } from 'react-toastify';
-import { useLoginMutation } from '@/services/authApi';
+
+/** API */
+import { LoginError, useLoginMutation } from '@/services/authApi';
+
+/** Validate */
+import { validateLogin } from '@/utils/validateLogin';
 
 export default function LoginPage() {
   const [login] = useLoginMutation();
@@ -33,20 +38,45 @@ export default function LoginPage() {
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    const username = formData.get('username') as string;
-    const password = formData.get('password') as string;
+
+    const account = formData.get('account')?.toString().trim() as string | null;
+    const password = formData.get('password')?.toString().trim() as
+      | string
+      | null;
+
+    toast.dismiss();
+
+    const errors = validateLogin({ account, password });
+
+    if (errors) {
+      errors.forEach((err) => {
+        toast.error(err.message, { autoClose: 5000 });
+      });
+      return;
+    }
 
     try {
       const res = await login({
-        username,
-        password,
+        account: account as string,
+        password: password as string,
       }).unwrap();
 
       toast.success(res.message);
       navigate('/');
-    } catch (error) {
-      console.error(error);
-      toast.error('Đã xảy ra lỗi');
+    } catch (error: LoginError | unknown) {
+      if ((error as LoginError).status === 422) {
+        (error as LoginError).data.errors?.forEach((err) => {
+          toast.error(err.message, { autoClose: 5000 });
+        });
+      } else if (
+        (error as LoginError).status === 500 ||
+        (error as LoginError).status === 401 ||
+        (error as LoginError).status === 404
+      ) {
+        toast.error((error as LoginError).data.message, { autoClose: 5000 });
+      } else {
+        toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
+      }
     }
   }
 
@@ -57,12 +87,12 @@ export default function LoginPage() {
       <main className={styles.main}>
         <form onSubmit={handleLogin} className={styles.form} method='POST'>
           <div className={styles.inputContainer}>
-            <label htmlFor='username'>Tên người dùng</label>
+            <label htmlFor='account'>Tên người dùng hoặc email</label>
             <input
-              id='username'
-              name='username'
+              id='account'
+              name='account'
               type='text'
-              placeholder='Tên người dùng'
+              placeholder='Tên người dùng hoặc email'
               autoComplete='off'
             />
           </div>

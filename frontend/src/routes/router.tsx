@@ -2,45 +2,73 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 /** Layout */
-import Layout from '@/Layout';
+import Layout, {
+  loader as layoutLoader,
+  revalidate as revalidateLayout,
+} from '@/Layout';
 
 /** Pages */
 import ListExamPage from '@/pages/list-exam/ListExam';
 import HomePage from '@/pages/home/Home';
 import SettingPage from '@/pages/setting/Setting';
-import ListSignPage from '@/pages/list-sign/ListSign';
-import SignDetailsPage from '../pages/list-sign/sign-details/SignDetails';
-import ListLawPage from '@/pages/list-law/ListLaw';
-import ListViolationPage from '@/pages/list-violation/ListViolation';
-import ViolationDetailsPage from '@/pages/list-violation/violation-details/ViolationDetails';
-import ListWrongPage from '@/pages/list-wrong/ListWrong';
+import ListSignPage, {
+  loader as listSignLoader,
+} from '@/pages/list-sign/ListSign';
+import SignDetailsPage, {
+  loader as signDetailsLoader,
+} from '../pages/list-sign/sign-details/SignDetails';
+import ListLawPage, { loader as listLawLoader } from '@/pages/list-law/ListLaw';
+import ListViolationPage, {
+  loader as listViolationLoader,
+} from '@/pages/list-violation/ListViolation';
+import ViolationDetailsPage, {
+  loader as violationDetailsLoader,
+} from '@/pages/list-violation/violation-details/ViolationDetails';
+import ListWrongPage, {
+  loader as listWrongLoader,
+} from '@/pages/list-wrong/ListWrong';
 import ListRequiredPage from '@/pages/list-required/ListRequired';
 import ReviewPage from '@/pages/review/Review';
 import ListTopicPage from '@/pages/list-topic/ListTopic';
 import TopicDetailsPage from '@/pages/list-topic/topic-details/TopicDetails';
-import ExamPage from '@/pages/exam/Exam';
-import ExamResultPage from '@/pages/exam-result/ExamResult';
+import ExamPage, { loader as examLoader } from '@/pages/exam/Exam';
+import ExamResultPage, {
+  loader as examResultLoader,
+} from '@/pages/exam-result/ExamResult';
 import LoginPage from '@/pages/login/Login';
 import RegisterPage, {
   action as registerAction,
 } from '@/pages/register/Register';
-import ExamHistoryPage from '@/pages/exam-history/ExamHistory';
-import DetailsExamHistoryPage from '@/pages/exam-history/details-exam-history/DetailsExamHistory';
+import ExamHistoryPage, {
+  loader as examHistoryLoader,
+} from '@/pages/exam-history/ExamHistory';
 import ProfilePage from '@/pages/profile/Profile';
 import AdminPage from '@/pages/admin/Admin';
-import Statistical from '@/components/statistical/Statistical';
-import UserManagement from '@/components/user-management/UserManagement';
-import ExamManagement from '@/components/exam-management/ExamManagement';
-import QuestionManagement from '@/components/question-management/QuestionManagement';
+import Statistical, {
+  loader as statisticalLoader,
+} from '@/components/statistical/Statistical';
+import UserManagement, {
+  loader as userManagementLoader,
+} from '@/components/user-management/UserManagement';
+import ExamManagement, {
+  loader as examManagementLoader,
+} from '@/components/exam-management/ExamManagement';
+import QuestionManagement, {
+  loader as questionsManagementLoader,
+} from '@/components/question-management/QuestionManagement';
 import PersonalInformation from '@/components/personal-information/PersonalInformation';
 import ChangePassword from '@/components/change-password/ChangePassword';
 import ForgotPasswordPage from '@/pages/forgot-password/ForgotPassword';
 import ProtectedRoute from '@/components/protected-route/ProtectedRoute';
+import ReviewDetailsPage from '@/pages/review/ReviewDetails';
 
 const router = createBrowserRouter([
   {
     path: '/',
+    id: 'root',
     element: <Layout />,
+    loader: layoutLoader,
+    shouldRevalidate: revalidateLayout,
     children: [
       {
         index: true,
@@ -51,24 +79,35 @@ const router = createBrowserRouter([
         element: <SettingPage />,
       },
       {
+        id: 'sign',
         path: '/list-sign',
-        element: <ListSignPage />,
-      },
-      {
-        path: '/list-sign/:signId',
-        element: <SignDetailsPage />,
+        loader: listSignLoader,
+        children: [
+          {
+            index: true,
+            element: <ListSignPage />,
+          },
+          {
+            path: '/list-sign/:signId',
+            element: <SignDetailsPage />,
+            loader: signDetailsLoader,
+          },
+        ],
       },
       {
         path: '/list-law',
         element: <ListLawPage />,
+        loader: listLawLoader,
       },
       {
-        path: '/list-law/:lawId/list-violation',
+        path: '/list-violation',
         element: <ListViolationPage />,
+        loader: listViolationLoader,
       },
       {
-        path: '/list-law/:lawId/list-violation/:violationId',
+        path: '/violation',
         element: <ViolationDetailsPage />,
+        loader: violationDetailsLoader,
       },
       {
         path: '/list-wrong',
@@ -77,6 +116,7 @@ const router = createBrowserRouter([
             <ListWrongPage />
           </ProtectedRoute>
         ),
+        loader: listWrongLoader,
       },
       {
         path: '/list-required',
@@ -85,6 +125,10 @@ const router = createBrowserRouter([
       {
         path: '/review',
         element: <ReviewPage />,
+      },
+      {
+        path: '/review/questions',
+        element: <ReviewDetailsPage />,
       },
       {
         path: '/list-topic',
@@ -101,6 +145,7 @@ const router = createBrowserRouter([
       {
         path: 'list-exam/:examId',
         element: <ExamPage />,
+        loader: examLoader,
       },
       {
         path: 'list-exam/:examId/result',
@@ -140,14 +185,16 @@ const router = createBrowserRouter([
             <ExamHistoryPage />
           </ProtectedRoute>
         ),
+        loader: examHistoryLoader,
       },
       {
-        path: '/exam-history/:examId',
+        path: '/exam-history/:examHistoryId',
         element: (
           <ProtectedRoute>
-            <DetailsExamHistoryPage />
+            <ExamResultPage />
           </ProtectedRoute>
         ),
+        loader: examResultLoader,
       },
       {
         path: '/admin',
@@ -160,18 +207,22 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Statistical />,
+            loader: statisticalLoader,
           },
           {
             path: 'user-management',
             element: <UserManagement />,
+            loader: userManagementLoader,
           },
           {
             path: 'exam-management',
             element: <ExamManagement />,
+            loader: examManagementLoader,
           },
           {
             path: 'question-management',
             element: <QuestionManagement />,
+            loader: questionsManagementLoader,
           },
         ],
       },

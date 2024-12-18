@@ -3,7 +3,8 @@ export interface ITheme {
 }
 
 export interface ISetting {
-  currentLicense: ILicense;
+  currentLicenseId: string | null;
+  currentLicense: ILicense | null | undefined;
   licenses: ILicense[];
   violationType: 1 | 2 | 3;
 }
@@ -27,14 +28,12 @@ export type User = {
 export type AuthState = {
   user: User | null;
   isLoggedIn: boolean;
-  access_token: string | null;
-  refresh_token: string | null;
 };
 
 export interface IExam {
   id: number;
-  license_ids: number[];
   title: string;
+  license_ids: number[];
 }
 
 export interface ILicense {
@@ -50,11 +49,11 @@ export interface IQuestion {
   image: string | File;
   text: string;
   tip: string;
-  required: boolean;
+  required: number;
   topic_id: number | null;
-  exam_ids: number[];
   license_ids: number[];
-  answers?: IAnswer[];
+  exam_ids: number[];
+  answers: IAnswer[];
   idSelectedAnswer?: number;
 }
 
@@ -80,11 +79,13 @@ export interface ISignTopic {
   signType: string;
   display: string;
   subTitle: string;
+  image: string;
 }
 
 export interface ITopic {
   id: number;
   display: string;
+  totalQuestion: number | undefined;
 }
 
 export interface IViolation {
@@ -98,7 +99,7 @@ export interface IViolation {
   otherPenalties: string;
   image: string;
   keyword: string;
-  relations: number[];
+  relations: IViolation[];
   bookmarks: IBookmark[];
   law_topic_id: number;
   violation_type: number;

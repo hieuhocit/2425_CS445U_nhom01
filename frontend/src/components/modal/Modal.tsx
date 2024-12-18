@@ -1,8 +1,8 @@
 /** styles */
-import { useEffect, useRef } from 'react';
 import styles from './Modal.module.scss';
 
 /** react */
+import { CSSProperties, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 /** icons */
@@ -13,11 +13,13 @@ export default function Modal({
   isDark,
   isOpen,
   onClose,
+  css,
 }: {
   children: React.ReactNode;
   isDark: boolean;
   isOpen: boolean;
   onClose: () => void;
+  css?: CSSProperties | undefined;
 }) {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
 
@@ -36,6 +38,7 @@ export default function Modal({
   return createPortal(
     <>
       <dialog
+        style={css}
         ref={dialogRef}
         className={`${styles.dialog} ${isDark ? styles.darkMode : ''}`}
       >

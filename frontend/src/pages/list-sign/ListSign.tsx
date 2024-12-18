@@ -7,12 +7,22 @@ import Header from '@/components/header/Header';
 /** react-redux */
 import { useSelector } from 'react-redux';
 import { themeMode } from '@/store/theme/themeSelector';
-import { Link } from 'react-router-dom';
+import { Link, useRouteLoaderData } from 'react-router-dom';
 
-/** DUMMY DATA */
-import { signTopics } from '@/data/data';
+/** types */
+import { ISignTopic } from '@/types/definitions';
+
+/** API */
+import { getSignTopics } from '@/services/signApi';
+
+export async function loader() {
+  const resSignTopics = await getSignTopics();
+  return resSignTopics.data;
+}
 
 export default function ListSignPage() {
+  const signTopics = useRouteLoaderData('sign') as ISignTopic[];
+
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
@@ -26,12 +36,14 @@ export default function ListSignPage() {
         <Header title='Biển báo' isDark={isDarkMode} />
         <main className={styles.main}>
           <ul className={styles.list}>
-            {signTopics.map((st, index) => (
+            {signTopics?.map((st) => (
               <li key={st.id}>
                 <Link to={`/list-sign/${st.id}`} className={styles.item}>
                   <div className={styles.head}>
                     <img
-                      src={`https://beta.gplx.app/images/assets/topic_sign_${index}.png`}
+                      src={`${
+                        import.meta.env.VITE_API_ORIGIN_URL
+                      }/images/sign_topics/${st.image}`}
                       alt={st.display + ' image'}
                     />
                     <h2>{st.display}</h2>

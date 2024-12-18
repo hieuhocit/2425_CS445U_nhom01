@@ -15,6 +15,7 @@
       font-weight: 600;
     }
 
+    select,
     input {
       margin-top: 6px;
       display: block;
@@ -115,6 +116,7 @@
     color: $color-dark-mode;
 
     .inputContainer {
+      select,
       input {
         color: $color-dark-mode;
         background-color: $background-dark-mode-4;

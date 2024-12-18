@@ -4,7 +4,6 @@ import styles from './ChangePassword.module.scss';
 /** react-redux */
 import { useSelector } from 'react-redux';
 import { themeMode } from '@/store/theme/themeSelector';
-import { userSelector } from '@/store/auth/authSelector';
 
 /** tostify */
 import { toast } from 'react-toastify';
@@ -18,6 +17,27 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 /** react-router */
 import { Link } from 'react-router-dom';
 
+/** validate */
+import { validateChangePassword } from '@/utils/validateChangePassword';
+
+/** API */
+import { postApiWithAuth } from '@/config/fetchApi';
+
+/** Types */
+import { User } from '@/types/definitions';
+
+type ErrorResponse = {
+  field: string;
+  message: string;
+};
+
+type UpdateProfileResponse = {
+  statusCode: number;
+  message: string;
+  errors?: ErrorResponse[];
+  data?: User;
+};
+
 export default function ChangePassword() {
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -26,35 +46,62 @@ export default function ChangePassword() {
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
-  const user = useSelector(userSelector);
-
-  function handleChangePassword(e: React.FormEvent<HTMLFormElement>) {
+  async function handleChangePassword(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
     const formData = new FormData(e.target as HTMLFormElement);
 
-    const old_password = formData.get('old_password');
-    const new_password = formData.get('new_password');
-    const confirm_new_password = formData.get('confirm_new_password');
+    const old_password = formData.get('old_password') as string | null;
+    const new_password = formData.get('new_password') as string | null;
+    const confirm_new_password = formData.get('confirm_new_password') as
+      | string
+      | null;
 
-    if (
-      (old_password as string).trim() === '' ||
-      (new_password as string).trim() === '' ||
-      (confirm_new_password as string).trim() === ''
-    ) {
-      toast.error('Vui lòng nhập đầy đủ thông tin');
-      return;
+    const errors = validateChangePassword({
+      old_password,
+      new_password,
+      confirm_new_password,
+    });
+
+    toast.dismiss();
+
+    if (errors) {
+      errors.forEach((err) => {
+        toast.error(err.message, { autoClose: 5000 });
+      });
+      return errors;
     }
 
-    if (
-      (new_password as string).trim() !==
-      (confirm_new_password as string).trim()
-    ) {
-      toast.error('Mật khẩu xác nhận không chính xác');
-      return;
-    }
+    try {
+      const res = await postApiWithAuth('user/password', {
+        old_password,
+        new_password,
+        confirm_new_password,
+      });
+      const resData = (await res.json()) as UpdateProfileResponse;
 
-    console.log(user?.id, Object.fromEntries(formData));
-    toast.success('Đổi mật khẩu thành công');
+      if (
+        resData.statusCode === 500 ||
+        resData.statusCode === 409 ||
+        resData.statusCode === 401
+      ) {
+        toast.error(resData.message);
+        return null;
+      }
+
+      if (resData.statusCode === 422 && resData.errors) {
+        resData.errors.forEach((err) => {
+          toast.error(err.message, { autoClose: 5000 });
+        });
+        return null;
+      }
+
+      toast.success(resData.message);
+      (e.target as HTMLFormElement).reset();
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
+    }
   }
 
   return (

@@ -13,6 +13,11 @@ const currentLicenseSelector = createSelector(
   (setting) => setting.currentLicense
 );
 
+const currentLicenseIdSelector = createSelector(
+  selectSetting,
+  (setting) => setting.currentLicenseId
+);
+
 const violationTypeSelector = createSelector(
   selectSetting,
   (setting) => setting.violationType
@@ -23,4 +28,5 @@ export {
   licensesSelector,
   currentLicenseSelector,
   violationTypeSelector,
+  currentLicenseIdSelector,
 };

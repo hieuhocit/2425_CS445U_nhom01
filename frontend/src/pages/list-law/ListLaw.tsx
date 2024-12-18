@@ -2,7 +2,7 @@
 import styles from './ListLaw.module.scss';
 
 /** react-router */
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
 /** react-redux */
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,8 +26,22 @@ import { PiBeerBottleFill } from 'react-icons/pi';
 import { ImProfile } from 'react-icons/im';
 import { GiWhiteBook } from 'react-icons/gi';
 
-/** DUMMY DATA */
-import { lawTopics } from '@/data/data';
+/** type */
+import { ILawTopic } from '@/types/definitions';
+
+/** API */
+import { getLawTopics } from '@/services/lawApi';
+
+interface ILoaderResponse {
+  topics: ILawTopic[] | null | undefined;
+}
+
+export async function loader() {
+  const resTopics = await getLawTopics();
+  return {
+    topics: resTopics.data,
+  };
+}
 
 const icons = [
   <GiTrafficCone className={styles.icon} />,
@@ -44,6 +58,9 @@ const icons = [
 ];
 
 export default function ListLawPage() {
+  const { topics: lawTopics }: ILoaderResponse =
+    useLoaderData() as ILoaderResponse;
+
   const violationType = useSelector(violationTypeSelector);
   const dispatch = useDispatch();
 
@@ -64,7 +81,7 @@ export default function ListLawPage() {
         isDarkMode ? styles.darkMode : undefined
       }`}
     >
-      <Header title='Luật giao thông' isDark={isDarkMode} />
+      <Header title='Luật giao thông' isDark={isDarkMode} path={'/'} />
       <main className={styles.main}>
         <div className={styles.options}>
           <div className={styles.option}>
@@ -105,10 +122,10 @@ export default function ListLawPage() {
           </div>
         </div>
         <ul className={styles.list}>
-          {lawTopics.map((lt, index) => (
+          {lawTopics?.map((lt, index) => (
             <li key={lt.id}>
               <Link
-                to={`/list-law/${lt.id}/list-violation`}
+                to={`/list-violation?violationTopic=${lt.id}&violationType=${violationType}`}
                 className={styles.item}
               >
                 {icons[index]}

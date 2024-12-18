@@ -20,15 +20,18 @@ import { changeLicense } from '@/store/setting/settingSlice';
 
 /** components */
 import Header from '@/components/header/Header';
+
+/** types */
 import { ILicense } from '@/types/definitions';
-import { changeQuestions } from '@/store/data/dataSlice';
 
 export default function SettingPage() {
   const licenses = useSelector(licensesSelector);
   const currentLicense = useSelector(currentLicenseSelector);
 
-  const [selectedOption, setSelectedOption] =
-    useState<ILicense>(currentLicense);
+  const [selectedOption, setSelectedOption] = useState<
+    ILicense | null | undefined
+  >(currentLicense);
+
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -44,11 +47,6 @@ export default function SettingPage() {
     dispatch(
       changeLicense({
         currentLicense: selectedOption,
-      })
-    );
-    dispatch(
-      changeQuestions({
-        licenseId: selectedOption.id,
       })
     );
     navigate('/');
@@ -70,7 +68,7 @@ export default function SettingPage() {
                   <label className={styles.item}>
                     <input
                       onChange={handleOnChange.bind(null, l)}
-                      checked={selectedOption.id === l.id}
+                      checked={selectedOption?.id === l.id}
                       type='radio'
                       name='level'
                       value={l.id}

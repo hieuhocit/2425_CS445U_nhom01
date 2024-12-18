@@ -17,7 +17,24 @@ import { useState } from 'react';
 /** toastify */
 import { toast } from 'react-toastify';
 
+/** API */
+import { postApi } from '@/config/fetchApi';
+
+type ErrorResponse = {
+  field: string;
+  message: string;
+};
+
+type TResponse = {
+  statusCode: number;
+  message: string;
+  errors?: ErrorResponse[];
+  data?: null;
+};
+
 export default function ForgotPasswordPage() {
+  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
   const [isConfirmCode, setIsConfirmCode] = useState(false);
   const mode = useSelector(themeMode);
 
@@ -29,41 +46,90 @@ export default function ForgotPasswordPage() {
   async function handleSendEmail(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const formData = new FormData(e.target as HTMLFormElement);
-    const email = formData.get('email') as string;
+    toast.dismiss();
 
     if (email.trim() === '') {
       toast.error('Vui lòng nhập email');
       return;
     }
-    if (!email.trim().includes('@')) {
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailRegex.test(email)) {
       toast.error('Vui lòng nhập đúng định dạng email');
       return;
     }
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    toast.success('Đã gửi mã xác nhận, vui lòng kiểm tra email');
-    setIsConfirmCode(true);
+
+    try {
+      const res = await postApi('user/send-code', { email });
+
+      const resData = (await res.json()) as TResponse;
+
+      if (resData.statusCode === 500 || resData.statusCode === 404) {
+        toast.error(resData.message);
+        return null;
+      }
+
+      if (resData.statusCode === 422 && resData.errors) {
+        resData.errors.forEach((err) => {
+          toast.error(err.message, { autoClose: 5000 });
+        });
+        return null;
+      }
+
+      toast.success(resData.message);
+      setCode('');
+      setIsConfirmCode(true);
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
+    }
   }
 
   async function handleConfirmCode(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const formData = new FormData(e.target as HTMLFormElement);
-    const code = formData.get('code') as string;
+    toast.dismiss();
 
-    if ((code as string).trim() === '') {
-      toast.error('Vui lòng nhập code');
+    if (code.trim() === '') {
+      toast.error('Vui lòng nhập mã xác nhận');
       return;
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    if ((code as string).trim() !== '230903') {
-      toast.error('Mã xác nhận không chính xác');
+    if (code.trim().length < 6 || code.trim().length > 6) {
+      toast.error('Mã xác nhận bao gồm 6 chữ số');
       return;
     }
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    toast.success('Đã gửi mật khẩu mới vào email, vui lòng kiểm tra email');
-    setIsConfirmCode(false);
+
+    try {
+      const res = await postApi('user/verify-code', { email, code });
+
+      const resData = (await res.json()) as TResponse;
+
+      if (
+        resData.statusCode === 500 ||
+        resData.statusCode === 404 ||
+        resData.statusCode === 400
+      ) {
+        toast.error(resData.message);
+        return null;
+      }
+
+      if (resData.statusCode === 422 && resData.errors) {
+        resData.errors.forEach((err) => {
+          toast.error(err.message, { autoClose: 5000 });
+        });
+        return null;
+      }
+
+      toast.success(resData.message);
+      setEmail('');
+      setCode('');
+      setIsConfirmCode(false);
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
+    }
   }
 
   return (
@@ -89,6 +155,8 @@ export default function ForgotPasswordPage() {
                 type='email'
                 placeholder='Nhập email'
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
           )}
@@ -102,6 +170,8 @@ export default function ForgotPasswordPage() {
                 placeholder='Nhập mã xác nhận'
                 autoComplete='off'
                 required
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
               />
             </div>
           )}
@@ -110,9 +180,17 @@ export default function ForgotPasswordPage() {
               {!isConfirmCode ? 'Gửi mã' : 'Xác nhận'}
             </button>
           </div>
-          <div className={styles.login}>
-            <span>Quay lại trang - </span> <Link to='/login'>Đăng nhập</Link>
-          </div>
+          {!isConfirmCode && (
+            <div className={styles.login}>
+              <span>Quay lại trang - </span> <Link to='/login'>Đăng nhập</Link>
+            </div>
+          )}
+          {isConfirmCode && (
+            <div className={styles.tryAgain}>
+              <span>Không nhận được mã? - </span>{' '}
+              <div onClick={() => setIsConfirmCode(false)}>Thử lại</div>
+            </div>
+          )}
         </form>
       </main>
     </div>

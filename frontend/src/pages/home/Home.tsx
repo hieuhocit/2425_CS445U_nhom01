@@ -37,20 +37,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { themeMode } from '@/store/theme/themeSelector';
 import { toggleMode } from '@/store/theme/themeSlice';
 import { currentLicenseSelector } from '@/store/setting/settingSelector';
-import { examsSelector, questionsSelector } from '@/store/data/dataSelector';
 import { loginSelector, permissionSelector } from '@/store/auth/authSelector';
 
 /** services */
 import { useLogoutMutation } from '@/services/authApi';
 
 /** react-router */
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useRouteLoaderData } from 'react-router-dom';
 
 /** toastify */
 import { toast } from 'react-toastify';
 
 /** Utils */
 import { getRandomExamId } from '@/utils/randomExam';
+
+/** types */
+import { IExam, IQuestion } from '@/types/definitions';
+
+/** react */
+import { useState } from 'react';
+
+/** Components */
+import Modal from '@/components/modal/Modal';
+import ConfirmMessage from '@/components/custom-confirm-message/ConfirmMessage';
 
 export default function HomePage() {
   const mode = useSelector(themeMode);
@@ -59,8 +68,12 @@ export default function HomePage() {
   const [logout] = useLogoutMutation();
   const navigate = useNavigate();
 
-  const questions = useSelector(questionsSelector);
-  const exams = useSelector(examsSelector);
+  const [showModal, setShowModal] = useState(false);
+
+  const { questions, exams } = useRouteLoaderData('root') as {
+    questions: IQuestion[] | undefined;
+    exams: IExam[] | undefined;
+  };
 
   const isLoggedIn = useSelector(loginSelector);
   const permission = useSelector(permissionSelector);
@@ -73,19 +86,28 @@ export default function HomePage() {
     dispatch(toggleMode());
   }
 
+  // Modal
+  function handleCloseModal() {
+    setShowModal(false);
+  }
+
+  function handleOpenModal() {
+    setShowModal(true);
+  }
+
   async function handleLogout() {
-    const ok = confirm('Bạn có chắc bạn muốn đăng xuất không?');
-    if (!ok) return;
     try {
       const res = await logout().unwrap();
       toast.success(res.message);
     } catch (error) {
       console.error(error);
-      toast.error('Đã có lỗi xảy ra');
+      toast.error('Đã có lỗi xảy ra vui lòng thử tải lại trang');
     }
+    setShowModal(false);
   }
 
   function handleNavigateToRandomExam() {
+    if (!exams) return;
     navigate(`/list-exam/${getRandomExamId(exams)}`);
   }
 
@@ -99,7 +121,7 @@ export default function HomePage() {
         <header className={styles.header}>
           <div className={styles.top}>
             <h1 className={styles.title}>
-              Ôn thi GPLX hạng {currentLicense.code}
+              Ôn thi GPLX hạng {currentLicense?.code}
             </h1>
             <Link to='/setting'>
               <IoMdSettings className={styles.icon} />
@@ -129,7 +151,7 @@ export default function HomePage() {
             </Link>
             <Link to='/review' className={`${styles.item} ${styles.green}`}>
               <IoMdGrid className={styles.icon} />
-              <p>{questions.length} câu hỏi</p>
+              <p>{questions?.length} câu hỏi</p>
             </Link>
             <Link
               to='/list-topic'
@@ -146,7 +168,7 @@ export default function HomePage() {
               className={`${styles.item} ${styles.red}`}
             >
               <FaHeart className={styles.icon} />
-              <p>{questions.filter((q) => q.required).length} câu liệt</p>
+              <p>{questions?.filter((q) => q.required).length} câu liệt</p>
             </Link>
             {isLoggedIn && (
               <Link
@@ -184,7 +206,7 @@ export default function HomePage() {
                   <p>Xem lịch sử thi</p>
                 </Link>
                 <div
-                  onClick={handleLogout}
+                  onClick={handleOpenModal}
                   className={`${styles.item} ${styles.login}`}
                 >
                   <IoIosLogOut className={styles.icon} />
@@ -243,6 +265,26 @@ export default function HomePage() {
           )}
         </main>
       </div>
+      <Modal
+        css={{
+          top: '10vh',
+          minHeight: 'auto',
+          maxHeight: '300px',
+          maxWidth: '500px',
+        }}
+        onClose={handleCloseModal}
+        isOpen={showModal}
+        isDark={isDarkMode}
+      >
+        {showModal && (
+          <ConfirmMessage
+            title='Bạn có chắc bạn muốn đăng xuất không?'
+            isDark={isDarkMode}
+            onConfirm={handleLogout}
+            onCancel={handleCloseModal}
+          />
+        )}
+      </Modal>
     </>
   );
 }

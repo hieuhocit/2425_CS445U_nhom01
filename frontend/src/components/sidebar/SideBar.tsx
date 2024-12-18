@@ -87,7 +87,7 @@ export default function SideBar({
                     className={({ isActive }) =>
                       isActive ? styles.active : ''
                     }
-                    to='user-management'
+                    to='user-management?page=1&limit=4'
                     replace
                   >
                     <FaUserCog className={styles.icon} />
@@ -97,7 +97,7 @@ export default function SideBar({
                 <li>
                   <NavLink
                     onClick={handleCloseSideBar}
-                    to='exam-management'
+                    to='exam-management?page=1&limit=4'
                     className={({ isActive }) =>
                       isActive ? styles.active : ''
                     }
@@ -110,7 +110,7 @@ export default function SideBar({
                 <li>
                   <NavLink
                     onClick={handleCloseSideBar}
-                    to='question-management'
+                    to='question-management?page=1&limit=4'
                     className={({ isActive }) =>
                       isActive ? styles.active : ''
                     }

@@ -6,8 +6,7 @@ import { useSelector } from 'react-redux';
 import { themeMode } from '@/store/theme/themeSelector';
 
 /** react-router */
-import { Link } from 'react-router-dom';
-import { questionsSelector } from '@/store/data/dataSelector';
+import { Link, useRouteLoaderData } from 'react-router-dom';
 
 /** components */
 import Header from '@/components/header/Header';
@@ -24,42 +23,53 @@ import { HiMiniWrenchScrewdriver } from 'react-icons/hi2';
 import { ImImages } from 'react-icons/im';
 import { FaRegHeart } from 'react-icons/fa';
 
-/** DUMMY DATA */
-import { topics } from '@/data/data';
+/** types */
+import { ITopic } from '@/types/definitions';
 
 export default function ListTopicPage() {
   const mode = useSelector(themeMode);
-  const isDarkMode = mode === 'dark';
 
-  const questions = useSelector(questionsSelector);
+  const { topics } = useRouteLoaderData('root') as {
+    topics: ITopic[] | undefined;
+  };
+
+  const isDarkMode = mode === 'dark';
 
   return (
     <div className={`${styles.listTopic} ${isDarkMode ? styles.darkMode : ''}`}>
       <Header title='Chủ đề' isDark={isDarkMode} />
 
       <main className={styles.main}>
-        <ul className={styles.list}>
-          {topics.map((t, index) => {
-            const numberOfQuestions =
-              t.id === 0
-                ? questions.length
-                : t.id === 8
-                ? questions.filter((q) => q.required).length
-                : questions.filter((q) => q.topic_id === t.id).length;
-            if (numberOfQuestions === 0) return;
-            return (
-              <li>
-                <Link to={`/list-topic/${t.id}`} className={styles.item}>
-                  {icons[index]}
-                  <div className={styles.info}>
-                    <h2 className={styles.title}>{t.display}</h2>
-                    <p className={styles.desc}>{numberOfQuestions} câu</p>
-                  </div>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        {topics && topics.length > 0 && (
+          <ul className={styles.list}>
+            {topics.map((t, index) => {
+              if (t.totalQuestion === 0) return;
+              return (
+                <li key={t.id}>
+                  <Link to={`/list-topic/${t.id}`} className={styles.item}>
+                    {icons[index]}
+                    <div className={styles.info}>
+                      <h2 className={styles.title}>{t.display}</h2>
+                      <p className={styles.desc}>{t.totalQuestion} câu</p>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        {topics && topics.length === 0 && (
+          <p
+            style={{
+              fontSize: '1.15rem',
+              textAlign: 'center',
+              marginTop: '32px',
+            }}
+          >
+            Hiện tại không có chủ đề, vui lòng quay lại sau hoặc liên hệ với
+            quản trị viên.
+          </p>
+        )}
       </main>
     </div>
   );

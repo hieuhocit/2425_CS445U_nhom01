@@ -9,10 +9,10 @@ import { FaXmark } from 'react-icons/fa6';
 import imagePlaceholder from '@/assets/images/image-placeholder.jpg';
 
 /** types */
-import { IQuestion } from '@/types/definitions';
+import { IQuestion, ITopic } from '@/types/definitions';
 
-/** DUMMY DATA */
-import { topics } from '@/data/data';
+/** react-router */
+import { useRouteLoaderData } from 'react-router-dom';
 
 export default function Table({
   isDark,
@@ -29,6 +29,8 @@ export default function Table({
   onOpenUpdate: (id: number) => void;
   onDelete: (id: number) => void;
 }) {
+  const { topics } = useRouteLoaderData('root') as { topics: ITopic[] };
+
   const minHeight = (rows + 1) * 65 + (rows + 2) * 16 + 16 + 'px';
 
   return (
@@ -56,7 +58,9 @@ export default function Table({
                     <img
                       src={
                         q.image
-                          ? `https://beta.gplx.app/images/questions/${q.image}`
+                          ? `${
+                              import.meta.env.VITE_API_ORIGIN_URL
+                            }/images/questions/${q.image}`
                           : imagePlaceholder
                       }
                       alt={q.text}
