@@ -5,16 +5,20 @@ import styles from './Form.module.scss';
 import { useState } from 'react';
 
 /** types */
-import { IAnswer, IQuestion } from '@/types/definitions';
+import { IAnswer, IExam, IQuestion, ITopic } from '@/types/definitions';
 
 /** icons */
 import { FaCheck } from 'react-icons/fa';
 import { CiCirclePlus } from 'react-icons/ci';
 import { FiDelete } from 'react-icons/fi';
 
-/** DUMMY DATA */
-import { topics, licenses, exams, answers as answersData } from '@/data/data';
+/** Utils */
 import { groupBy } from '@/utils/groupBy';
+
+/** react-redux */
+import { useSelector } from 'react-redux';
+import { licensesSelector } from '@/store/setting/settingSelector';
+import { useRouteLoaderData } from 'react-router-dom';
 
 type onSubmit =
   | null
@@ -27,12 +31,14 @@ export default function Form({
   behavior,
   onCancel,
   onSubmit,
+  exams,
 }: {
   isDark: boolean;
   question?: IQuestion | null;
   behavior: 'view' | 'update' | 'add';
   onCancel: () => void;
   onSubmit: onSubmit;
+  exams: IExam[];
 }) {
   const [selectedImage, setSelectedImage] = useState<File | undefined>(
     undefined
@@ -42,15 +48,12 @@ export default function Form({
     question?.license_ids || []
   );
 
-  const filteredAnswers = answersData.filter(
-    (a) => a.question_id === question?.id
+  const [answers, setAnswers] = useState(
+    question ? question.answers : [{ text: '', correct: false }]
   );
 
-  const [answers, setAnswers] = useState(
-    filteredAnswers.length > 0
-      ? filteredAnswers
-      : [{ text: '', correct: false }]
-  );
+  const licenses = useSelector(licensesSelector);
+  const { topics } = useRouteLoaderData('root') as { topics: ITopic[] };
 
   // Loại bỏ topic đầu và cuối vì cái topic đầu là câu hỏi cũng thuộc, còn cái cuối là tuỳ thuộc vào required
   const topicList = topics.slice(1, topics.length - 1);
@@ -59,7 +62,8 @@ export default function Form({
     exams.filter((e) =>
       selectedLicenseIds.find((id) => e.license_ids.includes(id))
     ),
-    (exam) => exam.license_ids.join(',')
+    (exam) =>
+      exam.license_ids.filter((id) => selectedLicenseIds.includes(id)).join(',')
   );
 
   function handleChangeImage(e: React.ChangeEvent<HTMLInputElement>) {
@@ -121,7 +125,7 @@ export default function Form({
     const image = formData.get('image') as File;
     const text = formData.get('text') as string;
     const tip = formData.get('tip') as string;
-    const required = formData.get('required') === 'on' ? true : false;
+    const required = formData.get('required') === 'on' ? 1 : 0;
     const topic_id = Number(formData.get('topic_id'))
       ? Number(formData.get('topic_id'))
       : null;
@@ -207,7 +211,7 @@ export default function Form({
           name='required'
           id='required'
           placeholder='Nhập hướng dẫn'
-          defaultChecked={question?.required || false}
+          defaultChecked={question?.required === 1 ? true : false}
           disabled={behavior === 'view'}
         />
       </div>
@@ -387,7 +391,9 @@ export default function Form({
               selectedImage
                 ? URL.createObjectURL(selectedImage)
                 : question?.image
-                ? `https://beta.gplx.app/images/questions/${question.image}`
+                ? `${import.meta.env.VITE_API_ORIGIN_URL}/images/questions/${
+                    question.image
+                  }`
                 : null
             }
           />
