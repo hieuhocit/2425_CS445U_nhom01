@@ -39,7 +39,9 @@ export default function QuestionDetails({
       {question?.image && (
         <div className={styles.imageContainer}>
           <img
-            src={`https://beta.gplx.app/images/questions/${question.image}`}
+            src={`${import.meta.env.VITE_API_ORIGIN_URL}/images/questions/${
+              question.image
+            }`}
             alt={question.text}
           />
         </div>
