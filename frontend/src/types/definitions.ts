@@ -49,9 +49,11 @@ export interface IQuestion {
   image: string | File;
   text: string;
   tip: string;
-  required: boolean;
+  required: number;
   topic_id: number | null;
-  answers?: IAnswer[];
+  license_ids: number[];
+  exam_ids: number[];
+  answers: IAnswer[];
   idSelectedAnswer?: number;
 }
 
