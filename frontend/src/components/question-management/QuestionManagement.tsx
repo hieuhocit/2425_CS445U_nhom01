@@ -18,13 +18,58 @@ import Form from './form/Form';
 import { toast } from 'react-toastify';
 
 /** types */
-import { IQuestion } from '@/types/definitions';
+import { IExam, IQuestion } from '@/types/definitions';
 
-/** DUMMY DATA */
-import { questions } from '@/data/data';
+/** react -router */
+import {
+  LoaderFunctionArgs,
+  useLoaderData,
+  useRevalidator,
+  useSearchParams,
+} from 'react-router-dom';
+
+/** API */
+import {
+  deleteApiWithAuth,
+  getApiWithAuth,
+  postApiFormDataWithAuth,
+  putApiFormDataWithAuth,
+} from '@/config/fetchApi';
+import { validateAddNewQuestion } from '@/utils/validateQuestion';
+
+type QuestionResponse = {
+  statusCode: number;
+  message: string;
+  data?: IQuestion;
+  errors?: {
+    field: string;
+    message: string;
+  }[];
+};
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const searchParams = new URL(request.url).searchParams;
+  const page = searchParams.get('page');
+  const limit = searchParams.get('limit');
+
+  const resQuestions = await getApiWithAuth(
+    `admin/questions?${page ? `page=${page}&` : ''}${
+      limit ? `limit=${limit}` : ''
+    }`
+  );
+  const resExams = await getApiWithAuth(`admin/exams`);
+
+  const resQuestionsData = await resQuestions.json();
+  const resExamsData = await resExams.json();
+
+  return {
+    exams: resExamsData.data.exams,
+    data: resQuestionsData.data,
+  };
+}
 
 export default function QuestionManagement() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [showModal, setShowModal] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<IQuestion | null>(
     null
@@ -34,41 +79,166 @@ export default function QuestionManagement() {
   const mode = useSelector(themeMode);
   const isDarkMode = mode === 'dark';
 
-  // Gọi API paginate ở đây
-  // Hiện tại đang giả sử đã có sẵn data
-  const ROWS = 4;
-  const currentQuestions = questions.slice(
-    (currentPage - 1) * ROWS,
-    (currentPage - 1) * ROWS + ROWS
-  );
-  const totalPages = Math.ceil(questions.length / ROWS);
+  const { data, exams } = useLoaderData() as {
+    data: {
+      questions: IQuestion[];
+      totalPages: number;
+      totalQuestions: number;
+    };
+    exams: IExam[];
+  };
+
+  const revalidator = useRevalidator();
+
+  const currentPage = Number(searchParams.get('page')) || 1;
+  const limit = Number(searchParams.get('limit')) || 4;
 
   // Operation
-  function handleDeleteQuestion(id: number) {
-    // Call API
-    const deletedUser = questions.find((q) => q.id === id);
-    if (!deletedUser) return;
+  async function handleDeleteQuestion(id: number) {
+    if (!Number(id)) return;
+    toast.dismiss();
+    try {
+      const res = await deleteApiWithAuth(`admin/questions/${id}`);
 
-    // Message
-    toast.success('Xoá câu hỏi thành công');
+      const resData = (await res.json()) as QuestionResponse;
+
+      if (
+        resData.statusCode === 500 ||
+        resData.statusCode === 409 ||
+        resData.statusCode === 400 ||
+        resData.statusCode === 401
+      ) {
+        toast.error(resData.message);
+        return null;
+      }
+
+      toast.success(resData.message);
+      revalidator.revalidate();
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
+    }
   }
 
-  function handleAddQuestion(questionData: IQuestion) {
+  async function handleAddQuestion(questionData: IQuestion) {
     // Validate data
-    console.log(questionData);
+    const errors = validateAddNewQuestion({
+      text: questionData.text,
+      topic_id: questionData.topic_id,
+      answers: questionData.answers,
+      exam_ids: questionData.exam_ids,
+      license_ids: questionData.license_ids,
+      image: questionData.image as File | null,
+    });
 
-    toast.success('Thêm câu hỏi thành công');
-    // handleCloseModal();
-    // Call API
+    toast.dismiss();
+
+    if (errors) {
+      errors.forEach((err) => {
+        toast.error(err.message, { autoClose: 5000 });
+      });
+      return errors;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.set('image', questionData.image);
+      formData.set('text', questionData.text);
+      formData.set('tip', questionData.tip);
+      formData.set('required', questionData.required + '');
+      formData.set('topic_id', questionData.topic_id + '');
+      formData.set('answers', JSON.stringify(questionData.answers));
+      formData.set('exam_ids', JSON.stringify(questionData.exam_ids));
+      formData.set('license_ids', JSON.stringify(questionData.license_ids));
+
+      const res = await postApiFormDataWithAuth('admin/questions', formData);
+      const resData = (await res.json()) as QuestionResponse;
+      console.log(resData);
+      if (
+        resData.statusCode === 500 ||
+        resData.statusCode === 409 ||
+        resData.statusCode === 401
+      ) {
+        toast.error(resData.message);
+        return null;
+      }
+
+      if (resData.statusCode === 422 && resData.errors) {
+        resData.errors.forEach((err) => {
+          toast.error(err.message, { autoClose: 5000 });
+        });
+        return null;
+      }
+
+      toast.success(resData.message);
+      revalidator.revalidate();
+      handleCloseModal();
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
+    }
   }
 
-  function handleUpdateQuestion(id: number, questionData: IQuestion) {
+  async function handleUpdateQuestion(id: number, questionData: IQuestion) {
     // Validate data
-    console.log(id, questionData);
+    const errors = validateAddNewQuestion({
+      text: questionData.text,
+      topic_id: questionData.topic_id,
+      answers: questionData.answers,
+      exam_ids: questionData.exam_ids,
+      license_ids: questionData.license_ids,
+      image: questionData.image as File | null,
+    });
 
-    // Call API;
-    toast.success('Cập nhật câu hỏi thành công');
-    // handleCloseModal();
+    toast.dismiss();
+
+    if (errors) {
+      errors.forEach((err) => {
+        toast.error(err.message, { autoClose: 5000 });
+      });
+      return errors;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.set('image', questionData.image);
+      formData.set('text', questionData.text);
+      formData.set('tip', questionData.tip);
+      formData.set('required', questionData.required + '');
+      formData.set('topic_id', questionData.topic_id + '');
+      formData.set('answers', JSON.stringify(questionData.answers));
+      formData.set('exam_ids', JSON.stringify(questionData.exam_ids));
+      formData.set('license_ids', JSON.stringify(questionData.license_ids));
+
+      const res = await putApiFormDataWithAuth(
+        `admin/questions/${id}`,
+        formData
+      );
+      const resData = (await res.json()) as QuestionResponse;
+      console.log(resData);
+      if (
+        resData.statusCode === 500 ||
+        resData.statusCode === 409 ||
+        resData.statusCode === 401
+      ) {
+        toast.error(resData.message);
+        return null;
+      }
+
+      if (resData.statusCode === 422 && resData.errors) {
+        resData.errors.forEach((err) => {
+          toast.error(err.message, { autoClose: 5000 });
+        });
+        return null;
+      }
+
+      toast.success(resData.message);
+      revalidator.revalidate();
+      handleCloseModal();
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi, vui lòng thử tải lại trang');
+    }
   }
 
   // Modal
@@ -83,7 +253,7 @@ export default function QuestionManagement() {
   }
 
   function handleOpenModalView(id: number) {
-    const question = questions.find((q) => q.id === id);
+    const question = data.questions.find((q) => q.id === id);
 
     if (!question) return;
     setSelectedQuestion(question);
@@ -92,7 +262,7 @@ export default function QuestionManagement() {
   }
 
   function handleOpenModalUpdate(id: number) {
-    const question = questions.find((q) => q.id === id);
+    const question = data.questions.find((q) => q.id === id);
 
     if (!question) return;
     setSelectedQuestion(question);
@@ -102,20 +272,24 @@ export default function QuestionManagement() {
 
   // Pagination
   function handleOnClickPrev() {
-    setCurrentPage((prevValue) =>
-      prevValue === 1 ? prevValue : prevValue - 1
-    );
+    if (+currentPage === 1) return;
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('page', currentPage - 1 + '');
+    setSearchParams(newParams);
   }
 
   function handleOnClickNext() {
-    setCurrentPage((prevValue) =>
-      prevValue === totalPages ? prevValue : prevValue + 1
-    );
+    if (+currentPage === data.totalPages) return;
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('page', currentPage + 1 + '');
+    setSearchParams(newParams);
   }
 
   function handleOnClickGoTo(page: number) {
-    if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
+    if (+currentPage < 1 || +currentPage > data.totalPages) return;
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('page', page + '');
+    setSearchParams(newParams);
   }
 
   return (
@@ -131,8 +305,8 @@ export default function QuestionManagement() {
         <div className={styles.body}>
           <Table
             isDark={isDarkMode}
-            questions={currentQuestions}
-            rows={ROWS}
+            questions={data.questions}
+            rows={limit}
             onOpenView={handleOpenModalView}
             onOpenUpdate={handleOpenModalUpdate}
             onDelete={handleDeleteQuestion}
@@ -140,7 +314,7 @@ export default function QuestionManagement() {
           <Pagination
             isDark={isDarkMode}
             currentPage={currentPage}
-            totalPages={totalPages}
+            totalPages={data.totalPages}
             onNext={handleOnClickNext}
             onPrev={handleOnClickPrev}
             onGoTo={handleOnClickGoTo}
@@ -150,6 +324,7 @@ export default function QuestionManagement() {
       <Modal onClose={handleCloseModal} isOpen={showModal} isDark={isDarkMode}>
         {showModal && (
           <Form
+            exams={exams}
             onCancel={handleCloseModal}
             isDark={isDarkMode}
             behavior={behavior}
