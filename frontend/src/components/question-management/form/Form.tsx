@@ -20,6 +20,8 @@ import { useSelector } from 'react-redux';
 import { licensesSelector } from '@/store/setting/settingSelector';
 import { useRouteLoaderData } from 'react-router-dom';
 
+import { BASE_URL } from '@/config/baseUrl';
+
 type onSubmit =
   | null
   | ((id: number, data: IQuestion) => void)
@@ -102,7 +104,7 @@ export default function Form({
 
     if (!answer) return;
 
-    if (text) {
+    if (text !== undefined) {
       answer.text = text;
     }
     if (correct) {
@@ -391,9 +393,7 @@ export default function Form({
               selectedImage
                 ? URL.createObjectURL(selectedImage)
                 : question?.image
-                ? `${import.meta.env.VITE_API_ORIGIN_URL}/images/questions/${
-                    question.image
-                  }`
+                ? `${BASE_URL}/images/questions/${question.image}`
                 : null
             }
           />

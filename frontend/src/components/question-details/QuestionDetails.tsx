@@ -4,6 +4,8 @@ import styles from './QuestionDetails.module.scss';
 /** types */
 import { IAnswer, IBehavior, IQuestion } from '@/types/definitions';
 
+import { BASE_URL } from '@/config/baseUrl';
+
 export default function QuestionDetails({
   isDarkMode,
   behavior,
@@ -39,9 +41,7 @@ export default function QuestionDetails({
       {question?.image && (
         <div className={styles.imageContainer}>
           <img
-            src={`${import.meta.env.VITE_API_ORIGIN_URL}/images/questions/${
-              question.image
-            }`}
+            src={`${BASE_URL}/images/questions/${question.image}`}
             alt={question.text}
           />
         </div>

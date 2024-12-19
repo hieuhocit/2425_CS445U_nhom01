@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { User } from '@/types/definitions';
+import { BASE_URL } from '@/config/baseUrl';
 
 type ErrorResponse = {
   field: string;
@@ -36,7 +37,7 @@ export interface LogoutResponse {
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API_URL,
+    baseUrl: `${BASE_URL}/api`,
     credentials: 'include',
   }),
 

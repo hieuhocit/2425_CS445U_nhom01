@@ -31,6 +31,8 @@ import profileImagePlaceholder from '@/assets/images/profile-image-placeholder.j
 import Modal from '@/components/modal/Modal';
 import ConfirmMessage from '@/components/custom-confirm-message/ConfirmMessage';
 
+import { BASE_URL } from '@/config/baseUrl';
+
 export default function SideBar({
   isDark,
   isCollapsed,
@@ -98,9 +100,7 @@ export default function SideBar({
               <img
                 src={
                   user?.avatar
-                    ? `${import.meta.env.VITE_API_ORIGIN_URL}/images/users/${
-                        user?.avatar
-                      }`
+                    ? `${BASE_URL}/images/users/${user?.avatar}`
                     : profileImagePlaceholder
                 }
                 alt={`${user?.last_name} ${user?.first_name} avatar`}

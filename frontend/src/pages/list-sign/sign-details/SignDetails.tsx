@@ -20,6 +20,8 @@ import {
 import { ISign, ISignTopic } from '@/types/definitions';
 import { getSigns } from '@/services/signApi';
 
+import { BASE_URL } from '@/config/baseUrl';
+
 export async function loader({ params }: LoaderFunctionArgs) {
   const { signId } = params;
 
@@ -57,9 +59,7 @@ export default function SignDetailsPage() {
               </div>
               <div className={styles.body}>
                 <img
-                  src={`${import.meta.env.VITE_API_ORIGIN_URL}/images/signs/${
-                    s.image
-                  }`}
+                  src={`${BASE_URL}/images/signs/${s.image}`}
                   alt={s.name + ' sign image'}
                 />
                 <p>{s.detail}</p>

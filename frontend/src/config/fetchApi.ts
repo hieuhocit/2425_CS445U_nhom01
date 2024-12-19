@@ -1,4 +1,6 @@
-const apiUrl = import.meta.env.VITE_API_URL;
+import { BASE_URL } from './baseUrl';
+
+const apiUrl = `${BASE_URL}/api`;
 
 export async function getApi(pathname: string) {
   return fetch(`${apiUrl}/${pathname}`, {

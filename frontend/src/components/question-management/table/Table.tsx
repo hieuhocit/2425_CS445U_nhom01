@@ -14,6 +14,8 @@ import { IQuestion, ITopic } from '@/types/definitions';
 /** react-router */
 import { useRouteLoaderData } from 'react-router-dom';
 
+import { BASE_URL } from '@/config/baseUrl';
+
 export default function Table({
   isDark,
   questions,
@@ -58,9 +60,7 @@ export default function Table({
                     <img
                       src={
                         q.image
-                          ? `${
-                              import.meta.env.VITE_API_ORIGIN_URL
-                            }/images/questions/${q.image}`
+                          ? `${BASE_URL}/images/questions/${q.image}`
                           : imagePlaceholder
                       }
                       alt={q.text}

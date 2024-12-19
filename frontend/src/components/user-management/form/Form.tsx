@@ -10,6 +10,8 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 /** types */
 import { User } from '@/types/definitions';
 
+import { BASE_URL } from '@/config/baseUrl';
+
 type onSubmit =
   | null
   | ((id: number, data: FormData) => void)
@@ -176,10 +178,7 @@ export default function Form({
             imageUrl={
               selectedImage
                 ? URL.createObjectURL(selectedImage)
-                : user?.avatar &&
-                  `${import.meta.env.VITE_API_ORIGIN_URL}/images/users/${
-                    user?.avatar
-                  }`
+                : user?.avatar && `${BASE_URL}/images/users/${user?.avatar}`
             }
           />
         </label>

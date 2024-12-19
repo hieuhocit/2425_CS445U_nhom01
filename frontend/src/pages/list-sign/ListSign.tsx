@@ -15,6 +15,8 @@ import { ISignTopic } from '@/types/definitions';
 /** API */
 import { getSignTopics } from '@/services/signApi';
 
+import { BASE_URL } from '@/config/baseUrl';
+
 export async function loader() {
   const resSignTopics = await getSignTopics();
   return resSignTopics.data;
@@ -41,9 +43,7 @@ export default function ListSignPage() {
                 <Link to={`/list-sign/${st.id}`} className={styles.item}>
                   <div className={styles.head}>
                     <img
-                      src={`${
-                        import.meta.env.VITE_API_ORIGIN_URL
-                      }/images/sign_topics/${st.image}`}
+                      src={`${BASE_URL}/images/sign_topics/${st.image}`}
                       alt={st.display + ' image'}
                     />
                     <h2>{st.display}</h2>

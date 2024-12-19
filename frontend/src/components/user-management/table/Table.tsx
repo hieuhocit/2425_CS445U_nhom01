@@ -10,6 +10,8 @@ import imagePlaceholder from '@/assets/images/image-placeholder.jpg';
 /** types */
 import { User } from '@/types/definitions';
 
+import { BASE_URL } from '@/config/baseUrl';
+
 export default function Table({
   isDark,
   users,
@@ -50,9 +52,7 @@ export default function Table({
                   <img
                     src={
                       user.avatar
-                        ? `${
-                            import.meta.env.VITE_API_ORIGIN_URL
-                          }/images/users/${user.avatar}`
+                        ? `${BASE_URL}/images/users/${user.avatar}`
                         : imagePlaceholder
                     }
                     alt={user.first_name + ' ' + user.last_name}

@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { ILicense } from '@/types/definitions';
+import { BASE_URL } from '@/config/baseUrl';
 
 export interface LicenseResponse {
   statusCode: number;
@@ -10,7 +11,7 @@ export interface LicenseResponse {
 export const licenseApi = createApi({
   reducerPath: 'licenseApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API_URL,
+    baseUrl: `${BASE_URL}/api`,
     credentials: 'include',
   }),
 
