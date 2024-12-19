@@ -68,7 +68,7 @@ export default function TemplateTestPage({
   const currentQuestion: IQuestion | undefined = questions?.[currentIndex];
 
   useEffect(() => {
-    if (behavior === 'view') return;
+    if (behavior === 'view' || !currentQuestion) return;
     intervalIdRef.current = window.setInterval(() => {
       if (ms > 0) {
         setMs((prevMs) => prevMs - 1000);
@@ -160,7 +160,7 @@ export default function TemplateTestPage({
         <Header title={title} isDark={isDark} path={path} />
 
         <main className={styles.main}>
-          {behavior === 'exam' && (
+          {behavior === 'exam' && currentQuestion && (
             <div className={styles.head}>
               <div className={styles.top}>
                 <div className={styles.timer}>
@@ -180,7 +180,10 @@ export default function TemplateTestPage({
             </div>
           )}
 
-          <div className={styles.body}>
+          <div
+            className={styles.body}
+            style={{ marginTop: behavior === 'view' ? '32px' : '0' }}
+          >
             {!currentQuestion && (
               <p>
                 Hiện tại chưa có câu hỏi, vui lòng quay lại sau hoặc liên hệ với
