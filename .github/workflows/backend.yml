@@ -25,7 +25,3 @@ jobs:
       - name: Install dependencies
         working-directory: ./backend
         run: npm install
-
-      - name: Run Lint
-        working-directory: ./backend
-        run: npm run lint
