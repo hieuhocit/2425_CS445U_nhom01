@@ -105,7 +105,7 @@ const login = [
 ];
 
 const logout = (req, res, next) => {
-  const refreshToken = req.cookies?.refreshToken;
+  const refreshToken = req?.cookies?.refreshToken;
 
   if (!refreshToken) {
     return res.status(401).json({
