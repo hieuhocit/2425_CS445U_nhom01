@@ -74,11 +74,14 @@ const login = [
       res.cookie('accessToken', access_token, {
         httpOnly: true,
         secure: true,
+        sameSite: 'none',
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngày
       });
 
       res.cookie('refreshToken', refresh_token, {
         httpOnly: true,
         secure: true,
+        sameSite: 'none',
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngày
       });
 
@@ -115,8 +118,16 @@ const logout = (req, res, next) => {
     });
   }
 
-  res.clearCookie('accessToken', { httpOnly: true, secure: true });
-  res.clearCookie('refreshToken', { httpOnly: true, secure: true });
+  res.clearCookie('accessToken', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+  });
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+  });
 
   return res.status(200).json({
     statusCode: 200,
