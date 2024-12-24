@@ -74,14 +74,14 @@ const login = [
       res.cookie('accessToken', access_token, {
         httpOnly: true,
         secure: true,
-        sameSite: 'none',
+        sameSite: 'None',
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngày
       });
 
       res.cookie('refreshToken', refresh_token, {
         httpOnly: true,
         secure: true,
-        sameSite: 'none',
+        sameSite: 'None',
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngày
       });
 

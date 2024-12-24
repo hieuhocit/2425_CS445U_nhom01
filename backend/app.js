@@ -20,10 +20,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.ORIGIN_URL || '*',
+    origin: process.env.ORIGIN_URL,
     credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type,Authorization',
   })
 );
 
@@ -40,7 +38,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       httpOnly: true,
       sameSite: 'none',
     },
