@@ -3,7 +3,7 @@ import { ILicense, ISetting } from '@/types/definitions';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: ISetting = {
-  currentLicenseId: localStorage.getItem('licenseId'),
+  currentLicenseId: Number(localStorage.getItem('licenseId') || 1),
   currentLicense: null,
   licenses: [],
   violationType: 1,
@@ -14,9 +14,10 @@ const settingSlice = createSlice({
   initialState: initialState,
   reducers: {
     changeLicense: (state, action) => {
-      state.currentLicense = action.payload.currentLicense;
-      state.currentLicenseId = action.payload.currentLicense.id;
-      localStorage.setItem('licenseId', action.payload.currentLicense.id);
+      const license = action.payload.currentLicense as ILicense;
+      state.currentLicense = license;
+      state.currentLicenseId = license.id;
+      localStorage.setItem('licenseId', license.id + '');
     },
     changeViolationType: (state, action) => {
       state.violationType = action.payload.violationType;
