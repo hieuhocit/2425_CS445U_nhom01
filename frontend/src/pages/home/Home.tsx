@@ -203,7 +203,7 @@ export default function HomePage() {
                   className={`${styles.item} ${styles.history}`}
                 >
                   <MdHistory className={styles.icon} />
-                  <p>Xem lịch sử thi</p>
+                  <p>Lịch sử thi</p>
                 </Link>
                 <div
                   onClick={handleOpenModal}

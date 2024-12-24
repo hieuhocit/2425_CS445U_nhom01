@@ -28,9 +28,20 @@ const settingSlice = createSlice({
       (state, action) => {
         const licenses = action.payload.data as ILicense[];
         state.licenses = licenses;
-        state.currentLicense = !state.currentLicenseId
-          ? licenses[0]
-          : licenses.find((l) => l.id === Number(state.currentLicenseId));
+
+        if (!state?.currentLicenseId) {
+          state.currentLicense = licenses[0];
+          state.currentLicenseId = licenses[0].id;
+          localStorage.setItem('licenseId', licenses[0].id + '');
+        } else {
+          const l = licenses.find(
+            (l) => l.id === Number(state.currentLicenseId)
+          ) as ILicense;
+
+          state.currentLicense = l;
+          state.currentLicenseId = l.id;
+          localStorage.setItem('licenseId', l.id + '');
+        }
       }
     );
   },
