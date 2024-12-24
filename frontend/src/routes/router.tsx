@@ -1,66 +1,93 @@
+/* eslint-disable react-refresh/only-export-components */
+
+/** react */
+import { lazy, Suspense } from 'react';
+
 /** react-router */
 import { createBrowserRouter } from 'react-router-dom';
 
 /** Layout */
-import Layout, {
+const Layout = lazy(() => import('@/Layout'));
+
+/** Pages */
+const ListExamPage = lazy(() => import('@/pages/list-exam/ListExam'));
+const HomePage = lazy(() => import('@/pages/home/Home'));
+const SettingPage = lazy(() => import('@/pages/setting/Setting'));
+const ListSignPage = lazy(() => import('@/pages/list-sign/ListSign'));
+const SignDetailsPage = lazy(
+  () => import('@/pages/list-sign/sign-details/SignDetails')
+);
+const ListLawPage = lazy(() => import('@/pages/list-law/ListLaw'));
+const ListViolationPage = lazy(
+  () => import('@/pages/list-violation/ListViolation')
+);
+const ViolationDetailsPage = lazy(
+  () => import('@/pages/list-violation/violation-details/ViolationDetails')
+);
+const ListWrongPage = lazy(() => import('@/pages/list-wrong/ListWrong'));
+const ListRequiredPage = lazy(
+  () => import('@/pages/list-required/ListRequired')
+);
+const ReviewPage = lazy(() => import('@/pages/review/Review'));
+const ListTopicPage = lazy(() => import('@/pages/list-topic/ListTopic'));
+const TopicDetailsPage = lazy(
+  () => import('@/pages/list-topic/topic-details/TopicDetails')
+);
+const ExamPage = lazy(() => import('@/pages/exam/Exam'));
+const ExamResultPage = lazy(() => import('@/pages/exam-result/ExamResult'));
+const LoginPage = lazy(() => import('@/pages/login/Login'));
+const RegisterPage = lazy(() => import('@/pages/register/Register'));
+const ExamHistoryPage = lazy(() => import('@/pages/exam-history/ExamHistory'));
+const ProfilePage = lazy(() => import('@/pages/profile/Profile'));
+const AdminPage = lazy(() => import('@/pages/admin/Admin'));
+const Statistical = lazy(() => import('@/components/statistical/Statistical'));
+const UserManagement = lazy(
+  () => import('@/components/user-management/UserManagement')
+);
+const ExamManagement = lazy(
+  () => import('@/components/exam-management/ExamManagement')
+);
+const QuestionManagement = lazy(
+  () => import('@/components/question-management/QuestionManagement')
+);
+const PersonalInformation = lazy(
+  () => import('@/components/personal-information/PersonalInformation')
+);
+const ChangePassword = lazy(
+  () => import('@/components/change-password/ChangePassword')
+);
+const ForgotPasswordPage = lazy(
+  () => import('@/pages/forgot-password/ForgotPassword')
+);
+const ProtectedRoute = lazy(
+  () => import('@/components/protected-route/ProtectedRoute')
+);
+const ReviewDetailsPage = lazy(() => import('@/pages/review/ReviewDetails'));
+
+/** Loaders */
+import {
   loader as layoutLoader,
   revalidate as revalidateLayout,
 } from '@/Layout';
+import { loader as listSignLoader } from '@/pages/list-sign/ListSign';
+import { loader as signDetailsLoader } from '@/pages/list-sign/sign-details/SignDetails';
+import { loader as listLawLoader } from '@/pages/list-law/ListLaw';
+import { loader as listViolationLoader } from '@/pages/list-violation/ListViolation';
+import { loader as violationDetailsLoader } from '@/pages/list-violation/violation-details/ViolationDetails';
+import { loader as listWrongLoader } from '@/pages/list-wrong/ListWrong';
+import { loader as examLoader } from '@/pages/exam/Exam';
+import { loader as examResultLoader } from '@/pages/exam-result/ExamResult';
+import { loader as examHistoryLoader } from '@/pages/exam-history/ExamHistory';
+import { loader as statisticalLoader } from '@/components/statistical/Statistical';
+import { loader as userManagementLoader } from '@/components/user-management/UserManagement';
+import { loader as examManagementLoader } from '@/components/exam-management/ExamManagement';
+import { loader as questionsManagementLoader } from '@/components/question-management/QuestionManagement';
 
-/** Pages */
-import ListExamPage from '@/pages/list-exam/ListExam';
-import HomePage from '@/pages/home/Home';
-import SettingPage from '@/pages/setting/Setting';
-import ListSignPage, {
-  loader as listSignLoader,
-} from '@/pages/list-sign/ListSign';
-import SignDetailsPage, {
-  loader as signDetailsLoader,
-} from '../pages/list-sign/sign-details/SignDetails';
-import ListLawPage, { loader as listLawLoader } from '@/pages/list-law/ListLaw';
-import ListViolationPage, {
-  loader as listViolationLoader,
-} from '@/pages/list-violation/ListViolation';
-import ViolationDetailsPage, {
-  loader as violationDetailsLoader,
-} from '@/pages/list-violation/violation-details/ViolationDetails';
-import ListWrongPage, {
-  loader as listWrongLoader,
-} from '@/pages/list-wrong/ListWrong';
-import ListRequiredPage from '@/pages/list-required/ListRequired';
-import ReviewPage from '@/pages/review/Review';
-import ListTopicPage from '@/pages/list-topic/ListTopic';
-import TopicDetailsPage from '@/pages/list-topic/topic-details/TopicDetails';
-import ExamPage, { loader as examLoader } from '@/pages/exam/Exam';
-import ExamResultPage, {
-  loader as examResultLoader,
-} from '@/pages/exam-result/ExamResult';
-import LoginPage from '@/pages/login/Login';
-import RegisterPage, {
-  action as registerAction,
-} from '@/pages/register/Register';
-import ExamHistoryPage, {
-  loader as examHistoryLoader,
-} from '@/pages/exam-history/ExamHistory';
-import ProfilePage from '@/pages/profile/Profile';
-import AdminPage from '@/pages/admin/Admin';
-import Statistical, {
-  loader as statisticalLoader,
-} from '@/components/statistical/Statistical';
-import UserManagement, {
-  loader as userManagementLoader,
-} from '@/components/user-management/UserManagement';
-import ExamManagement, {
-  loader as examManagementLoader,
-} from '@/components/exam-management/ExamManagement';
-import QuestionManagement, {
-  loader as questionsManagementLoader,
-} from '@/components/question-management/QuestionManagement';
-import PersonalInformation from '@/components/personal-information/PersonalInformation';
-import ChangePassword from '@/components/change-password/ChangePassword';
-import ForgotPasswordPage from '@/pages/forgot-password/ForgotPassword';
-import ProtectedRoute from '@/components/protected-route/ProtectedRoute';
-import ReviewDetailsPage from '@/pages/review/ReviewDetails';
+/** Action */
+import { action as registerAction } from '@/pages/register/Register';
+
+/** Component */
+import LoadingIndicator from '@/components/loading-indicator/LoadingIndicator';
 
 const router = createBrowserRouter([
   {
@@ -72,11 +99,19 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <HomePage />
+          </Suspense>
+        ),
       },
       {
         path: '/setting',
-        element: <SettingPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <SettingPage />
+          </Suspense>
+        ),
       },
       {
         id: 'sign',
@@ -85,150 +120,248 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <ListSignPage />,
+            element: (
+              <Suspense fallback={<LoadingIndicator />}>
+                <ListSignPage />
+              </Suspense>
+            ),
           },
           {
             path: '/list-sign/:signId',
-            element: <SignDetailsPage />,
+            element: (
+              <Suspense fallback={<LoadingIndicator />}>
+                <SignDetailsPage />
+              </Suspense>
+            ),
             loader: signDetailsLoader,
           },
         ],
       },
       {
         path: '/list-law',
-        element: <ListLawPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <ListLawPage />
+          </Suspense>
+        ),
         loader: listLawLoader,
       },
       {
         path: '/list-violation',
-        element: <ListViolationPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <ListViolationPage />
+          </Suspense>
+        ),
         loader: listViolationLoader,
       },
       {
         path: '/violation',
-        element: <ViolationDetailsPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <ViolationDetailsPage />
+          </Suspense>
+        ),
         loader: violationDetailsLoader,
       },
       {
         path: '/list-wrong',
         element: (
-          <ProtectedRoute>
-            <ListWrongPage />
-          </ProtectedRoute>
+          <Suspense fallback={<LoadingIndicator />}>
+            <ProtectedRoute>
+              <ListWrongPage />
+            </ProtectedRoute>
+          </Suspense>
         ),
         loader: listWrongLoader,
       },
       {
         path: '/list-required',
-        element: <ListRequiredPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <ListRequiredPage />
+          </Suspense>
+        ),
       },
       {
         path: '/review',
-        element: <ReviewPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <ReviewPage />
+          </Suspense>
+        ),
       },
       {
         path: '/review/questions',
-        element: <ReviewDetailsPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <ReviewDetailsPage />
+          </Suspense>
+        ),
       },
       {
         path: '/list-topic',
-        element: <ListTopicPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <ListTopicPage />
+          </Suspense>
+        ),
       },
       {
         path: '/list-topic/:topicId',
-        element: <TopicDetailsPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <TopicDetailsPage />
+          </Suspense>
+        ),
       },
       {
         path: 'list-exam',
-        element: <ListExamPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <ListExamPage />
+          </Suspense>
+        ),
       },
       {
         path: 'list-exam/:examId',
-        element: <ExamPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <ExamPage />
+          </Suspense>
+        ),
         loader: examLoader,
       },
       {
         path: 'list-exam/:examId/result',
-        element: <ExamResultPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <ExamResultPage />
+          </Suspense>
+        ),
       },
       {
         path: '/login',
-        element: <LoginPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <LoginPage />
+          </Suspense>
+        ),
       },
       {
         path: '/register',
-        element: <RegisterPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <RegisterPage />
+          </Suspense>
+        ),
         action: registerAction,
       },
       {
         path: '/profile',
         element: (
-          <ProtectedRoute>
-            <ProfilePage />
-          </ProtectedRoute>
+          <Suspense fallback={<LoadingIndicator />}>
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          </Suspense>
         ),
         children: [
           {
             index: true,
-            element: <PersonalInformation />,
+            element: (
+              <Suspense fallback={<LoadingIndicator />}>
+                <PersonalInformation />
+              </Suspense>
+            ),
           },
           {
             path: 'password',
-            element: <ChangePassword />,
+            element: (
+              <Suspense fallback={<LoadingIndicator />}>
+                <ChangePassword />
+              </Suspense>
+            ),
           },
         ],
       },
       {
         path: '/exam-history',
         element: (
-          <ProtectedRoute>
-            <ExamHistoryPage />
-          </ProtectedRoute>
+          <Suspense fallback={<LoadingIndicator />}>
+            <ProtectedRoute>
+              <ExamHistoryPage />
+            </ProtectedRoute>
+          </Suspense>
         ),
         loader: examHistoryLoader,
       },
       {
         path: '/exam-history/:examHistoryId',
         element: (
-          <ProtectedRoute>
-            <ExamResultPage />
-          </ProtectedRoute>
+          <Suspense fallback={<LoadingIndicator />}>
+            <ProtectedRoute>
+              <ExamResultPage />
+            </ProtectedRoute>
+          </Suspense>
         ),
         loader: examResultLoader,
       },
       {
         path: '/admin',
         element: (
-          <ProtectedRoute>
-            <AdminPage />
-          </ProtectedRoute>
+          <Suspense fallback={<LoadingIndicator />}>
+            <ProtectedRoute>
+              <AdminPage />
+            </ProtectedRoute>
+          </Suspense>
         ),
         children: [
           {
             index: true,
-            element: <Statistical />,
+            element: (
+              <Suspense fallback={<LoadingIndicator />}>
+                <Statistical />
+              </Suspense>
+            ),
             loader: statisticalLoader,
           },
           {
             path: 'user-management',
-            element: <UserManagement />,
+            element: (
+              <Suspense fallback={<LoadingIndicator />}>
+                <UserManagement />
+              </Suspense>
+            ),
             loader: userManagementLoader,
           },
           {
             path: 'exam-management',
-            element: <ExamManagement />,
+            element: (
+              <Suspense fallback={<LoadingIndicator />}>
+                <ExamManagement />
+              </Suspense>
+            ),
             loader: examManagementLoader,
           },
           {
             path: 'question-management',
-            element: <QuestionManagement />,
+            element: (
+              <Suspense fallback={<LoadingIndicator />}>
+                <QuestionManagement />
+              </Suspense>
+            ),
             loader: questionsManagementLoader,
           },
         ],
       },
       {
         path: '/forgot-password',
-        element: <ForgotPasswordPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <ForgotPasswordPage />
+          </Suspense>
+        ),
       },
     ],
   },
