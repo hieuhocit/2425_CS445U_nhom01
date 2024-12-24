@@ -79,10 +79,13 @@ npm install
 ```
 
 6. **Cấu hình lại đường dẫn url trong phần frontend để phát triển cục bộ**
-   Mở/đóng comment phù hợp cho Development hoặc Production
-   [](./backend/public/config_base_url.png);
 
-7. **Cấu hình file .env trong phần backend theo mẫu dưới đây**
+```
+   Mở/đóng comment phù hợp cho Development hoặc Production
+   ![](./backend/public/config_base_url.png);
+```
+
+8. **Cấu hình file .env trong phần backend theo mẫu dưới đây**
 
 ```
 DB_HOST=127.0.0.1
