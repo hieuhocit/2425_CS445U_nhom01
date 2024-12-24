@@ -3,6 +3,7 @@ import {
   Outlet,
   ShouldRevalidateFunctionArgs,
   useNavigate,
+  useNavigation,
 } from 'react-router-dom';
 
 /** toastify */
@@ -27,6 +28,13 @@ import { useEffect, useState } from 'react';
 
 /** store */
 import store from './store/store';
+
+/** nprogress */
+import NProgress from 'nprogress';
+
+/** styles */
+import 'nprogress/nprogress.css';
+import './styles/layout.scss';
 
 export async function loader() {
   const licenseId =
@@ -63,7 +71,23 @@ export default function Layout() {
 
   const navigate = useNavigate();
 
+  const navigation = useNavigation();
+
   useGetLicensesQuery();
+
+  useEffect(
+    function () {
+      NProgress.configure({
+        showSpinner: false,
+      });
+      if (navigation.state === 'loading') NProgress.start();
+      else NProgress.done();
+      return () => {
+        NProgress.done();
+      };
+    },
+    [navigation.state]
+  );
 
   const { isLoading } = useGetUserQuery();
 
