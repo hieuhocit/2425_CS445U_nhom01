@@ -50,9 +50,11 @@ Biết cơ bản về MySQL, npm và vite.
 CREATE DATABASE GPLX;
 ```
 
-2. **Khởi tạo data Chạy file initialData.sql từ thư mục db/initialData**
+2. **Khởi tạo data
 
-3. **Sao chép kho lưu trữ**
+- Chạy file initialData.sql từ thư mục db/initialData**
+
+4. **Sao chép kho lưu trữ**
 
 ```
 git clone https://github.com/hieuhocit/2425_CS445U_nhom01.git
