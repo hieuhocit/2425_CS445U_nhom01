@@ -52,7 +52,7 @@ CREATE DATABASE GPLX;
 
 2. **Khởi tạo data
 
-- Chạy file initialData.sql từ thư mục db/initialData**
+-- Chạy file initialData.sql từ thư mục db/initialData**
 
 4. **Sao chép kho lưu trữ**
 
@@ -82,11 +82,11 @@ npm install
 
 6. **Cấu hình lại đường dẫn url trong phần frontend để phát triển cục bộ**
 
-Mở/đóng comment phù hợp cho Development hoặc Production (nằm trong thư mục src/config/baseUrl.ts)
-![](./backend/public/config_base_url.png);
+-- Mở/đóng comment phù hợp cho Development hoặc Production (nằm trong thư mục src/config/baseUrl.ts)
+-- ![](./backend/public/config_base_url.png);
 
 
-8. **Cấu hình file .env trong phần backend theo mẫu dưới đây**
+8. **Cấu hình file .env trong phần backend theo hướng dẫn dưới đây**
 
 ```
 DB_HOST=127.0.0.1
