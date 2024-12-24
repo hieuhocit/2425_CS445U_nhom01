@@ -40,7 +40,7 @@ Truy cập ngay tại: [https://luyenthigplx.netlify.app/](https://luyenthigplx.
 
 ### Yêu Cầu
 
-Biết cơ bản về MySQL, npm, và Vite.
+Biết cơ bản về MySQL, npm và vite.
 
 Để chạy dự án cục bộ, hãy làm theo các bước sau:
 
