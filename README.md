@@ -80,10 +80,9 @@ npm install
 
 6. **Cấu hình lại đường dẫn url trong phần frontend để phát triển cục bộ**
 
-```
-   Mở/đóng comment phù hợp cho Development hoặc Production
-   ![](./backend/public/config_base_url.png);
-```
+Mở/đóng comment phù hợp cho Development hoặc Production (nằm trong thư mục src/config/baseUrl.ts)
+![](./backend/public/config_base_url.png);
+
 
 8. **Cấu hình file .env trong phần backend theo mẫu dưới đây**
 
